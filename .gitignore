@@ -1,1 +1,5 @@
+/bin
+/build/*
+/WebContent/WEB-INF/lib/*.jar
+/kkadalip.war
 /build/
