@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xml>
+<project name="kkadalip" xmlns:ivy="antlib:org.apache.ivy.ant" default="war">
+	<presetdef name="javac">
+		<javac includeantruntime="false" />
+	</presetdef>
+	
+	<!-- Directories -->  
+	<property name="basedir" location="." />
+	<property name="src.dir" location="${basedir}/src" />
+	<property name="build.dir" location="${basedir}/build" />
+	<property name="classes.dir" location="${build.dir}/classes" />
+	<property name="web_content.dir" location="${basedir}/WebContent" />
+	<property name="META-INF.dir" location="${web_content.dir}/META-INF" />
+	<property name="lib.dir" location="${web_content.dir}/WEB-INF/lib" />
+	<property name="war.file" location="${basedir}/kkadalip.war" />
+	<property name="ivylib.dir" location="${basedir}/lib" />
+	<property name="ivy.retrieve.pattern" value="${lib.dir}/[artifact][type][revision].[ext]" />
+	<!--<property name="tests.dir" location="${src.dir}/tests" />-->
+	
+	<path id="classpath.compile">
+		<!-- ivy library -->
+		<fileset dir="${ivylib.dir}">
+			<include name="*.jar" />
+		</fileset>
+		<!-- downloaded file libraries -->
+		<fileset dir="${lib.dir}">
+			<include name="*.jar" />
+		</fileset>
+	</path>
+	
+	<!-- COMPILE: actions for compiling (cleaning, initializing, retrieving) -->
+	<target name="compile" depends="clean, init, retrieve">
+		<javac srcdir="${src.dir}" destdir="${classes.dir}" source="1.8" target="1.8" includeantruntime="false">
+			<classpath refid="classpath.compile" />
+		</javac>
+	</target>
+
+	<!-- INIT: Creates classes directory (./classes) -->
+	<target name="init">
+		<mkdir dir="${classes.dir}" />
+	</target>
+
+	<!-- CLEAN: Deletes build directory (./build) -->
+	<target name="clean">
+		<delete dir="${build.dir}" />
+	</target>
+	
+	<target name="war" depends="compile">  
+		<war destfile="${war.file}" webxml="${web_content.dir}/WEB-INF/web.xml">
+			<classes dir="${classes.dir}" />
+			<zipfileset dir="${META-INF.dir}" includes="*" prefix="WEB-INF/classes/META-INF" />
+			<!--<zipfileset dir="${src.dir}" includes="*.sql" prefix="WEB-INF/classes" />-->
+			<zipfileset dir="${src.dir}" includes="*.properties" prefix="WEB-INF/classes" />
+		</war>
+	</target>
+
+	<!-- To retreive Ivy dependency libraries (.jar) -->
+	<path id="classpath.retrieve">
+		<fileset dir="${ivylib.dir}">
+			<include name="*.jar" />
+		</fileset>
+	</path>
+	
+	<target name="retrieve" description="retreive dependencies">
+		<taskdef resource="org/apache/ivy/ant/antlib.xml" uri="antlib:org.apache.ivy.ant"
+			classpathref="classpath.retrieve" />
+		<ivy:resolve file="${basedir}/ivy.xml" log="download-only" />
+		<ivy:retrieve pattern="${ivy.retrieve.pattern}" conf="default" />
+	</target>
+	
+</project>

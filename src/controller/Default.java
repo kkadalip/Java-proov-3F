@@ -8,24 +8,24 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-//import org.slf4j.Logger;
-//import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Default extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-//	Logger log = LoggerFactory.getLogger(Default.class); // info trace debug warn error
+	Logger log = LoggerFactory.getLogger(Default.class); // info trace debug warn error
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-//		log.info("[doGet] START");
+		log.info("[doGet] START");
 		HttpSession httpSession = request.getSession(true);
 		request.getRequestDispatcher("jsp/index.jsp").forward(request, response);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-//		log.info("[doPost] START");
+		log.info("[doPost] START");
 		HttpSession httpSession = request.getSession(true);
 		response.sendRedirect(""); // Success
-//		log.info("[doPost] END");
+		log.info("[doPost] END");
 	}
 }
 
