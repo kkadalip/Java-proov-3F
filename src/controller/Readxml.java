@@ -13,23 +13,16 @@ public class Readxml {
 
 	public static void main(String argv[]) {
 
-		try {
-
-//			File fXmlFile = new File("/Users/mkyong/staff.xml");
-//			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-//			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-//			Document doc = dBuilder.parse(fXmlFile);
-
-			// http://www.evemarketeer.com/api/orders/10000043/30119/xml
+		try {			
+			//File xmlFile = new File("/Users/example.xml");
 			URL url = new URL("http://statistika.eestipank.ee/Reports?type=curd&format=xml&date1=2010-12-30&lng=est&print=off");
 			//URL url = new URL("http://webservices.lb.lt/ExchangeRates/ExchangeRates.asmx/getExchangeRatesByDate?Date=2010-12-30");
 			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 			DocumentBuilder db = dbf.newDocumentBuilder();
+			//Document doc = db.parse(xmlFile);
 			Document doc = db.parse(url.openStream());
 			NodeList nodes = doc.getElementsByTagName("Currency"); // row
 			System.out.println(nodes.getLength() + " nodes found");
-			
-			
 			
 			//optional, but recommended
 			//read this - http://stackoverflow.com/questions/13786607/normalization-in-dom-parsing-with-java-how-does-it-work
@@ -37,21 +30,22 @@ public class Readxml {
 
 			System.out.println("Root element :" + doc.getDocumentElement().getNodeName());
 
-			NodeList nList = doc.getElementsByTagName("staff");
+			NodeList nList = doc.getElementsByTagName("Currency");
 
 			System.out.println("----------------------------");
-
+			System.out.println("nList length: " + nList.getLength());
 			for (int temp = 0; temp < nList.getLength(); temp++) {
 
 				Node nNode = nList.item(temp);
 
-				System.out.println("\nCurrent Element :" + nNode.getNodeName());
+				//System.out.println("\nCurrent Element :" + nNode.getNodeName()); // Current Element :Currency
 
 				if (nNode.getNodeType() == Node.ELEMENT_NODE) {
 
 					Element eElement = (Element) nNode;
 					
-					System.out.println("I HAVE NODE!");
+					//System.out.println("I HAVE NODE!");
+					System.out.println("name: " + eElement.getAttribute("name") + " text: " + eElement.getAttribute("text") + " rate: " + eElement.getAttribute("rate"));
 
 //					System.out.println("Staff id : " + eElement.getAttribute("id"));
 //					System.out.println("First Name : " + eElement.getElementsByTagName("firstname").item(0).getTextContent());
