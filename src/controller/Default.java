@@ -1,6 +1,7 @@
 package controller;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -11,6 +12,9 @@ import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import dao.Readxml;
+import model.Currency;
+
 public class Default extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	Logger log = LoggerFactory.getLogger(Default.class); // info trace debug warn error
@@ -18,6 +22,10 @@ public class Default extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		log.info("[doGet] START");
 		HttpSession httpSession = request.getSession(true);
+		
+		List<Currency> displayedCurrencies = Readxml.getCurrencies();
+		request.setAttribute("displayedCurrencies", displayedCurrencies);
+		
 		request.getRequestDispatcher("jsp/index.jsp").forward(request, response);
 	}
 

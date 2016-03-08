@@ -1,4 +1,4 @@
-package controller;
+package dao;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.DocumentBuilder;
@@ -29,16 +29,16 @@ public class Readxml {
 		
 		//doStuff();
 		
-		List<Currency> swagCurrencies = getCurrencies();
-		System.out.println("swagcurrencies size: " + swagCurrencies.size());
-		for(Currency c : swagCurrencies){
-			if(c != null){
-				System.out.println("CURRENCY: " + c.toString());
-			}else{
-				System.out.println("c IS NULL!!");
-			}
-			
-		}
+//		List<Currency> swagCurrencies = getCurrencies();
+//		System.out.println("swagcurrencies size: " + swagCurrencies.size());
+//		for(Currency c : swagCurrencies){
+//			if(c != null){
+//				System.out.println("CURRENCY: " + c.toString());
+//			}else{
+//				System.out.println("c IS NULL!!");
+//			}
+//			
+//		}
 	}
 	
 	public static List<Currency> getCurrencies(){

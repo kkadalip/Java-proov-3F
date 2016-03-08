@@ -1,6 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -43,6 +46,12 @@
 			<option value="ALL">AUD - Austraalia dollar</option>
 		</select> <br> Kursi kuupäev: input väli formaadis dd.mm.yyyy koos mõne
 		javascript date pickeriga!!!! <br> <input type="submit" value="Done">
+
+		<br /> Currencies: <select required name="displayedCurrencies" multiple="multiple" size="15">
+			<c:forEach items="${requestScope['displayedCurrencies']}" var="item" varStatus="outerLoop">
+				<option id="option_${item._shortName}" value="${item._shortName}">${item._shortName} - ${item._fullName} - ${item._rate} - ${item._date}</option>
+			</c:forEach>
+		</select>
 	</form>
 </body>
 </html>
