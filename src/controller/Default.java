@@ -15,20 +15,37 @@ import org.slf4j.LoggerFactory;
 import dao.Readxml;
 import model.Currency;
 
+
 public class Default extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	Logger log = LoggerFactory.getLogger(Default.class); // info trace debug warn error
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		log.info("[doGet] START");
-		HttpSession httpSession = request.getSession(true);
+		//HttpSession httpSession = request.getSession(true);
 		
+		// sessiooni võiks sellegipoolest salvestada (refresh page jmt jaoks)
 		List<Currency> displayedCurrencies = Readxml.getCurrencies();
 		request.setAttribute("displayedCurrencies", displayedCurrencies);
+		
+		// kontrolli, kas on sessiooni var-is olemas, kui ei, siis lisa, tglt ajaxiga javascripti abil teha??
+		//@SuppressWarnings("unchecked")
+		//List<Currency> displayedCurrencies = (List<Currency>) httpSession.getAttribute("displayedCurrencies");
+		//if(displayedCurrencies.isEmpty()){
+		//	log.debug("I DO NOT HAVE session displayedcurrencies, setting them now");
+		//	displayedCurrencies = Readxml.getCurrencies();
+		//	httpSession.setAttribute("displayedCurrencies", displayedCurrencies);
+		//}else{
+		//	log.debug("I have session displayedcurrencies.");
+		//}
+		//request.setAttribute("displayedCurrencies", displayedCurrencies);
+
+
 		
 		request.getRequestDispatcher("jsp/index.jsp").forward(request, response);
 	}
 
+	// NOT USING:
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		log.info("[doPost] START");
 		HttpSession httpSession = request.getSession(true);
@@ -50,7 +67,7 @@ public class Default extends HttpServlet {
 		Float outputAmount = inputCurrencyFloat / outputCurrencyFloat * inputMoneyAmountFloat;
 		log.debug("output amount: " + outputAmount);
 		
-		//response.sendRedirect(""); // Success
+		response.sendRedirect(""); // Success
 		log.info("[doPost] END");
 	}
 }

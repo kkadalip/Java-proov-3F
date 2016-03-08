@@ -23,9 +23,17 @@
     media-src 'self';">
 
 <link rel="stylesheet" type="text/css" href="static/style.css">
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
 <script src="static/default.js"></script>
+<script>
+	$(document).on("click", "#ajaxbutton", function() {
+		console.log("clicked button!");
+		$.get("Something", function(responseText) { // Execute Ajax GET request on URL of "someservlet" and execute the following function with Ajax response text...
+			$("#somediv").text(responseText); // Locate HTML DOM element with ID "somediv" and set its text content with the response text.
+		});
+	});
+</script>
+
 </head>
 <body>
 	AJAX valuutakalkulaator
@@ -33,18 +41,17 @@
 
 	<form action="" method="POST">
 		Lähtesumma: <input type="text" name="inputMoneyAmount" /> <br>
-		Lähtevaluuta:
-		<select name="inputCurrency">
+		Lähtevaluuta: <select name="inputCurrency">
 			<c:forEach items="${requestScope['displayedCurrencies']}" var="item">
-				<option id="input_${item._shortName}" value="${item._rate}">${item._shortName} - ${item._fullName} - ${item._rate} - ${item._date}</option>
+				<option id="input_${item._shortName}" value="${item._rate}">${item._shortName}
+					- ${item._fullName} - ${item._rate} - ${item._date}</option>
 			</c:forEach>
-		</select>
-		(select box, sisuks valuuta lühend + valuuta täisnimi, täisnime järgi tähestikulises järjekorras)
-		<br>
-		Sihtvaluuta: sama mis eelmine
-		<select name="outputCurrency">
+		</select> (select box, sisuks valuuta lühend + valuuta täisnimi, täisnime järgi
+		tähestikulises järjekorras) <br> Sihtvaluuta: sama mis eelmine <select
+			name="outputCurrency">
 			<c:forEach items="${requestScope['displayedCurrencies']}" var="item">
-				<option id="output_${item._shortName}" value="${item._rate}">${item._shortName} - ${item._fullName} - ${item._rate} - ${item._date}</option>
+				<option id="output_${item._shortName}" value="${item._rate}">${item._shortName}
+					- ${item._fullName} - ${item._rate} - ${item._date}</option>
 			</c:forEach>
 		</select>
 		<!-- 
@@ -55,11 +62,14 @@
 			<option value="ALL">AUD - Austraalia dollar</option>
 		</select> 
 		 -->
-		 <br>
-		 Kursi kuupäev: input väli formaadis dd.mm.yyyy koos mõne javascript date pickeriga!!!!
-		 <br>
-		 <input type="submit" value="Done">
+		<br> Kursi kuupäev: input väli formaadis dd.mm.yyyy koos mõne
+		javascript date pickeriga!!!! <br> <input type="submit"
+			value="Done">
 	</form>
-	Tulemus: <input required type="text" name="inputSum" />
+	Tulemus:
+	<input required type="text" name="inputSum" />
+
+	<button id="ajaxbutton">press here</button>
+	<div id="somediv">eh</div>
 </body>
 </html>
