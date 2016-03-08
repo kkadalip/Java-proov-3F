@@ -18,6 +18,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.InputStream;
 import java.net.URL;
 import java.text.DateFormat;
@@ -60,9 +61,12 @@ public class Readxml {
 			//URL resourceUrl = context.getResource("/WEB-INF/test/foo.txt");
 			
 			// of for just input stream
-			InputStream xmlFile = context.getResourceAsStream("/WEB-INF/xml/eesti.xml"); //("/WEB-INF/test/foo.txt"); InputStream resourceContent =
-			
-			if(xmlFile == null){
+			//InputStream xmlFile = context.getResourceAsStream("/WEB-INF/xml/eesti.xml"); //("/WEB-INF/test/foo.txt"); InputStream resourceContent =
+			URL resourceUrl = context.getResource("/WEB-INF/xml/eesti.xml");
+			FileInputStream fis;
+			//File resourceFile;
+			//InputStream xmlFileIS = null;
+			if(resourceUrl == null){ // xmlFile
 				System.out.println("NO XML FILE FOUND!!!, DOWNLOADING FROM INTERNETZ");
 				//String realp = context.getRealPath("/WEB-INF/xml/"); // C:\Users\karlk\workspace\.metadata\.plugins\org.eclipse.wst.server.core\tmp1\wtpwebapps\Java-Proov-3F\WEB-INF\xml\
 				//URL fileURL = context.getResource("/WEB-INF/xml/");
@@ -72,25 +76,33 @@ public class Readxml {
 				//String fileURL = contextPath + "/WEB-INF/xml/eesti.xml";
 				//String fileURL = context.getRealPath("/WEB-INF/xml/eesti.xml"); // C:\Users\karlk\workspace\.metadata\.plugins\org.eclipse.wst.server.core\tmp1\wtpwebapps\Java-Proov-3F\WEB-INF\xml\eesti.xml
 				
-				String path = context.getRealPath("/WEB-INF/");
-				String newFilePath = path+"/WEB-INF/xml/eesti.xml";
-				System.out.println("newFilePath: " + newFilePath);
+				String path = context.getRealPath("/WEB-INF/xml/");
+				String newFilePath = path+"eesti.xml";
+				System.out.println("newFilePath: " + newFilePath); // C:\Users\karlk\workspace\.metadata\.plugins\org.eclipse.wst.server.core\tmp1\wtpwebapps\Java-Proov-3F\WEB-INF\/WEB-INF/xml/eesti.xml
 				File newXmlFile = new File(newFilePath); //("WEB-INF/xml/eesti.xml"); // ./WEB-INF/xml/eesti.xml is the same thing				
 
 				FileUtils.copyURLToFile(bankOfEstoniaURL, newXmlFile);
-				System.out.println("newXmlFile stuff: " + newXmlFile.getAbsolutePath()); // C:\Java-Proov-3F\WEB-INF\xml\eesti.xml // C:\WEB-INF\xml\eesti.xml  // with ./WEB-IF it is C:\eclipse\.\WEB-INF\xml\eesti.xml
+				//System.out.println("newXmlFile stuff: " + newXmlFile.getAbsolutePath()); // C:\Users\karlk\workspace\.metadata\.plugins\org.eclipse.wst.server.core\tmp1\wtpwebapps\Java-Proov-3F\WEB-INF\WEB-INF\xml\eesti.xml // C:\Java-Proov-3F\WEB-INF\xml\eesti.xml // C:\WEB-INF\xml\eesti.xml  // with ./WEB-IF it is C:\eclipse\.\WEB-INF\xml\eesti.xml
 //				public static void copyURLToFile(URL source,
 //                        File destination,
 //                        int connectionTimeout,
 //                        int readTimeout)
 //                 throws IOException
-				xmlFile = context.getResourceAsStream("/WEB-INF/xml/eesti.xml");
+				//xmlFile = newXmlFile;
+				
+				//resourceFile = newXmlFile;
+				//System.out.println("xmlfile is " + xmlFile.toString());
+				fis = new FileInputStream(newXmlFile);
 			}else{
-				System.out.println("XML FILE FOUND!");
+				System.out.println("resourceUrl (XML FILE) FOUND!");
+				fis = new FileInputStream(new File(resourceUrl.toURI()));
 			}
+			//FileInputStream inputStream = new FileInputStream(new File(getClass().getResource(url).toURI()));
+			
 			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 			DocumentBuilder db = dbf.newDocumentBuilder();
-			Document doc = db.parse(xmlFile);
+			Document doc = db.parse(fis);
+			//Document doc = db.parse(xmlFile);
 			//Document doc = db.parse(xmlFile);
 			//Document doc = db.parse(url.openStream()); // TO STREAM FROM INTERNET
 			
@@ -100,10 +112,7 @@ public class Readxml {
 			//FileUtils.copyURLToFile(URL, File);
 			//FileUtils.copyURLToFile(bankOfEstonia, File);
 			
-
-			
-			//optional, but recommended
-			//read this - http://stackoverflow.com/questions/13786607/normalization-in-dom-parsing-with-java-how-does-it-work
+			//optional, but recommended! read this - http://stackoverflow.com/questions/13786607/normalization-in-dom-parsing-with-java-how-does-it-work
 			doc.getDocumentElement().normalize();
 
 			System.out.println("Root element: " + doc.getDocumentElement().getNodeName());
