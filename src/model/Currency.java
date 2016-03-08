@@ -28,4 +28,10 @@ public class Currency {
 
 	public Date get_date() {return _date;}
 	public void set_date(Date _date) {this._date = _date;}
+	
+	@Override
+	public String toString() {
+		//return super.toString();
+		return "[Currency] shortname: " + _shortName + " fullName: " + _fullName + " rate: " + _rate + " date: " + _date;
+	}
 }

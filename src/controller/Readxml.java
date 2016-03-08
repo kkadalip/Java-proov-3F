@@ -30,8 +30,14 @@ public class Readxml {
 		//doStuff();
 		
 		List<Currency> swagCurrencies = getCurrencies();
+		System.out.println("swagcurrencies size: " + swagCurrencies.size());
 		for(Currency c : swagCurrencies){
-			System.out.println("CURRENCY: " + c.toString());
+			if(c != null){
+				System.out.println("CURRENCY: " + c.toString());
+			}else{
+				System.out.println("c IS NULL!!");
+			}
+			
 		}
 	}
 	
@@ -93,14 +99,17 @@ public class Readxml {
 //					System.out.println("DATE IS: " + date);
 							
 					System.out.println("name: " + eElement.getAttribute("name") + " text: " + eElement.getAttribute("text") + " rate: " + eElement.getAttribute("rate"));
-					returnCurrencies.add(new Currency(name, text, rate, date));
+					Currency addCurrency = new Currency(name, text, rate, date);
+					//System.out.println("addcurrency " + addCurrency.toString());
+					returnCurrencies.add(addCurrency);
+					//returnCurrencies.add(new Currency(name, text, rate, date));
 				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
-		return null;
+		return returnCurrencies;
 	}
 
 	private static void doStuff(){
