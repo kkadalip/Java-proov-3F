@@ -9,20 +9,23 @@
 		<servlet-name>Default</servlet-name>
 		<servlet-class>controller.Default</servlet-class>
 	</servlet>
+	<!-- 
 	<servlet-mapping>
 		<servlet-name>Default</servlet-name>
 		<url-pattern></url-pattern>
 	</servlet-mapping>
-	
+	-->
 	<servlet>
 		<display-name>Something</display-name>
 		<servlet-name>Something</servlet-name>
 		<servlet-class>controller.Something</servlet-class>
 	</servlet>
+	<!-- 
 	<servlet-mapping>
 		<servlet-name>Something</servlet-name>
 		<url-pattern>/Something</url-pattern>
 	</servlet-mapping>
+	-->
 </web-app>
 
 
