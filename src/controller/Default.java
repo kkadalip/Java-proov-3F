@@ -26,7 +26,10 @@ public class Default extends HttpServlet {
 		//HttpSession httpSession = request.getSession(true);
 		
 		// sessiooni võiks sellegipoolest salvestada (refresh page jmt jaoks)
-		List<Currency> displayedCurrencies = Readxml.getCurrencies();
+		
+		//ServletContext context = getContext();
+		//URL resourceUrl = context.getResource("/WEB-INF/test/foo.txt");
+		List<Currency> displayedCurrencies = Readxml.getCurrencies(getServletContext());
 		request.setAttribute("displayedCurrencies", displayedCurrencies);
 		
 		// kontrolli, kas on sessiooni var-is olemas, kui ei, siis lisa, tglt ajaxiga javascripti abil teha??

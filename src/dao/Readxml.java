@@ -1,7 +1,10 @@
 package dao;
 
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.servlet.ServletContext;
 import javax.xml.parsers.DocumentBuilder;
+
+import org.apache.tools.ant.util.FileUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 
@@ -12,6 +15,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 
 import java.io.File;
+import java.io.InputStream;
 import java.net.URL;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
@@ -41,17 +45,30 @@ public class Readxml {
 //		}
 	}
 	
-	public static List<Currency> getCurrencies(){
+	public static List<Currency> getCurrencies(ServletContext context){
 		List<Currency> returnCurrencies = new ArrayList<Currency>();
-		try {			
+		try {
+			String bankOfEstonia = "http://statistika.eestipank.ee/Reports?type=curd&format=xml&date1=2010-12-30&lng=est&print=off";
+			String bankOfLithuania = "http://webservices.lb.lt/ExchangeRates/ExchangeRates.asmx/getExchangeRatesByDate?Date=2010-12-30";
+			
+			//ServletContext context = getContext();
+			//URL resourceUrl = context.getResource("/WEB-INF/test/foo.txt");
+			
+			// of for just input stream
+			InputStream xmlFile = context.getResourceAsStream("/WEB-INF/xml/eesti.xml"); //("/WEB-INF/test/foo.txt"); InputStream resourceContent =
+			
 			//File xmlFile = new File("/Users/example.xml");
-			URL url = new URL("http://statistika.eestipank.ee/Reports?type=curd&format=xml&date1=2010-12-30&lng=est&print=off");
-			//URL url = new URL("http://webservices.lb.lt/ExchangeRates/ExchangeRates.asmx/getExchangeRatesByDate?Date=2010-12-30");
+			//File xmlFile = context.getResource("/WEB-INF/xml/eesti.xml");
+			
+			//FileUtils.copyURLToFile(URL, File);
+			//FileUtils.copyURLToFile(bankOfEstonia, File);
+			
+			URL url = new URL(bankOfEstonia);
 			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 			DocumentBuilder db = dbf.newDocumentBuilder();
-			//Document doc = db.parse(xmlFile);
-			Document doc = db.parse(url.openStream());
-
+			Document doc = db.parse(xmlFile);
+			//Document doc = db.parse(url.openStream()); // TO DOWNLOAD FROM INTERNET
+			
 			//optional, but recommended
 			//read this - http://stackoverflow.com/questions/13786607/normalization-in-dom-parsing-with-java-how-does-it-work
 			doc.getDocumentElement().normalize();

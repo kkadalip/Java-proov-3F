@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Report xmlns="http://producers.eestipank.info/types">
+    <Header>
+        <Type>Päevakursid</Type>
+        <Version>1.0</Version>
+        <Date>07.03.16</Date>
+        <Language>et</Language>
+    </Header>
+    <Body>
+        <FixingsDate>30.12.10</FixingsDate>
+        <Currencies>
+            <Currency name="AED" text="Araabia Ühendemiraatide dirhem" rate="3,2169600000"/>
+            <Currency name="ARS" text="Argentina peeso" rate="2,9695600000"/>
+            <Currency name="AUD" text="Austraalia dollar" rate="12,0138000000"/>
+            <Currency name="AZN" text="Uus Aserbaidžaani manat" rate="14,7745000000"/>
+            <Currency name="BGN" text="Bulgaaria leev" rate="8,0012800000"/>
+            <Currency name="BRL" text="Brasiilia reaal" rate="7,0460600000"/>
+            <Currency name="BYR" text="Valgevene uus rubla" rate="0,0039373200"/>
+            <Currency name="CAD" text="Kanada dollar" rate="11,8023000000"/>
+            <Currency name="CHF" text="Šveitsi frank" rate="12,5842000000"/>
+            <Currency name="CNY" text="Hiina jüaan (renminbi)" rate="1,7896100000"/>
+            <Currency name="CZK" text="Tšehhi kroon (koruna)" rate="0,6185040000"/>
+            <Currency name="DKK" text="Taani kroon" rate="2,0991100000"/>
+            <Currency name="EGP" text="Egiptuse nael" rate="2,0356400000"/>
+            <Currency name="EUR" text="Euro" rate="15,6466000000"/>
+            <Currency name="GBP" text="Suurbritannia naelsterling" rate="18,3199000000"/>
+            <Currency name="GEL" text="Gruusia lari" rate="6,6618300000"/>
+            <Currency name="HKD" text="Hongkongi dollar" rate="1,5182800000"/>
+            <Currency name="HRK" text="Horvaatia kuna" rate="2,1189100000"/>
+            <Currency name="HUF" text="Ungari forint" rate="0,0559028000"/>
+            <Currency name="IDR" text="Indoneesia ruupia" rate="0,0013136100"/>
+            <Currency name="ILS" text="Iisraeli uus seekel" rate="3,3274800000"/>
+            <Currency name="INR" text="India ruupia" rate="0,2631310000"/>
+            <Currency name="ISK" text="Islandi kroon" rate="0,1019630000"/>
+            <Currency name="JPY" text="Jaapani jeen (yen)" rate="0,1449620000"/>
+            <Currency name="KGS" text="Kõrgõzstani somm" rate="0,2508720000"/>
+            <Currency name="KRW" text="Korea vonn" rate="0,0104293000"/>
+            <Currency name="KZT" text="Kasahstani tenge" rate="0,0801621000"/>
+            <Currency name="LTL" text="Leedu litt" rate="4,5315700000"/>
+            <Currency name="LVL" text="Läti latt" rate="22,0508000000"/>
+            <Currency name="MAD" text="Maroko dirhem" rate="1,4031600000"/>
+            <Currency name="MDL" text="Moldova leu" rate="0,9716900000"/>
+            <Currency name="MXN" text="Mehhiko peeso" rate="0,9527410000"/>
+            <Currency name="MYR" text="Malaisia ringgit" rate="3,8319700000"/>
+            <Currency name="NOK" text="Norra kroon" rate="2,0029300000"/>
+            <Currency name="NZD" text="Uus-Meremaa dollar" rate="9,0923300000"/>
+            <Currency name="PLN" text="Poola zlott" rate="3,9404000000"/>
+            <Currency name="RON" text="Uus Rumeenia leu" rate="3,6439600000"/>
+            <Currency name="RSD" text="Serbia dinaar" rate="0,1483670000"/>
+            <Currency name="RUB" text="Venemaa rubla" rate="0,3870760000"/>
+            <Currency name="SDR" text="IMF arveldusühik" rate="18,2049000000"/>
+            <Currency name="SEK" text="Rootsi kroon" rate="1,7371700000"/>
+            <Currency name="SGD" text="Singapuri dollar" rate="9,1482600000"/>
+            <Currency name="THB" text="Tai baat" rate="0,3919690000"/>
+            <Currency name="TND" text="Tuneesia dinaar" rate="8,1850300000"/>
+            <Currency name="TRY" text="Uus Türgi liir" rate="7,6040200000"/>
+            <Currency name="TWD" text="Taiwani dollar" rate="0,4066740000"/>
+            <Currency name="UAH" text="Ukraina grivna" rate="1,4830100000"/>
+            <Currency name="USD" text="USA  dollar" rate="11,8159000000"/>
+            <Currency name="UZS" text="Usbekistani somm" rate="0,0072113200"/>
+            <Currency name="VEF" text="Venezuela boliivar" rate="2,7513000000"/>
+            <Currency name="XAU" text="Kuld (EEK/oz)" rate="16 691,7000000000"/>
+            <Currency name="XOF" text="CFA frank (BCEAO)" rate="0,0237414000"/>
+            <Currency name="ZAR" text="Lõuna-Aafrika Vabariigi  rand" rate="1,7805300000"/>
+        </Currencies>
+    </Body>
+</Report>

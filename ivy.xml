@@ -15,5 +15,7 @@
 		<!-- LOGGING -->
 		<dependency org="org.slf4j" name="slf4j-api" rev="1.7.18" />
 		<dependency org="ch.qos.logback" name="logback-classic" rev="1.1.5" />
+		
+		<dependency org="com.google.code.gson" name="gson" rev="2.6.2"/>
 	</dependencies>
 </ivy-module>
