@@ -4,11 +4,14 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.servlet.ServletContext;
 import javax.xml.parsers.DocumentBuilder;
 
-import org.apache.tools.ant.util.FileUtils;
+import org.apache.commons.io.FileUtils;
+//import org.apache.tools.ant.util.FileUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 
 import com.sun.xml.internal.messaging.saaj.packaging.mime.internet.ParseException;
+
+//import ch.qos.logback.core.util.FileUtil;
 
 import org.w3c.dom.Node;
 import org.w3c.dom.Element;
@@ -51,11 +54,45 @@ public class Readxml {
 			String bankOfEstonia = "http://statistika.eestipank.ee/Reports?type=curd&format=xml&date1=2010-12-30&lng=est&print=off";
 			String bankOfLithuania = "http://webservices.lb.lt/ExchangeRates/ExchangeRates.asmx/getExchangeRatesByDate?Date=2010-12-30";
 			
+			URL bankOfEstoniaURL = new URL(bankOfEstonia);
+			
 			//ServletContext context = getContext();
 			//URL resourceUrl = context.getResource("/WEB-INF/test/foo.txt");
 			
 			// of for just input stream
 			InputStream xmlFile = context.getResourceAsStream("/WEB-INF/xml/eesti.xml"); //("/WEB-INF/test/foo.txt"); InputStream resourceContent =
+			
+			if(xmlFile == null){
+				System.out.println("NO XML FILE FOUND!!!, DOWNLOADING FROM INTERNETZ");
+				//String realp = context.getRealPath("/WEB-INF/xml/"); // C:\Users\karlk\workspace\.metadata\.plugins\org.eclipse.wst.server.core\tmp1\wtpwebapps\Java-Proov-3F\WEB-INF\xml\
+				//URL fileURL = context.getResource("/WEB-INF/xml/");
+				//String contextPath = context.getContextPath(); // /Java-Proov-3F
+				//System.out.println("context path is " + contextPath); // /Java-Proov-3F
+				//System.out.println("FILE URL IS " + fileURL);
+				//String fileURL = contextPath + "/WEB-INF/xml/eesti.xml";
+				//String fileURL = context.getRealPath("/WEB-INF/xml/eesti.xml"); // C:\Users\karlk\workspace\.metadata\.plugins\org.eclipse.wst.server.core\tmp1\wtpwebapps\Java-Proov-3F\WEB-INF\xml\eesti.xml
+				
+				String path = context.getRealPath("/WEB-INF/");
+				String newFilePath = path+"/WEB-INF/xml/eesti.xml";
+				System.out.println("newFilePath: " + newFilePath);
+				File newXmlFile = new File(newFilePath); //("WEB-INF/xml/eesti.xml"); // ./WEB-INF/xml/eesti.xml is the same thing				
+
+				FileUtils.copyURLToFile(bankOfEstoniaURL, newXmlFile);
+				System.out.println("newXmlFile stuff: " + newXmlFile.getAbsolutePath()); // C:\Java-Proov-3F\WEB-INF\xml\eesti.xml // C:\WEB-INF\xml\eesti.xml  // with ./WEB-IF it is C:\eclipse\.\WEB-INF\xml\eesti.xml
+//				public static void copyURLToFile(URL source,
+//                        File destination,
+//                        int connectionTimeout,
+//                        int readTimeout)
+//                 throws IOException
+				xmlFile = context.getResourceAsStream("/WEB-INF/xml/eesti.xml");
+			}else{
+				System.out.println("XML FILE FOUND!");
+			}
+			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+			DocumentBuilder db = dbf.newDocumentBuilder();
+			Document doc = db.parse(xmlFile);
+			//Document doc = db.parse(xmlFile);
+			//Document doc = db.parse(url.openStream()); // TO STREAM FROM INTERNET
 			
 			//File xmlFile = new File("/Users/example.xml");
 			//File xmlFile = context.getResource("/WEB-INF/xml/eesti.xml");
@@ -63,17 +100,13 @@ public class Readxml {
 			//FileUtils.copyURLToFile(URL, File);
 			//FileUtils.copyURLToFile(bankOfEstonia, File);
 			
-			URL url = new URL(bankOfEstonia);
-			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-			DocumentBuilder db = dbf.newDocumentBuilder();
-			Document doc = db.parse(xmlFile);
-			//Document doc = db.parse(url.openStream()); // TO DOWNLOAD FROM INTERNET
+
 			
 			//optional, but recommended
 			//read this - http://stackoverflow.com/questions/13786607/normalization-in-dom-parsing-with-java-how-does-it-work
 			doc.getDocumentElement().normalize();
 
-			System.out.println("Root element :" + doc.getDocumentElement().getNodeName());
+			System.out.println("Root element: " + doc.getDocumentElement().getNodeName());
 
 			NodeList nList = doc.getElementsByTagName("Currency"); // row
 			System.out.println(nList.getLength() + " nodes found");

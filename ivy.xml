@@ -17,5 +17,9 @@
 		<dependency org="ch.qos.logback" name="logback-classic" rev="1.1.5" />
 		
 		<dependency org="com.google.code.gson" name="gson" rev="2.6.2"/>
+		
+		<!-- saving url to file etc -->
+		<dependency org="commons-io" name="commons-io" rev="2.4"/>
+		
 	</dependencies>
 </ivy-module>
