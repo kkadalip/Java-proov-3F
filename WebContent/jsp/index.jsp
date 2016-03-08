@@ -32,11 +32,11 @@
 	<br>
 
 	<form action="" method="POST">
-		Lähtesumma: <input type="text" name="inputSum" /> <br>
+		Lähtesumma: <input type="text" name="inputMoneyAmount" /> <br>
 		Lähtevaluuta:
 		<select name="inputCurrency">
 			<c:forEach items="${requestScope['displayedCurrencies']}" var="item">
-				<option id="input_${item._shortName}" value="${item._shortName}">${item._shortName} - ${item._fullName} - ${item._rate} - ${item._date}</option>
+				<option id="input_${item._shortName}" value="${item._rate}">${item._shortName} - ${item._fullName} - ${item._rate} - ${item._date}</option>
 			</c:forEach>
 		</select>
 		(select box, sisuks valuuta lühend + valuuta täisnimi, täisnime järgi tähestikulises järjekorras)
@@ -44,7 +44,7 @@
 		Sihtvaluuta: sama mis eelmine
 		<select name="outputCurrency">
 			<c:forEach items="${requestScope['displayedCurrencies']}" var="item">
-				<option id="output_${item._shortName}" value="${item._shortName}">${item._shortName} - ${item._fullName} - ${item._rate} - ${item._date}</option>
+				<option id="output_${item._shortName}" value="${item._rate}">${item._shortName} - ${item._fullName} - ${item._rate} - ${item._date}</option>
 			</c:forEach>
 		</select>
 		<!-- 

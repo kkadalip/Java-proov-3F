@@ -33,12 +33,23 @@ public class Default extends HttpServlet {
 		log.info("[doPost] START");
 		HttpSession httpSession = request.getSession(true);
 		
+		String inputMoneyAmount = request.getParameter("inputMoneyAmount");
+		
 		String inputCurrency = request.getParameter("inputCurrency");
 		String outputCurrency = request.getParameter("outputCurrency");
 		
+		log.debug("inputMoneyAmount: " + inputMoneyAmount);
+		// rate:
 		log.debug("inputCurrency: " + inputCurrency);
 		log.debug("outputCurrency: " + outputCurrency);
 
+		Float inputMoneyAmountFloat = Float.parseFloat(inputMoneyAmount);
+		Float inputCurrencyFloat = Float.parseFloat(inputCurrency);
+		Float outputCurrencyFloat = Float.parseFloat(outputCurrency);
+		
+		Float outputAmount = inputCurrencyFloat / outputCurrencyFloat * inputMoneyAmountFloat;
+		log.debug("output amount: " + outputAmount);
+		
 		//response.sendRedirect(""); // Success
 		log.info("[doPost] END");
 	}
