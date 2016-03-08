@@ -32,7 +32,14 @@ public class Default extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		log.info("[doPost] START");
 		HttpSession httpSession = request.getSession(true);
-		response.sendRedirect(""); // Success
+		
+		String inputCurrency = request.getParameter("inputCurrency");
+		String outputCurrency = request.getParameter("outputCurrency");
+		
+		log.debug("inputCurrency: " + inputCurrency);
+		log.debug("outputCurrency: " + outputCurrency);
+
+		//response.sendRedirect(""); // Success
 		log.info("[doPost] END");
 	}
 }

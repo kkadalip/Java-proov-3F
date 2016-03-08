@@ -32,26 +32,34 @@
 	<br>
 
 	<form action="" method="POST">
-		Lähtesumma: <input required type="text" name="inputSum" /> <br>
-		Lähtevaluuta: <select>
-			<option value="empty"></option>
-			<option value="AED">AED - Araabia Ühendemiraatide dirhem</option>
-			<option value="AFN">ARS - Argentina peeso</option>
-			<option value="ALL">AUD - Austraalia dollar</option>
-		</select> (select box, sisuks valuuta lühend + valuuta täisnimi, täisnime järgi
-		tähestikulises järjekorras) <br> Sihtvaluuta: sama mis eelmine <select>
-			<option value="empty"></option>
-			<option value="AED">AED - Araabia Ühendemiraatide dirhem</option>
-			<option value="AFN">ARS - Argentina peeso</option>
-			<option value="ALL">AUD - Austraalia dollar</option>
-		</select> <br> Kursi kuupäev: input väli formaadis dd.mm.yyyy koos mõne
-		javascript date pickeriga!!!! <br> <input type="submit" value="Done">
-
-		<br /> Currencies: <select required name="displayedCurrencies" multiple="multiple" size="15">
-			<c:forEach items="${requestScope['displayedCurrencies']}" var="item" varStatus="outerLoop">
-				<option id="option_${item._shortName}" value="${item._shortName}">${item._shortName} - ${item._fullName} - ${item._rate} - ${item._date}</option>
+		Lähtesumma: <input type="text" name="inputSum" /> <br>
+		Lähtevaluuta:
+		<select name="inputCurrency">
+			<c:forEach items="${requestScope['displayedCurrencies']}" var="item">
+				<option id="input_${item._shortName}" value="${item._shortName}">${item._shortName} - ${item._fullName} - ${item._rate} - ${item._date}</option>
 			</c:forEach>
 		</select>
+		(select box, sisuks valuuta lühend + valuuta täisnimi, täisnime järgi tähestikulises järjekorras)
+		<br>
+		Sihtvaluuta: sama mis eelmine
+		<select name="outputCurrency">
+			<c:forEach items="${requestScope['displayedCurrencies']}" var="item">
+				<option id="output_${item._shortName}" value="${item._shortName}">${item._shortName} - ${item._fullName} - ${item._rate} - ${item._date}</option>
+			</c:forEach>
+		</select>
+		<!-- 
+		<select>
+			<option value="empty"></option>
+			<option value="AED">AED - Araabia Ühendemiraatide dirhem</option>
+			<option value="AFN">ARS - Argentina peeso</option>
+			<option value="ALL">AUD - Austraalia dollar</option>
+		</select> 
+		 -->
+		 <br>
+		 Kursi kuupäev: input väli formaadis dd.mm.yyyy koos mõne javascript date pickeriga!!!!
+		 <br>
+		 <input type="submit" value="Done">
 	</form>
+	Tulemus: <input required type="text" name="inputSum" />
 </body>
 </html>
