@@ -100,6 +100,8 @@
 
 	$(function() {
 		$("#datepicker").datepicker();
+		$("#datepicker").datepicker("option", "dateFormat", "dd.mm.yy" );
+		//var date = $('#datepicker').datepicker({ dateFormat: 'dd-mm-yy' }).val();
 	});
 </script>
 
