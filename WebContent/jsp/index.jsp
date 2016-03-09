@@ -79,6 +79,7 @@
 
 	// Ajaxifying an existing form
 	$(document).on("submit", "#someform", function(event) {
+		console.log("submitting the ajax post form");
 		var $form = $(this);
 
 		$.post($form.attr("action"), $form.serialize(), function(responseJson) {
@@ -94,7 +95,7 @@
 	AJAX valuutakalkulaator
 	<br>
 
-	<form action="" method="POST">
+	<form action="" method="POST" id="someform">
 		Lähtesumma: <input type="text" name="inputMoneyAmount" /> <br>
 		Lähtevaluuta: <select name="inputCurrency">
 			<c:forEach items="${requestScope['displayedCurrencies']}" var="item">

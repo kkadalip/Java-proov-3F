@@ -71,11 +71,6 @@ public class Default extends HttpServlet {
 		Float outputAmount = inputCurrencyFloat / outputCurrencyFloat * inputMoneyAmountFloat;
 		log.debug("output amount: " + outputAmount);
 		
-		response.sendRedirect(""); // Success
-		
-		
-		
-		
 		// AJAXIFY http://stackoverflow.com/questions/4112686/how-to-use-servlets-and-ajax
 		
 //	    String foo = request.getParameter("foo");
@@ -95,6 +90,8 @@ public class Default extends HttpServlet {
 		
 		
 		log.info("[doPost] END");
+		
+		//response.sendRedirect(""); // Success
 	}
 }
 
