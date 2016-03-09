@@ -92,6 +92,12 @@ public class Default extends HttpServlet {
 		log.info("[doPost] END");
 		
 		//response.sendRedirect(""); // Success
+		
+		// SENDING BACK OUTPUT NUMBER (CHANGE TO JSON/XML LATER!)
+		String text = outputAmount.toString();
+		response.setContentType("text/plain");  // Set content type of the response so that jQuery knows what it can expect.
+	    response.setCharacterEncoding("UTF-8");
+	    response.getWriter().write(text);       // Write response body.
 	}
 }
 

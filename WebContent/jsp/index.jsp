@@ -82,8 +82,11 @@
 		console.log("submitting the ajax post form");
 		var $form = $(this);
 
-		$.post($form.attr("action"), $form.serialize(), function(responseJson) {
+		$.post($form.attr("action"), $form.serialize(), function(responseText) { // responseJson responseXml
 			// ...
+			//$("#somediv").html($(responseXml).find("data").html());
+			console.log("responseText is: " + responseText);
+			$("#outResult").val(responseText); // text
 		});
 
 		event.preventDefault(); // Important! Prevents submitting the form.
@@ -123,7 +126,7 @@
 			value="Done">
 	</form>
 	Tulemus:
-	<input required type="text" name="inputSum" />
+	<input required type="text" name="outputResult" id="outResult" />
 	<br>
 	<button id="ajaxbutton">press here</button>
 	<div id="somediv">eh</div>
