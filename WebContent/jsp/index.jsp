@@ -146,7 +146,7 @@
 					<td>
 						<input class="dataEntry" type="text" placeholder="" name="inputMoneyAmount2" />
 					</td>
-					<td style="width:3px"></td>
+					<!-- <td style="width:3px"></td>  -->
 					<td>
 						<select class="dataSelect">
 							<!--<option value="empty"></option>-->
@@ -160,7 +160,7 @@
 					<td>
 						<input class="dataEntry" type="text" placeholder="" name="outputResult2" id="outResult2" />
 					</td>
-					<td style="width:3px"></td>
+					<!-- <td style="width:3px"></td>  -->
 					<td>
 						<select class="dataSelect">
 							<!--<option value="empty"></option>-->
