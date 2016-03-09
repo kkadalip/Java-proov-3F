@@ -14,13 +14,20 @@ input[type="text"] {
   margin: 0;
   width: 100%;
   font-family: sans-serif;
-  font-size: 18px;
+  font-size: 14px;
+  /* font-size: medium !important; that means 14px */
   appearance: none;
   box-shadow: none;
-  border-radius: none;
+  /*border-radius: none;*/
+  border-radius: 2px;
   
   padding: 10px;
-  border: solid 1px rgb(220,220,220);
+  /*border: solid 1px rgb(220,220,220);*/
+  border: 1px solid rgb(217,217,217); /*#d9d9d9*/
+  border-top: 1px solid rgb(200,200,200); /*silver*/
+
+  
+  
   /*box-shadow: 10px 10px 5px #888888;*/
   transition: box-shadow 0.3s, border 0.3s;
 }
@@ -35,14 +42,16 @@ input[type="text"] {
 */
 input[type="text"]:focus,
 input[type="text"].focus {
-  border: solid 1px #707070;
-  box-shadow: 0 0 5px 1px #969696;
+  	border: solid 1px #707070;
+  	box-shadow: 0 0 5px 1px #969696;
+  
+  /* REMOVE OUTLINE WHEN SELECTED */
+  	outline-style:none;
+	/*box-shadow:none;
+	border-color:transparent;*/
 }
 
 .dataEntry1 {
-    border: 1px solid #d9d9d9;
-    border-top: 1px solid silver;
-    border-radius: 2px;
     /*-webkit-border-radius: 2px;*/
     height: 28px;
     margin: 0;
