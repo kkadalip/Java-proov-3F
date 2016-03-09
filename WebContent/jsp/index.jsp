@@ -137,6 +137,42 @@
 		<button id="ajaxbutton3">press here 3</button>
 		<select id="someselect3"></select>
 
+
+		<br>
+		<br>
+		<table style="table-layour:fixed; width:100%">
+			<tbody>
+				<tr>
+					<td>
+						<input class="dataEntry" type="text" name="inputMoneyAmount2" />
+					</td>
+					<td style="width:3px"></td>
+					<td>
+						<select style="width:300px;height:30px;">
+							<!--<option value="empty"></option>-->
+							<option value="AED">AED - Araabia Ühendemiraatide dirhem</option>
+							<option value="AFN">ARS - Argentina peeso</option>
+							<option value="ALL">AUD - Austraalia dollar</option>
+						</select> 
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<input class="dataEntry" type="text" name="outputResult2" id="outResult2" />
+					</td>
+					<td style="width:3px"></td>
+					<td>
+						<select>
+							<!--<option value="empty"></option>-->
+							<option value="AED">AED - Araabia Ühendemiraatide dirhem</option>
+							<option value="AFN">ARS - Argentina peeso</option>
+							<option value="ALL">AUD - Austraalia dollar</option>
+						</select> 
+					</td>
+				</tr>
+			</tbody>
+		</table>
+
 	</div>
 </body>
 </html>

@@ -64,6 +64,7 @@ public class Default extends HttpServlet {
 		log.debug("inputCurrency: " + inputCurrency);
 		log.debug("outputCurrency: " + outputCurrency);
 
+		// TODO java.lang.NumberFormatException: empty String
 		Float inputMoneyAmountFloat = Float.parseFloat(inputMoneyAmount);
 		Float inputCurrencyFloat = Float.parseFloat(inputCurrency);
 		Float outputCurrencyFloat = Float.parseFloat(outputCurrency);
