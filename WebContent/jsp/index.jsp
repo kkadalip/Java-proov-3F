@@ -15,17 +15,23 @@
 <meta http-equiv="Content-Security-Policy"
 	content="
     default-src 'self';
-    script-src 'self' 'unsafe-inline' https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js;
+    script-src 'self' 'unsafe-inline' https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js;
     connect-src 'self';
     font-src 'self';
     img-src 'self';
     style-src 'self' 'unsafe-inline';
     media-src 'self';">
 
+<!-- MY OWN CSS AND JS -->
 <link rel="stylesheet" type="text/css" href="static/style.css">
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
 <script src="static/default.js"></script>
+
+<!-- jQuery (Uncompressed: //code.jquery.com/jquery-1.12.1.js)-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+<!-- jQuery UI (Uncompressed: //code.jquery.com/ui/1.11.4/jquery-ui.js) -->
+<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+
 <script>
 	// string as plain text
 	$(document).on("click", "#ajaxbutton", function() {
@@ -91,6 +97,10 @@
 
 		event.preventDefault(); // Important! Prevents submitting the form.
 	});
+
+	$(function() {
+		$("#datepicker").datepicker();
+	});
 </script>
 
 </head>
@@ -116,7 +126,7 @@
 			<button id="ajaxbutton3">press here 3</button>
 			<select id="someselect3"></select> <br> <br>
 			 -->
-			
+
 			<table style="table-layour: fixed; width: 100%">
 				<tbody>
 					<tr>
@@ -147,8 +157,11 @@
 				</tbody>
 			</table>
 			<br> Kursi kuupäev: input väli formaadis dd.mm.yyyy koos mõne
-			javascript date pickeriga!!!! <br> <input type="submit"
-				style="width: 100%;" value="Done">
+			javascript date pickeriga!!!!
+			<p>
+				Date: <input type="text" id="datepicker">
+			</p>
+			<br> <input type="submit" style="width: 100%;" value="Done">
 		</form>
 	</div>
 </body>
