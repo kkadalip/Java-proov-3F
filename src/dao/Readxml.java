@@ -5,11 +5,15 @@ import javax.servlet.ServletContext;
 import javax.xml.parsers.DocumentBuilder;
 
 import org.apache.commons.io.FileUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 //import org.apache.tools.ant.util.FileUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 
 import com.sun.xml.internal.messaging.saaj.packaging.mime.internet.ParseException;
+
+import controller.Default;
 
 //import ch.qos.logback.core.util.FileUtil;
 
@@ -32,7 +36,8 @@ import java.util.List;
 import model.Currency;
 
 public class Readxml {
-
+	static Logger log = LoggerFactory.getLogger(Default.class); // info trace debug warn error
+	
 	public static void main(String argv[]) {
 		
 		//doStuff();
@@ -67,7 +72,8 @@ public class Readxml {
 			//File resourceFile;
 			//InputStream xmlFileIS = null;
 			if(resourceUrl == null){ // xmlFile
-				System.out.println("NO XML FILE FOUND!!!, DOWNLOADING FROM INTERNETZ");
+				log.debug("NO XML FILE FOUND!!!, DOWNLOADING FROM INTERNETZ");
+
 				//String realp = context.getRealPath("/WEB-INF/xml/"); // C:\Users\karlk\workspace\.metadata\.plugins\org.eclipse.wst.server.core\tmp1\wtpwebapps\Java-Proov-3F\WEB-INF\xml\
 				//URL fileURL = context.getResource("/WEB-INF/xml/");
 				//String contextPath = context.getContextPath(); // /Java-Proov-3F
@@ -94,7 +100,7 @@ public class Readxml {
 				//System.out.println("xmlfile is " + xmlFile.toString());
 				fis = new FileInputStream(newXmlFile);
 			}else{
-				System.out.println("resourceUrl (XML FILE) FOUND!");
+				log.debug("resourceUrl (XML FILE) FOUND!");
 				fis = new FileInputStream(new File(resourceUrl.toURI()));
 			}
 			//FileInputStream inputStream = new FileInputStream(new File(getClass().getResource(url).toURI()));
@@ -115,19 +121,19 @@ public class Readxml {
 			//optional, but recommended! read this - http://stackoverflow.com/questions/13786607/normalization-in-dom-parsing-with-java-how-does-it-work
 			doc.getDocumentElement().normalize();
 
-			System.out.println("Root element: " + doc.getDocumentElement().getNodeName());
+			log.debug("Root element: " + doc.getDocumentElement().getNodeName());
 
 			NodeList nList = doc.getElementsByTagName("Currency"); // row
-			System.out.println(nList.getLength() + " nodes found");
+			log.debug(nList.getLength() + " nodes found");
 			
-			System.out.println("----------------------------");
-			System.out.println("nList length: " + nList.getLength());
+			log.debug("----------------------------");
+			log.debug("nList length: " + nList.getLength());
 			String dateString = doc.getElementsByTagName("Date").item(0).getTextContent(); //.getTextContent(); //07.03.16        "January 2, 2010";
-			System.out.println("dateString: " + dateString);
+			log.debug("dateString: " + dateString);
 			SimpleDateFormat format = new SimpleDateFormat("dd.MM.yy"); // new SimpleDateFormat("MMMM d, yyyy", Locale.ENGLISH); // DateFormat
 			// java.text.ParseException: Unparseable date: ""
 			Date date = format.parse(dateString);
-			System.out.println("DATE IS: " + date);
+			log.debug("DATE IS: " + date);
 			
 			// CURRENCY ELEMENTS:
 			for (int temp = 0; temp < nList.getLength(); temp++) {
@@ -157,7 +163,7 @@ public class Readxml {
 //					Date date = format.parse(dateString);
 //					System.out.println("DATE IS: " + date);
 							
-					System.out.println("name: " + eElement.getAttribute("name") + " text: " + eElement.getAttribute("text") + " rate: " + eElement.getAttribute("rate"));
+					log.debug("name: " + eElement.getAttribute("name") + " text: " + eElement.getAttribute("text") + " rate: " + eElement.getAttribute("rate"));
 					Currency addCurrency = new Currency(name, text, rate, date);
 					//System.out.println("addcurrency " + addCurrency.toString());
 					returnCurrencies.add(addCurrency);
@@ -181,18 +187,18 @@ public class Readxml {
 			//Document doc = db.parse(xmlFile);
 			Document doc = db.parse(url.openStream());
 			NodeList nodes = doc.getElementsByTagName("Currency"); // row
-			System.out.println(nodes.getLength() + " nodes found");
+			log.debug(nodes.getLength() + " nodes found");
 
 			//optional, but recommended
 			//read this - http://stackoverflow.com/questions/13786607/normalization-in-dom-parsing-with-java-how-does-it-work
 			doc.getDocumentElement().normalize();
 
-			System.out.println("Root element :" + doc.getDocumentElement().getNodeName());
+			log.debug("Root element :" + doc.getDocumentElement().getNodeName());
 
 			NodeList nList = doc.getElementsByTagName("Currency");
 
-			System.out.println("----------------------------");
-			System.out.println("nList length: " + nList.getLength());
+			log.debug("----------------------------");
+			log.debug("nList length: " + nList.getLength());
 			for (int temp = 0; temp < nList.getLength(); temp++) {
 
 				Node nNode = nList.item(temp);
@@ -203,8 +209,8 @@ public class Readxml {
 
 					Element eElement = (Element) nNode;
 
-					//System.out.println("I HAVE NODE!");
-					System.out.println("name: " + eElement.getAttribute("name") + " text: " + eElement.getAttribute("text") + " rate: " + eElement.getAttribute("rate"));
+					//log.debug("I HAVE NODE!");
+					log.debug("name: " + eElement.getAttribute("name") + " text: " + eElement.getAttribute("text") + " rate: " + eElement.getAttribute("rate"));
 
 					//					System.out.println("Staff id : " + eElement.getAttribute("id"));
 					//					System.out.println("First Name : " + eElement.getElementsByTagName("firstname").item(0).getTextContent());
@@ -231,22 +237,22 @@ public class Readxml {
 			// make sure it's element node.
 			if (tempNode.getNodeType() == Node.ELEMENT_NODE) {
 				// get node name and value
-				System.out.println("\nNode Name =" + tempNode.getNodeName() + " [OPEN]");
-				System.out.println("Node Value =" + tempNode.getTextContent());
+				log.debug("\nNode Name =" + tempNode.getNodeName() + " [OPEN]");
+				log.debug("Node Value =" + tempNode.getTextContent());
 				if (tempNode.hasAttributes()) {
 					// get attributes names and values
 					NamedNodeMap nodeMap = tempNode.getAttributes();
 					for (int i = 0; i < nodeMap.getLength(); i++) {
 						Node node = nodeMap.item(i);
-						System.out.println("attr name : " + node.getNodeName());
-						System.out.println("attr value : " + node.getNodeValue());
+						log.debug("attr name : " + node.getNodeName());
+						log.debug("attr value : " + node.getNodeValue());
 					}
 				}
 				if (tempNode.hasChildNodes()) {
 					// loop again if has child nodes
 					printNote(tempNode.getChildNodes());
 				}
-				System.out.println("Node Name =" + tempNode.getNodeName() + " [CLOSE]");
+				log.debug("Node Name =" + tempNode.getNodeName() + " [CLOSE]");
 			}
 		}
 	}
