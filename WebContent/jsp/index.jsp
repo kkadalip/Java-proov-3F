@@ -23,23 +23,35 @@
     media-src 'self';">
 
 <link rel="stylesheet" type="text/css" href="static/style.css">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
 <script src="static/default.js"></script>
 <script>
+	// string as plain text
 	$(document).on("click", "#ajaxbutton", function() {
 		console.log("clicked button!");
 		$.get("Something", function(responseText) { // Execute Ajax GET request on URL of "someservlet" and execute the following function with Ajax response text...
 			$("#somediv").text(responseText); // Locate HTML DOM element with ID "somediv" and set its text content with the response text.
 		});
 	});
-	
-	$(document).on("click", "#ajaxbutton2", function() {  // When HTML DOM "click" event is invoked on element with ID "somebutton", execute the following function...
-	    $.get("Something", function(responseJson) {    // Execute Ajax GET request on URL of "someservlet" and execute the following function with Ajax response JSON...
-	        var $ul = $("<ul>").appendTo($("#somediv2")); // Create HTML <ul> element and append it to HTML DOM element with ID "somediv".
-	        $.each(responseJson, function(index, item) { // Iterate over the JSON array.
-	            $("<li>").text(item).appendTo($ul);      // Create HTML <li> element, set its text content with currently iterated item and append it to the <ul>.
-	        });
-	    });
+	// Returning List<String> as JSON
+	$(document).on("click", "#ajaxbutton2", function() { // When HTML DOM "click" event is invoked on element with ID "somebutton", execute the following function...
+		$.get("Something", function(responseJson) { // Execute Ajax GET request on URL of "someservlet" and execute the following function with Ajax response JSON...
+			var $ul = $("<ul>").appendTo($("#somediv2")); // Create HTML <ul> element and append it to HTML DOM element with ID "somediv".
+			$.each(responseJson, function(index, item) { // Iterate over the JSON array.
+				$("<li>").text(item).appendTo($ul); // Create HTML <li> element, set its text content with currently iterated item and append it to the <ul>.
+			});
+		});
+	});
+	// Returning Map<String, String> as JSON
+	$(document).on("click", "#ajaxbutton3", function() { // When HTML DOM "click" event is invoked on element with ID "somebutton", execute the following function...
+		$.get("Something", function(responseJson) { // Execute Ajax GET request on URL of "someservlet" and execute the following function with Ajax response JSON...
+			var $select = $("#someselect3"); // Locate HTML DOM element with ID "someselect".
+			$select.find("option").remove(); // Find all child elements with tag name "option" and remove them (just to prevent duplicate options when button is pressed again).
+			$.each(responseJson, function(key, value) { // Iterate over the JSON object.
+				$("<option>").val(key).text(value).appendTo($select); // Create HTML <option> element, set its value with currently iterated key and its text content with currently iterated item and finally append it to the <select>.
+			});
+		});
 	});
 </script>
 
@@ -77,13 +89,14 @@
 	</form>
 	Tulemus:
 	<input required type="text" name="inputSum" />
-	
 	<br>
-
 	<button id="ajaxbutton">press here</button>
 	<div id="somediv">eh</div>
-	
+	<br>
 	<button id="ajaxbutton2">press here 2</button>
 	<div id="somediv2">eh2</div>
+	<br>
+	<button id="ajaxbutton3">press here 3</button>
+	<select id="someselect3"></select>
 </body>
 </html>

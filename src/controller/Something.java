@@ -2,7 +2,9 @@ package controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -32,11 +34,22 @@ public class Something extends HttpServlet {
 //	    response.getWriter().write(text);       // Write response body.
 	    
 	    // Returning List<String> as JSON:
-	    List<String> list = new ArrayList<String>();
-	    list.add("item1");
-	    list.add("item2");
-	    list.add("item3");
-	    String json = new Gson().toJson(list);
+//	    List<String> list = new ArrayList<String>();
+//	    list.add("item1");
+//	    list.add("item2");
+//	    list.add("item3");
+//	    String json = new Gson().toJson(list);
+//
+//	    response.setContentType("application/json");
+//	    response.setCharacterEncoding("UTF-8");
+//	    response.getWriter().write(json);
+		
+		//Returning Map<String, String> as JSON
+	    Map<String, String> options = new LinkedHashMap<String, String>();
+	    options.put("value1", "label1");
+	    options.put("value2", "label2");
+	    options.put("value3", "label3");
+	    String json = new Gson().toJson(options);
 
 	    response.setContentType("application/json");
 	    response.setCharacterEncoding("UTF-8");
