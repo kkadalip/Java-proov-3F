@@ -53,6 +53,40 @@
 			});
 		});
 	});
+	// Returning List<Entity> as JSON
+	/*
+	$(document).on("click", "#somebutton", function() { // When HTML DOM "click" event is invoked on element with ID "somebutton", execute the following function...
+		$.get("someservlet", function(responseJson) { // Execute Ajax GET request on URL of "someservlet" and execute the following function with Ajax response JSON...
+			var $table = $("<table>").appendTo($("#somediv")); // Create HTML <table> element and append it to HTML DOM element with ID "somediv".
+			$.each(responseJson, function(index, product) { // Iterate over the JSON array.
+				$("<tr>").appendTo($table) // Create HTML <tr> element, set its text content with currently iterated item and append it to the <table>.
+				.append($("<td>").text(product.id)) // Create HTML <td> element, set its text content with id of currently iterated product and append it to the <tr>.
+				.append($("<td>").text(product.name)) // Create HTML <td> element, set its text content with name of currently iterated product and append it to the <tr>.
+				.append($("<td>").text(product.price)); // Create HTML <td> element, set its text content with price of currently iterated product and append it to the <tr>.
+			});
+		});
+	});
+	 */
+
+	// Returning List<Entity> as XML
+	/*
+	$(document).on("click", "#somebutton", function() {             // When HTML DOM "click" event is invoked on element with ID "somebutton", execute the following function...
+	    $.get("someservlet", function(responseXml) {                // Execute Ajax GET request on URL of "someservlet" and execute the following function with Ajax response XML...
+	        $("#somediv").html($(responseXml).find("data").html()); // Parse XML, find <data> element and append its HTML to HTML DOM element with ID "somediv".
+	    });
+	});
+	 */
+
+	// Ajaxifying an existing form
+	$(document).on("submit", "#someform", function(event) {
+		var $form = $(this);
+
+		$.post($form.attr("action"), $form.serialize(), function(responseJson) {
+			// ...
+		});
+
+		event.preventDefault(); // Important! Prevents submitting the form.
+	});
 </script>
 
 </head>

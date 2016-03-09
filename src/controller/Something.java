@@ -54,6 +54,20 @@ public class Something extends HttpServlet {
 	    response.setContentType("application/json");
 	    response.setCharacterEncoding("UTF-8");
 	    response.getWriter().write(json);
+	    
+	    // Returning List<Entity> as JSON
+	    // List<Product> in a <table> where the Product class has the properties Long id, String name and BigDecimal price. The servlet:
+//	    List<Product> products = someProductService.list();
+//	    String json = new Gson().toJson(products);
+//
+//	    response.setContentType("application/json");
+//	    response.setCharacterEncoding("UTF-8");
+//	    response.getWriter().write(json);
+	    
+	    // Returning List<Entity> as XML
+//	    List<Product> products = someProductService.list();
+//	    request.setAttribute("products", products);
+//	    request.getRequestDispatcher("/WEB-INF/xml/products.jsp").forward(request, response);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

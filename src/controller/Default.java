@@ -72,6 +72,28 @@ public class Default extends HttpServlet {
 		log.debug("output amount: " + outputAmount);
 		
 		response.sendRedirect(""); // Success
+		
+		
+		
+		
+		// AJAXIFY http://stackoverflow.com/questions/4112686/how-to-use-servlets-and-ajax
+		
+//	    String foo = request.getParameter("foo");
+//	    String bar = request.getParameter("bar");
+//	    String baz = request.getParameter("baz");
+
+	    boolean ajax = "XMLHttpRequest".equals(request.getHeader("X-Requested-With"));
+	    // ...
+
+	    if (ajax) {
+	    	log.debug("AJAX POST!!!");
+	        // Handle ajax (JSON) response.
+	    } else {
+	    	log.debug("REGULAR POST!!!");
+	        // Handle regular (JSP) response.
+	    }
+		
+		
 		log.info("[doPost] END");
 	}
 }
