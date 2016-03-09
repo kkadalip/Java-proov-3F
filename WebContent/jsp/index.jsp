@@ -145,7 +145,7 @@
 				</tbody>
 			</table>
 			<br> Kursi kuupäev: input väli formaadis dd.mm.yyyy koos mõne
-			javascript date pickeriga!!!! <br> <input type="submit"
+			javascript date pickeriga!!!! <br> <input type="submit" style="width:100%;"
 				value="Done">
 		</form>
 	</div>
