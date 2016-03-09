@@ -44,7 +44,7 @@ public class Something extends HttpServlet {
 //	    response.setCharacterEncoding("UTF-8");
 //	    response.getWriter().write(json);
 		
-		//Returning Map<String, String> as JSON
+		// Returning Map<String, String> as JSON
 	    Map<String, String> options = new LinkedHashMap<String, String>();
 	    options.put("value1", "label1");
 	    options.put("value2", "label2");
