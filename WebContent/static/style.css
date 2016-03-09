@@ -5,11 +5,41 @@
 
 body {
 	/* background: rgb(38, 38, 38); */
-	background: rgb(255, 255, 255);
+	background: rgb(239, 239, 239);
 	color: rgb(0,0,0);
 }
+/* .dataEntry */
+input[type="text"] {
+  display: block;
+  margin: 0;
+  width: 100%;
+  font-family: sans-serif;
+  font-size: 18px;
+  appearance: none;
+  box-shadow: none;
+  border-radius: none;
+  
+  padding: 10px;
+  border: solid 1px rgb(220,220,220);
+  /*box-shadow: 10px 10px 5px #888888;*/
+  transition: box-shadow 0.3s, border 0.3s;
+}
+.dataEntry:hover {
+   /*box-shadow: 0 0 3px #515151;*/
+   box-shadow: 0 0 5px 1px #969696;
+}
+/*
+.dataEntry :focus {
+  outline: none;
+}
+*/
+input[type="text"]:focus,
+input[type="text"].focus {
+  border: solid 1px #707070;
+  box-shadow: 0 0 5px 1px #969696;
+}
 
-.dataEntry {
+.dataEntry1 {
     border: 1px solid #d9d9d9;
     border-top: 1px solid silver;
     border-radius: 2px;
@@ -23,6 +53,8 @@ body {
     
     width:90%;
     color: rgb(120,120,120) !important;
+    
+    transition: box-shadow 0.3s, border 0.3s;
 }
 
 .dataSelect {

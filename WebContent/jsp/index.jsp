@@ -144,7 +144,7 @@
 			<tbody>
 				<tr>
 					<td>
-						<input class="dataEntry" type="text" name="inputMoneyAmount2" />
+						<input class="dataEntry" type="text" placeholder="" name="inputMoneyAmount2" />
 					</td>
 					<td style="width:3px"></td>
 					<td>
@@ -158,7 +158,7 @@
 				</tr>
 				<tr>
 					<td>
-						<input class="dataEntry" type="text" name="outputResult2" id="outResult2" />
+						<input class="dataEntry" type="text" placeholder="" name="outputResult2" id="outResult2" />
 					</td>
 					<td style="width:3px"></td>
 					<td>
