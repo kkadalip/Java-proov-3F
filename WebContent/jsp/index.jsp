@@ -15,11 +15,11 @@
 <meta http-equiv="Content-Security-Policy"
 	content="
     default-src 'self';
-    script-src 'self' 'unsafe-inline' https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js;
+    script-src 'self' 'unsafe-inline' https://ajax.googleapis.com;
     connect-src 'self';
     font-src 'self';
-    img-src 'self';
-    style-src 'self' 'unsafe-inline';
+    img-src 'self' https://ajax.googleapis.com;
+    style-src 'self' 'unsafe-inline' https://ajax.googleapis.com;
     media-src 'self';">
 
 <!-- MY OWN CSS AND JS -->
@@ -132,10 +132,10 @@
 			<table style="table-layour: fixed; width: 100%">
 				<tbody>
 					<tr>
-						<td><input class="dataEntry" type="text" placeholder=""
+						<td><input class="hoverShadow dataEntry" type="text" placeholder=""
 							name="inputMoneyAmount" /></td>
 						<!-- <td style="width:3px"></td>  -->
-						<td><select class="dataSelect" name="inputCurrency">
+						<td><select class="hoverShadow dataSelect" name="inputCurrency">
 								<c:forEach items="${requestScope['displayedCurrencies']}"
 									var="item">
 									<option id="input_${item._shortName}" value="${item._rate}">${item._shortName}
@@ -144,10 +144,10 @@
 						</select></td>
 					</tr>
 					<tr>
-						<td><input class="dataEntry" type="text" placeholder=""
+						<td><input class="hoverShadow dataEntry" type="text" placeholder=""
 							name="outputResult" id="outResult" /></td>
 						<!-- <td style="width:3px"></td>  -->
-						<td><select class="dataSelect" name="outputCurrency">
+						<td><select class="hoverShadow dataSelect" name="outputCurrency">
 								<!--<option value="empty"></option>-->
 								<c:forEach items="${requestScope['displayedCurrencies']}"
 									var="item">
@@ -158,10 +158,8 @@
 					</tr>
 				</tbody>
 			</table>
-			<br> Kursi kuupäev: input väli formaadis dd.mm.yyyy koos mõne
-			javascript date pickeriga!!!!
 			<p>
-				Date: <input type="text" id="datepicker">
+				Date: <input class="hoverShadow dataEntry" type="text" id="datepicker">
 			</p>
 			<br> <input type="submit" style="width: 100%;" value="Done">
 		</form>
