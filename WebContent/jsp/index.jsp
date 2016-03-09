@@ -148,7 +148,7 @@
 					</td>
 					<td style="width:3px"></td>
 					<td>
-						<select style="width:300px;height:30px;">
+						<select class="dataSelect">
 							<!--<option value="empty"></option>-->
 							<option value="AED">AED - Araabia Ühendemiraatide dirhem</option>
 							<option value="AFN">ARS - Argentina peeso</option>
@@ -162,7 +162,7 @@
 					</td>
 					<td style="width:3px"></td>
 					<td>
-						<select>
+						<select class="dataSelect">
 							<!--<option value="empty"></option>-->
 							<option value="AED">AED - Araabia Ühendemiraatide dirhem</option>
 							<option value="AFN">ARS - Argentina peeso</option>
