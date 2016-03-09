@@ -106,7 +106,7 @@
 		</select> 
 		 -->
 
-
+			<!-- 
 			<button id="ajaxbutton">press here</button>
 			<div id="somediv">eh</div>
 			<br>
@@ -115,6 +115,8 @@
 			<br>
 			<button id="ajaxbutton3">press here 3</button>
 			<select id="someselect3"></select> <br> <br>
+			 -->
+			
 			<table style="table-layour: fixed; width: 100%">
 				<tbody>
 					<tr>
@@ -145,8 +147,8 @@
 				</tbody>
 			</table>
 			<br> Kursi kuupäev: input väli formaadis dd.mm.yyyy koos mõne
-			javascript date pickeriga!!!! <br> <input type="submit" style="width:100%;"
-				value="Done">
+			javascript date pickeriga!!!! <br> <input type="submit"
+				style="width: 100%;" value="Done">
 		</form>
 	</div>
 </body>
