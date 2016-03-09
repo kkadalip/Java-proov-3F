@@ -96,7 +96,24 @@
 </head>
 <body>
 	<div id="floating-box">
+
+		AJAX valuutakalkulaator <br>
+
 		<form action="" method="POST" id="someform">
+			Lähtesumma: <input type="text" name="inputMoneyAmount" /> <br>
+			Lähtevaluuta: <select name="inputCurrency">
+				<c:forEach items="${requestScope['displayedCurrencies']}" var="item">
+					<option id="input_${item._shortName}" value="${item._rate}">${item._shortName}
+						- ${item._fullName} - ${item._rate} - ${item._date}</option>
+				</c:forEach>
+			</select> (select box, sisuks valuuta lühend + valuuta täisnimi, täisnime
+			järgi tähestikulises järjekorras) <br> Sihtvaluuta: sama mis
+			eelmine <select name="outputCurrency">
+				<c:forEach items="${requestScope['displayedCurrencies']}" var="item">
+					<option id="output_${item._shortName}" value="${item._rate}">${item._shortName}
+						- ${item._fullName} - ${item._rate} - ${item._date}</option>
+				</c:forEach>
+			</select>
 			<!-- 
 		<select>
 			<option value="empty"></option>
@@ -105,49 +122,57 @@
 			<option value="ALL">AUD - Austraalia dollar</option>
 		</select> 
 		 -->
-
-
-			<button id="ajaxbutton">press here</button>
-			<div id="somediv">eh</div>
-			<br>
-			<button id="ajaxbutton2">press here 2</button>
-			<div id="somediv2">eh2</div>
-			<br>
-			<button id="ajaxbutton3">press here 3</button>
-			<select id="someselect3"></select> <br> <br>
-			<table style="table-layour: fixed; width: 100%">
-				<tbody>
-					<tr>
-						<td><input class="dataEntry" type="text" placeholder=""
-							name="inputMoneyAmount" /></td>
-						<!-- <td style="width:3px"></td>  -->
-						<td><select class="dataSelect" name="inputCurrency">
-								<c:forEach items="${requestScope['displayedCurrencies']}"
-									var="item">
-									<option id="input_${item._shortName}" value="${item._rate}">${item._shortName}
-										- ${item._fullName} - ${item._rate} - ${item._date}</option>
-								</c:forEach>
-						</select></td>
-					</tr>
-					<tr>
-						<td><input class="dataEntry" type="text" placeholder=""
-							name="outputResult" id="outResult" /></td>
-						<!-- <td style="width:3px"></td>  -->
-						<td><select class="dataSelect" name="outputCurrency">
-								<!--<option value="empty"></option>-->
-								<c:forEach items="${requestScope['displayedCurrencies']}"
-									var="item">
-									<option id="output_${item._shortName}" value="${item._rate}">${item._shortName}
-										- ${item._fullName} - ${item._rate} - ${item._date}</option>
-								</c:forEach>
-						</select></td>
-					</tr>
-				</tbody>
-			</table>
 			<br> Kursi kuupäev: input väli formaadis dd.mm.yyyy koos mõne
 			javascript date pickeriga!!!! <br> <input type="submit"
 				value="Done">
 		</form>
+		Tulemus: <input required type="text" name="outputResult"
+			id="outResult" /> <br>
+		<button id="ajaxbutton">press here</button>
+		<div id="somediv">eh</div>
+		<br>
+		<button id="ajaxbutton2">press here 2</button>
+		<div id="somediv2">eh2</div>
+		<br>
+		<button id="ajaxbutton3">press here 3</button>
+		<select id="someselect3"></select>
+
+
+		<br>
+		<br>
+		<table style="table-layour:fixed; width:100%">
+			<tbody>
+				<tr>
+					<td>
+						<input class="dataEntry" type="text" placeholder="" name="inputMoneyAmount2" />
+					</td>
+					<!-- <td style="width:3px"></td>  -->
+					<td>
+						<select class="dataSelect">
+							<!--<option value="empty"></option>-->
+							<option value="AED">AED - Araabia Ühendemiraatide dirhem</option>
+							<option value="AFN">ARS - Argentina peeso</option>
+							<option value="ALL">AUD - Austraalia dollar</option>
+						</select> 
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<input class="dataEntry" type="text" placeholder="" name="outputResult2" id="outResult2" />
+					</td>
+					<!-- <td style="width:3px"></td>  -->
+					<td>
+						<select class="dataSelect">
+							<!--<option value="empty"></option>-->
+							<option value="AED">AED - Araabia Ühendemiraatide dirhem</option>
+							<option value="AFN">ARS - Argentina peeso</option>
+							<option value="ALL">AUD - Austraalia dollar</option>
+						</select> 
+					</td>
+				</tr>
+			</tbody>
+		</table>
+
 	</div>
 </body>
 </html>
