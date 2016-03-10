@@ -8,14 +8,16 @@ body {
 	background: rgb(239, 239, 239);
 	color: rgb(0,0,0);
 }
-
+#floating-box-container{
+    text-align: center;
+}
 #floating-box {
     display: inline-block;
     background: rgb(255,255,255);
     box-shadow: 0px 1px 4px 0px rgba(0,0,0,0.2);
     padding: 20px 20px 24px 20px;
     line-height: 1.2;
-    margin: 40px;
+    margin: 30px 10px 10px 10px;
     
     /*width: 150px;
     height: 75px;

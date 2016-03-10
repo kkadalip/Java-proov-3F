@@ -107,68 +107,70 @@
 
 </head>
 <body>
-	<div id="floating-box">
-		<form action="" method="POST" id="someform">
-			<!-- 
-		<select>
-			<option value="empty"></option>
-			<option value="AED">AED - Araabia Ühendemiraatide dirhem</option>
-			<option value="AFN">ARS - Argentina peeso</option>
-			<option value="ALL">AUD - Austraalia dollar</option>
-		</select> 
-		 -->
-
-			<!-- 
-			<button id="ajaxbutton">press here</button>
-			<div id="somediv">eh</div>
-			<br>
-			<button id="ajaxbutton2">press here 2</button>
-			<div id="somediv2">eh2</div>
-			<br>
-			<button id="ajaxbutton3">press here 3</button>
-			<select id="someselect3"></select> <br> <br>
+	<div id="floating-box-container">
+		<div id="floating-box">
+			<form action="" method="POST" id="someform">
+				<!-- 
+			<select>
+				<option value="empty"></option>
+				<option value="AED">AED - Araabia Ühendemiraatide dirhem</option>
+				<option value="AFN">ARS - Argentina peeso</option>
+				<option value="ALL">AUD - Austraalia dollar</option>
+			</select> 
 			 -->
-
-			<table style="table-layour: fixed; width: 100%">
-				<tbody>
-					<tr>
-						<td>
-							Select date:
-						</td>
-						<td>
-							<input class="hoverShadow dataEntry" type="text" id="datepicker">
-						</td>
-					</tr>
-				
-					<tr>
-						<td><input class="hoverShadow dataEntry" type="text" placeholder=""
-							name="inputMoneyAmount" /></td>
-						<!-- <td style="width:3px"></td>  -->
-						<td><select class="hoverShadow dataSelect" name="inputCurrency">
-								<c:forEach items="${requestScope['displayedCurrencies']}"
-									var="item">
-									<option id="input_${item._shortName}" value="${item._rate}">${item._shortName}
-										- ${item._fullName} - ${item._rate} - ${item._date}</option>
-								</c:forEach>
-						</select></td>
-					</tr>
-					<tr>
-						<td><input class="hoverShadow dataEntry" type="text" placeholder=""
-							name="outputResult" id="outResult" /></td>
-						<!-- <td style="width:3px"></td>  -->
-						<td><select class="hoverShadow dataSelect" name="outputCurrency">
-								<!--<option value="empty"></option>-->
-								<c:forEach items="${requestScope['displayedCurrencies']}"
-									var="item">
-									<option id="output_${item._shortName}" value="${item._rate}">${item._shortName}
-										- ${item._fullName} - ${item._rate} - ${item._date}</option>
-								</c:forEach>
-						</select></td>
-					</tr>
-				</tbody>
-			</table>
-			<br> <input type="submit" style="width: 100%;" value="Done">
-		</form>
+	
+				<!-- 
+				<button id="ajaxbutton">press here</button>
+				<div id="somediv">eh</div>
+				<br>
+				<button id="ajaxbutton2">press here 2</button>
+				<div id="somediv2">eh2</div>
+				<br>
+				<button id="ajaxbutton3">press here 3</button>
+				<select id="someselect3"></select> <br> <br>
+				 -->
+	
+				<table style="table-layour: fixed; width: 100%">
+					<tbody>
+						<tr>
+							<td>
+								Select date:
+							</td>
+							<td>
+								<input class="hoverShadow dataEntry" type="text" id="datepicker">
+							</td>
+						</tr>
+					
+						<tr>
+							<td><input class="hoverShadow dataEntry" type="text" placeholder=""
+								name="inputMoneyAmount" /></td>
+							<!-- <td style="width:3px"></td>  -->
+							<td><select class="hoverShadow dataSelect" name="inputCurrency">
+									<c:forEach items="${requestScope['displayedCurrencies']}"
+										var="item">
+										<option id="input_${item._shortName}" value="${item._rate}">${item._shortName}
+											- ${item._fullName} - ${item._rate} - ${item._date}</option>
+									</c:forEach>
+							</select></td>
+						</tr>
+						<tr>
+							<td><input class="hoverShadow dataEntry" type="text" placeholder=""
+								name="outputResult" id="outResult" /></td>
+							<!-- <td style="width:3px"></td>  -->
+							<td><select class="hoverShadow dataSelect" name="outputCurrency">
+									<!--<option value="empty"></option>-->
+									<c:forEach items="${requestScope['displayedCurrencies']}"
+										var="item">
+										<option id="output_${item._shortName}" value="${item._rate}">${item._shortName}
+											- ${item._fullName} - ${item._rate} - ${item._date}</option>
+									</c:forEach>
+							</select></td>
+						</tr>
+					</tbody>
+				</table>
+				<br> <input type="submit" style="width: 100%;" value="Done">
+			</form>
+		</div>
 	</div>
 </body>
 </html>
