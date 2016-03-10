@@ -168,7 +168,10 @@
 						</tr>
 					</tbody>
 				</table>
-				<br> <input type="submit" style="width: 100%;" value="Done">
+				<!-- <input type="submit" value="Done">  -->
+				<br> 
+				<!-- <button class="gradientButton" type="submit" style="width: 100%;" value="">Done</button>  -->
+				<input class="gradientButton" type="submit" value="Done">
 			</form>
 		</div>
 	</div>
