@@ -80,7 +80,6 @@
 		});
 	});
 	 */
-
 	// Returning List<Entity> as XML
 	 /*
 	 	$(document).on("click", "#submitButton", function() {             // When HTML DOM "click" event is invoked on element with ID "somebutton", execute the following function...
@@ -111,11 +110,25 @@
 			*/
 			
 			// POPULATE SELECT WITH RESULTS
-			var $select = $("#someselect"); // Locate HTML DOM element with ID "someselect".
-			$select.find("option").remove(); // Find all child elements with tag name "option" and remove them (just to prevent duplicate options when button is pressed again).
-			$.each(responseJson, function(key, value) { // Iterate over the JSON object.
-				$("<option>").val(key).text(value).appendTo($select); // Create HTML <option> element, set its value with currently iterated key and its text content with currently iterated item and finally append it to the <select>.
-			});
+			//var $select = $("#someselect"); // Locate HTML DOM element with ID "someselect".
+			//$select.find("option").remove(); // Find all child elements with tag name "option" and remove them (just to prevent duplicate options when button is pressed again).
+			//$.each(responseJson, function(key, value) { // Iterate over the JSON object.
+			//	$("<option>").val(key).text(value).appendTo($select); // Create HTML <option> element, set its value with currently iterated key and its text content with currently iterated item and finally append it to the <select>.
+			//});
+			
+			//var $table = $("<table>").appendTo($("#somediv")); // Create HTML <table> element and append it to HTML DOM element with ID "somediv".
+			var $table = $("<table>"); //.appendTo($("#somediv"));
+			$.each(responseJson, function(index, result) {    // Iterate over the JSON array.
+				$("<tr>").appendTo($table)
+				.append($("<td>").text("Bank: " + result._bankName))
+				.append($("<td>").text("Bank: " + result._resultValue));
+	        	//$("<tr>").($table)                     
+	            
+	            //$("<tr>").appendTo($table) // Create HTML <tr> element, set its text content with currently iterated item and append it to the <table>.
+	            //	.append($("<td>").text("Bank: " + result._bankName))        // Create HTML <td> element, set its text content with id of currently iterated product and append it to the <tr>.
+	            //    .append($("<td>").text("Result: " + result._resultValue))
+	        });
+			$('#somediv').html($table);
 			
 		    //$.get("Something", function(responseXml) {                // Execute Ajax GET request on URL of "someservlet" and execute the following function with Ajax response XML...
 		    //    $("#somediv").html($(responseXml).find("data").html()); // Parse XML, find <data> element and append its HTML to HTML DOM element with ID "somediv".
@@ -168,7 +181,7 @@
 								Select date:
 							</td>
 							<td>
-								<input class="hoverShadow dataEntry" type="text" id="datepicker">
+								<input class="hoverShadow dataEntry" type="text" id="datepicker" name="selectedDate">
 							</td>
 						</tr>
 					
@@ -205,10 +218,10 @@
 				<input class="gradientButton" type="submit" value="Done">
 				<br>
 				<p>Results with select:</p>
-				<select id="someselect"></select>
+				<select id="someselect">
+				</select>
 				
 				<div id="somediv">
-				HERE
 				</div>
 				
 				<table>

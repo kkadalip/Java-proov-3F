@@ -2,6 +2,7 @@ package controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,6 +21,7 @@ import com.google.gson.Gson;
 
 import dao.Readxml;
 import model.Currency;
+import model.Result;
 
 @WebServlet("")
 public class Default extends HttpServlet {
@@ -34,7 +36,8 @@ public class Default extends HttpServlet {
 		
 		//ServletContext context = getContext();
 		//URL resourceUrl = context.getResource("/WEB-INF/test/foo.txt");
-		List<Currency> displayedCurrencies = Readxml.getCurrencies(getServletContext());
+		
+		List<Currency> displayedCurrencies = Readxml.getCurrencies(getServletContext()); // TODO add date, get by date, default will be current day (atm the latest possible, later dates need to be disabled!)
 		request.setAttribute("displayedCurrencies", displayedCurrencies);
 		
 		// kontrolli, kas on sessiooni var-is olemas, kui ei, siis lisa, tglt ajaxiga javascripti abil teha??
@@ -58,14 +61,13 @@ public class Default extends HttpServlet {
 		HttpSession httpSession = request.getSession(true);
 		
 		String inputMoneyAmount = request.getParameter("inputMoneyAmount");
-		
-		String inputCurrency = request.getParameter("inputCurrency");
-		String outputCurrency = request.getParameter("outputCurrency");
-		
 		log.debug("inputMoneyAmount: " + inputMoneyAmount);
-		// rate:
-		log.debug("inputCurrency: " + inputCurrency);
+		String inputCurrency = request.getParameter("inputCurrency");
+		log.debug("inputCurrency: " + inputCurrency); // rate
+		String outputCurrency = request.getParameter("outputCurrency");
 		log.debug("outputCurrency: " + outputCurrency);
+		String selectedDate = request.getParameter("selectedDate");
+		log.debug("selectedDate: " + selectedDate);
 
 		// TODO java.lang.NumberFormatException: empty String
 		Float inputMoneyAmountFloat = Float.parseFloat(inputMoneyAmount);
@@ -76,10 +78,6 @@ public class Default extends HttpServlet {
 		log.debug("output amount: " + outputAmount);
 		
 		// AJAXIFY http://stackoverflow.com/questions/4112686/how-to-use-servlets-and-ajax
-		
-//	    String foo = request.getParameter("foo");
-//	    String bar = request.getParameter("bar");
-//	    String baz = request.getParameter("baz");
 
 	    boolean ajax = "XMLHttpRequest".equals(request.getHeader("X-Requested-With"));
 	    // ...
@@ -108,11 +106,15 @@ public class Default extends HttpServlet {
 //	    options.put("value3", "label3");
 //	    String json = new Gson().toJson(options);
 		
-		List<String> results = new ArrayList<String>();
-		results.add(text);
-		results.add("some other");
+		//List<String> results = new ArrayList<String>();
+		//results.add(text);
+		//results.add("some other");
+		
+		List<Result> results = new ArrayList<Result>();
+		results.add(new Result(textOwner, text));
+		results.add(new Result("Whatever bank", "some result"));
 		String json = new Gson().toJson(results);
-
+		log.debug("JSON IS: " + json);
 	    response.setContentType("application/json");
 	    response.setCharacterEncoding("UTF-8");
 	    response.getWriter().write(json);
