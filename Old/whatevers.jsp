@@ -3,13 +3,13 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <data>
+	<p>lalalala whatevers jsp</p>
     <table>
-        <c:forEach items="${products}" var="product">
+        <c:forEach items="${whatevers}" var="whatever">
             <tr>
-                <td>${product.id}</td>
-                <td><c:out value="${product.name}" /></td>
-                <td><fmt:formatNumber value="${product.price}" type="currency" currencyCode="USD" /></td>
+                <td>whatever: ${whatever}</td>
             </tr>
         </c:forEach>
     </table>
+    <p>lala end</p>
 </data>

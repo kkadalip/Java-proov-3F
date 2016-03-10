@@ -41,6 +41,7 @@ public class Something extends HttpServlet {
 //	    String json = new Gson().toJson(list);
 		
 		// Returning Map<String, String> as JSON
+		/*
 	    Map<String, String> options = new LinkedHashMap<String, String>();
 	    options.put("value1", "label1");
 	    options.put("value2", "label2");
@@ -50,6 +51,7 @@ public class Something extends HttpServlet {
 	    response.setContentType("application/json");
 	    response.setCharacterEncoding("UTF-8");
 	    response.getWriter().write(json);
+	    */
 	    
 	    // Returning List<Entity> as JSON
 	    // List<Product> in a <table> where the Product class has the properties Long id, String name and BigDecimal price. The servlet:
@@ -61,9 +63,12 @@ public class Something extends HttpServlet {
 //	    response.getWriter().write(json);
 	    
 	    // Returning List<Entity> as XML
-//	    List<Product> products = someProductService.list();
-//	    request.setAttribute("products", products);
-//	    request.getRequestDispatcher("/WEB-INF/xml/products.jsp").forward(request, response);
+	    //List<Product> products = someProductService.list();
+		
+		log.debug("[doGet] WHATEVERS");
+		List<String> whatevers = new ArrayList<String>();
+	    request.setAttribute("whatevers", whatevers);
+	    request.getRequestDispatcher("/WEB-INF/xml/whatevers.jsp").forward(request, response);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

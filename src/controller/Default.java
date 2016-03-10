@@ -1,6 +1,7 @@
 package controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -47,8 +48,6 @@ public class Default extends HttpServlet {
 		//	log.debug("I have session displayedcurrencies.");
 		//}
 		//request.setAttribute("displayedCurrencies", displayedCurrencies);
-
-
 		
 		request.getRequestDispatcher("jsp/index.jsp").forward(request, response);
 	}
@@ -93,9 +92,6 @@ public class Default extends HttpServlet {
 	        // Handle regular (JSP) response.
 	    }
 		
-		
-		log.info("[doPost] END");
-		
 		//response.sendRedirect(""); // Success
 		// TEXT AS JSON: SENDING BACK OUTPUT NUMBER (CHANGE TO JSON/XML LATER!)
 		String textOwner = "Eesti Pank";
@@ -105,16 +101,26 @@ public class Default extends HttpServlet {
 //	    response.getWriter().write(text);       // Write response body.
 	    
 		// Returning Map<String, String> as JSON
-	    Map<String, String> options = new LinkedHashMap<String, String>();
-	    options.put(textOwner, text);
-	    options.put("value2", "label2");
-	    options.put("value3", "label3");
-	    String json = new Gson().toJson(options);
+		
+//		Map<String, String> options = new LinkedHashMap<String, String>();
+//	    options.put(textOwner, text);
+//	    options.put("value2", "label2");
+//	    options.put("value3", "label3");
+//	    String json = new Gson().toJson(options);
+		
+		List<String> results = new ArrayList<String>();
+		results.add(text);
+		results.add("some other");
+		String json = new Gson().toJson(results);
 
 	    response.setContentType("application/json");
 	    response.setCharacterEncoding("UTF-8");
 	    response.getWriter().write(json);
-	    
+
+	    //request.setAttribute("whatevers", results);
+	    //request.getRequestDispatcher("/WEB-INF/xml/whatevers.jsp").forward(request, response);
+		
+		log.info("[doPost] END");
 	}
 }
 

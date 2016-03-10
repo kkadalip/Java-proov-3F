@@ -3,6 +3,7 @@
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <!DOCTYPE html>
 <html>
@@ -33,14 +34,17 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
 
 <script>
-	// string as plain text
+	// STRING AS PLAIN TEXT
+	/*
 	$(document).on("click", "#ajaxbutton", function() {
 		console.log("clicked button!");
 		$.get("Something", function(responseText) { // Execute Ajax GET request on URL of "someservlet" and execute the following function with Ajax response text...
 			$("#somediv").text(responseText); // Locate HTML DOM element with ID "somediv" and set its text content with the response text.
 		});
 	});
+	*/
 	// Returning List<String> as JSON
+	/*
 	$(document).on("click", "#ajaxbutton2", function() { // When HTML DOM "click" event is invoked on element with ID "somebutton", execute the following function...
 		$.get("Something", function(responseJson) { // Execute Ajax GET request on URL of "someservlet" and execute the following function with Ajax response JSON...
 			var $ul = $("<ul>").appendTo($("#somediv2")); // Create HTML <ul> element and append it to HTML DOM element with ID "somediv".
@@ -49,7 +53,9 @@
 			});
 		});
 	});
+	*/
 	// Returning Map<String, String> as JSON
+	/*
 	$(document).on("click", "#ajaxbutton3", function() { // When HTML DOM "click" event is invoked on element with ID "somebutton", execute the following function...
 		$.get("Something", function(responseJson) { // Execute Ajax GET request on URL of "someservlet" and execute the following function with Ajax response JSON...
 			var $select = $("#someselect3"); // Locate HTML DOM element with ID "someselect".
@@ -59,6 +65,7 @@
 			});
 		});
 	});
+	*/
 	// Returning List<Entity> as JSON
 	/*
 	$(document).on("click", "#somebutton", function() { // When HTML DOM "click" event is invoked on element with ID "somebutton", execute the following function...
@@ -75,9 +82,10 @@
 	 */
 
 	// Returning List<Entity> as XML
-	/*
-	$(document).on("click", "#somebutton", function() {             // When HTML DOM "click" event is invoked on element with ID "somebutton", execute the following function...
-	    $.get("someservlet", function(responseXml) {                // Execute Ajax GET request on URL of "someservlet" and execute the following function with Ajax response XML...
+	 /*
+	 	$(document).on("click", "#submitButton", function() {             // When HTML DOM "click" event is invoked on element with ID "somebutton", execute the following function...
+		console.log("Im in here!");
+	    $.get("Something", function(responseXml) {                // Execute Ajax GET request on URL of "someservlet" and execute the following function with Ajax response XML...
 	        $("#somediv").html($(responseXml).find("data").html()); // Parse XML, find <data> element and append its HTML to HTML DOM element with ID "somediv".
 	    });
 	});
@@ -87,7 +95,12 @@
 	$(document).on("submit", "#someform", function(event) {
 		console.log("submitting the ajax post form");
 		var $form = $(this);
-
+		/*
+		$.get("Something", function(responseXml) {                // Execute Ajax GET request on URL of "someservlet" and execute the following function with Ajax response XML...
+	        $("#somediv").html($(responseXml).find("data").html()); // Parse XML, find <data> element and append its HTML to HTML DOM element with ID "somediv".
+	    });
+		*/
+		
 		$.post($form.attr("action"), $form.serialize(), function(responseJson) { // responseText responseJson responseXml
 			// ...
 			//$("#somediv").html($(responseXml).find("data").html());
@@ -97,18 +110,24 @@
 			$("#outResult").val(responseText); // text
 			*/
 			
-			
+			// POPULATE SELECT WITH RESULTS
 			var $select = $("#someselect"); // Locate HTML DOM element with ID "someselect".
 			$select.find("option").remove(); // Find all child elements with tag name "option" and remove them (just to prevent duplicate options when button is pressed again).
 			$.each(responseJson, function(key, value) { // Iterate over the JSON object.
 				$("<option>").val(key).text(value).appendTo($select); // Create HTML <option> element, set its value with currently iterated key and its text content with currently iterated item and finally append it to the <select>.
 			});
 			
+		    //$.get("Something", function(responseXml) {                // Execute Ajax GET request on URL of "someservlet" and execute the following function with Ajax response XML...
+		    //    $("#somediv").html($(responseXml).find("data").html()); // Parse XML, find <data> element and append its HTML to HTML DOM element with ID "somediv".
+		    //});
+			//$("#somediv").html($(responseXml).find("data").html());
 			
 		});
-
 		event.preventDefault(); // Important! Prevents submitting the form.
 	});
+	
+
+	
 
 	$(function() {
 		$("#datepicker").datepicker();
@@ -185,9 +204,33 @@
 				<!-- <button class="gradientButton" type="submit" style="width: 100%;" value="">Done</button>  -->
 				<input class="gradientButton" type="submit" value="Done">
 				<br>
-				<p>Results:</p>
+				<p>Results with select:</p>
 				<select id="someselect"></select>
+				
+				<div id="somediv">
+				HERE
+				</div>
+				
+				<table>
+			        <c:forEach items="${results}" var="result">
+			            <tr>
+			            	<td>result: ${result}</td>
+			            	<!-- 
+			                <td>${result.id}</td>
+			                <td><c:out value="${result.name}" /></td>
+			                <td><fmt:formatNumber value="${result.price}" type="currency" currencyCode="USD" /></td>
+			                 -->
+			            </tr>
+			        </c:forEach>
+			        <tr>
+			        	<td>
+			        		swag
+			        	</td>
+			        </tr>
+		        </table>
 			</form>
+			
+			<input type="submit" id="submitButton" value="submitButton"/>
 		</div>
 	</div>
 </body>
