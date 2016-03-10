@@ -1,7 +1,9 @@
 package controller;
 
 import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -12,6 +14,8 @@ import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.google.gson.Gson;
 
 import dao.Readxml;
 import model.Currency;
@@ -93,12 +97,24 @@ public class Default extends HttpServlet {
 		log.info("[doPost] END");
 		
 		//response.sendRedirect(""); // Success
-		
-		// SENDING BACK OUTPUT NUMBER (CHANGE TO JSON/XML LATER!)
+		// TEXT AS JSON: SENDING BACK OUTPUT NUMBER (CHANGE TO JSON/XML LATER!)
+		String textOwner = "Eesti Pank";
 		String text = outputAmount.toString();
-		response.setContentType("text/plain");  // Set content type of the response so that jQuery knows what it can expect.
+//		response.setContentType("text/plain");  // Set content type of the response so that jQuery knows what it can expect.
+//	    response.setCharacterEncoding("UTF-8");
+//	    response.getWriter().write(text);       // Write response body.
+	    
+		// Returning Map<String, String> as JSON
+	    Map<String, String> options = new LinkedHashMap<String, String>();
+	    options.put(textOwner, text);
+	    options.put("value2", "label2");
+	    options.put("value3", "label3");
+	    String json = new Gson().toJson(options);
+
+	    response.setContentType("application/json");
 	    response.setCharacterEncoding("UTF-8");
-	    response.getWriter().write(text);       // Write response body.
+	    response.getWriter().write(json);
+	    
 	}
 }
 

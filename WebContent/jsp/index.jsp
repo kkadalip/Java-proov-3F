@@ -88,11 +88,23 @@
 		console.log("submitting the ajax post form");
 		var $form = $(this);
 
-		$.post($form.attr("action"), $form.serialize(), function(responseText) { // responseJson responseXml
+		$.post($form.attr("action"), $form.serialize(), function(responseJson) { // responseText responseJson responseXml
 			// ...
 			//$("#somediv").html($(responseXml).find("data").html());
+		
+			/*
 			console.log("responseText is: " + responseText);
 			$("#outResult").val(responseText); // text
+			*/
+			
+			
+			var $select = $("#someselect"); // Locate HTML DOM element with ID "someselect".
+			$select.find("option").remove(); // Find all child elements with tag name "option" and remove them (just to prevent duplicate options when button is pressed again).
+			$.each(responseJson, function(key, value) { // Iterate over the JSON object.
+				$("<option>").val(key).text(value).appendTo($select); // Create HTML <option> element, set its value with currently iterated key and its text content with currently iterated item and finally append it to the <select>.
+			});
+			
+			
 		});
 
 		event.preventDefault(); // Important! Prevents submitting the form.
@@ -172,6 +184,9 @@
 				<br> 
 				<!-- <button class="gradientButton" type="submit" style="width: 100%;" value="">Done</button>  -->
 				<input class="gradientButton" type="submit" value="Done">
+				<br>
+				<p>Results:</p>
+				<select id="someselect"></select>
 			</form>
 		</div>
 	</div>

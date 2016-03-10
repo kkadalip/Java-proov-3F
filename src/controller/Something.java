@@ -39,10 +39,6 @@ public class Something extends HttpServlet {
 //	    list.add("item2");
 //	    list.add("item3");
 //	    String json = new Gson().toJson(list);
-//
-//	    response.setContentType("application/json");
-//	    response.setCharacterEncoding("UTF-8");
-//	    response.getWriter().write(json);
 		
 		// Returning Map<String, String> as JSON
 	    Map<String, String> options = new LinkedHashMap<String, String>();
