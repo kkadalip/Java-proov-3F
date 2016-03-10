@@ -132,6 +132,15 @@
 			<table style="table-layour: fixed; width: 100%">
 				<tbody>
 					<tr>
+						<td>
+							Select date:
+						</td>
+						<td>
+							<input class="hoverShadow dataEntry" type="text" id="datepicker">
+						</td>
+					</tr>
+				
+					<tr>
 						<td><input class="hoverShadow dataEntry" type="text" placeholder=""
 							name="inputMoneyAmount" /></td>
 						<!-- <td style="width:3px"></td>  -->
@@ -158,9 +167,6 @@
 					</tr>
 				</tbody>
 			</table>
-			<p>
-				Date: <input class="hoverShadow dataEntry" type="text" id="datepicker">
-			</p>
 			<br> <input type="submit" style="width: 100%;" value="Done">
 		</form>
 	</div>
