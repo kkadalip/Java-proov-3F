@@ -119,13 +119,13 @@
 			//var $table = $("<table>").appendTo($("#somediv")); // Create HTML <table> element and append it to HTML DOM element with ID "somediv".
 			var $table = $("<table>"); //.appendTo($("#somediv"));
 			$("<tr>").appendTo($table)
-			.append($("<th>").text("Bank"))
-			.append($("<th>").text("Result"));
+			.append($("<th>").text("Bank:"))
+			.append($("<th>").text("Result:"));
 			
 			$.each(responseJson, function(index, result) {    // Iterate over the JSON array.
 				$("<tr>").appendTo($table)
 				.append($("<td>").text(result._bankName))
-				.append($("<td>").text("Result: " + result._resultValue));
+				.append($("<td>").text(result._resultValue));
 	        	//$("<tr>").($table)                     
 	            
 	            //$("<tr>").appendTo($table) // Create HTML <tr> element, set its text content with currently iterated item and append it to the <table>.

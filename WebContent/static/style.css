@@ -154,14 +154,17 @@ input[type="text"] {
 }
 */
 #resultsTableContainer table, #resultsTableContainer tbody, #resultsTableContainer th, #resultsTableContainer  tr, #resultsTableContainer  td {
-   border: 1px solid blue;
+   	border: 1px solid rgb(217,217,217);
+  	border-top: 1px solid rgb(200,200,200);
 }
 
 #resultsTableContainer table {
+
 	/*border-collapse: collapse;*/
 	background-color: rgb(240,240,240);
 	width: 100%;
 	margin-top: 30px;
+	border-radius: 2px;
 }
 
 
