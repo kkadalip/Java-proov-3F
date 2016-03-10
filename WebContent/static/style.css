@@ -114,7 +114,7 @@ input[type="text"] {
 	padding: 2px;
 	font-size: 18px;
 	/*font-family: "Bitter",serif;*/
-	line-height: 1.5;
+	line-height: 1.8;
 	appearance: none;
 	
 	color: #fff;
@@ -153,6 +153,16 @@ input[type="text"] {
 	transform: translateY(5px);
 }
 */
+#resultsTableContainer table, #resultsTableContainer tbody, #resultsTableContainer th, #resultsTableContainer  tr, #resultsTableContainer  td {
+   border: 1px solid blue;
+}
+
+#resultsTableContainer table {
+	/*border-collapse: collapse;*/
+	background-color: rgb(240,240,240);
+	width: 100%;
+	margin-top: 30px;
+}
 
 
 

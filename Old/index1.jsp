@@ -118,21 +118,17 @@
 			
 			//var $table = $("<table>").appendTo($("#somediv")); // Create HTML <table> element and append it to HTML DOM element with ID "somediv".
 			var $table = $("<table>"); //.appendTo($("#somediv"));
-			$("<tr>").appendTo($table)
-			.append($("<th>").text("Bank"))
-			.append($("<th>").text("Result"));
-			
 			$.each(responseJson, function(index, result) {    // Iterate over the JSON array.
 				$("<tr>").appendTo($table)
-				.append($("<td>").text(result._bankName))
-				.append($("<td>").text("Result: " + result._resultValue));
+				.append($("<td>").text("Bank: " + result._bankName))
+				.append($("<td>").text("Bank: " + result._resultValue));
 	        	//$("<tr>").($table)                     
 	            
 	            //$("<tr>").appendTo($table) // Create HTML <tr> element, set its text content with currently iterated item and append it to the <table>.
 	            //	.append($("<td>").text("Bank: " + result._bankName))        // Create HTML <td> element, set its text content with id of currently iterated product and append it to the <tr>.
 	            //    .append($("<td>").text("Result: " + result._resultValue))
 	        });
-			$('#resultsTableContainer').html($table);
+			$('#somediv').html($table);
 			
 		    //$.get("Something", function(responseXml) {                // Execute Ajax GET request on URL of "someservlet" and execute the following function with Ajax response XML...
 		    //    $("#somediv").html($(responseXml).find("data").html()); // Parse XML, find <data> element and append its HTML to HTML DOM element with ID "somediv".
@@ -221,9 +217,33 @@
 				<!-- <button class="gradientButton" type="submit" style="width: 100%;" value="">Done</button>  -->
 				<input class="gradientButton" type="submit" value="Done">
 				<br>
-				<div id="resultsTableContainer">
+				<p>Results with select:</p>
+				<select id="someselect">
+				</select>
+				
+				<div id="somediv">
 				</div>
+				
+				<table>
+			        <c:forEach items="${results}" var="result">
+			            <tr>
+			            	<td>result: ${result}</td>
+			            	<!-- 
+			                <td>${result.id}</td>
+			                <td><c:out value="${result.name}" /></td>
+			                <td><fmt:formatNumber value="${result.price}" type="currency" currencyCode="USD" /></td>
+			                 -->
+			            </tr>
+			        </c:forEach>
+			        <tr>
+			        	<td>
+			        		swag
+			        	</td>
+			        </tr>
+		        </table>
 			</form>
+			
+			<input type="submit" id="submitButton" value="submitButton"/>
 		</div>
 	</div>
 </body>
