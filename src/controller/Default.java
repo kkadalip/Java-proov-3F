@@ -38,7 +38,8 @@ public class Default extends HttpServlet {
 		//URL resourceUrl = context.getResource("/WEB-INF/test/foo.txt");
 		
 		//List<Currency> displayedCurrencies = Readxml.getCurrencies(getServletContext()); // TODO add date, get by date, default will be current day (atm the latest possible, later dates need to be disabled!)
-		List<Currency> displayedCurrencies = Readxml.downloadAllForDate(getServletContext());
+		//List<Currency> displayedCurrencies = Readxml.downloadAllForDate(getServletContext());
+		List<Currency> displayedCurrencies = Readxml.downloadAllForDate();
 		request.setAttribute("displayedCurrencies", displayedCurrencies);
 		
 		// kontrolli, kas on sessiooni var-is olemas, kui ei, siis lisa, tglt ajaxiga javascripti abil teha??

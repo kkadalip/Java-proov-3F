@@ -52,6 +52,21 @@ public class Readxml {
 	static Logger log = LoggerFactory.getLogger(Readxml.class); // info trace debug warn error
 
 	//static FileInputStream fisEstonia;
+	
+	public static void main(String argv[]) {
+		//doStuff();
+
+		//		List<Currency> swagCurrencies = getCurrencies();
+		//		System.out.println("swagcurrencies size: " + swagCurrencies.size());
+		//		for(Currency c : swagCurrencies){
+		//			if(c != null){
+		//				System.out.		println("CURRENCY: " + c.toString());
+		//			}else{
+		//				System.out.println("c IS NULL!!");
+		//			}
+		//			
+		//		}
+	}
 
 	// 0) Download all XMLs (DATE!!, don't let user select newer dates!)
 	// 1) Get all possible currencies from XMLs
@@ -92,7 +107,7 @@ public class Readxml {
 	}
 	
 	// ATM USING ONLY FOR DOWNLOAD + DISPLAY:
-	public static List<Currency> downloadAllForDate(){ //ServletContext context){//, Date date){
+	public static List<Currency> downloadAllForDate(ServletContext context){//, Date date){
 		log.debug("[downloadAllForDate]");
 		
 		String day = "30";
@@ -105,11 +120,9 @@ public class Readxml {
 		String bankOfLithuania = "http://webservices.lb.lt/ExchangeRates/ExchangeRates.asmx/getExchangeRatesByDate?Date="+timeString; //"http://webservices.lb.lt/ExchangeRates/ExchangeRates.asmx/getExchangeRatesByDate?Date=2010-12-30";
 
 		// DOWNLOAD FOR X      URL(with date) and file name (eg eesti-2010-12-30)
-		//FileInputStream fisEstonia = getFisForX(context, bankOfEstonia,"bankOfEstonia-"+timeString+".xml");
-		FileInputStream fisEstonia = getFisForX(bankOfEstonia,"bankOfEstonia-"+timeString+".xml");
+		FileInputStream fisEstonia = getFisForX(context, bankOfEstonia,"bankOfEstonia-"+timeString+".xml");
 		//fisEstonia = getFisForX(context, bankOfEstonia,"bankOfEstonia-"+timeString+".xml");
-		//FileInputStream fisLithuania = getFisForX(context, bankOfLithuania,"bankOfLithuania-"+timeString+".xml");
-		FileInputStream fisLithuania = getFisForX(bankOfLithuania,"bankOfLithuania-"+timeString+".xml");
+		FileInputStream fisLithuania = getFisForX(context, bankOfLithuania,"bankOfLithuania-"+timeString+".xml");
 		
 		List<Currency> bankOfEstoniaCurrencies = fisToCurrencies(fisEstonia);
 		List<Currency> bankOfLithuaniaCurrencies = fisToCurrencies(fisLithuania);
@@ -123,22 +136,17 @@ public class Readxml {
 			
 		return bankOfEstoniaCurrencies;
 	}
-	public static FileInputStream getFisForX(String downloadURL, String fileName){ //(ServletContext context, String downloadURL, String fileName){
+	public static FileInputStream getFisForX (ServletContext context, String downloadURL, String fileName){
 		log.debug("[getFileForX]");
 		try {
 			FileInputStream fis;
 			String xmlFilesPath = "/WEB-INF/xml/";
-			
-			//URL locationUrl = Readxml.class.getClassLoader().getResource("sql/whatever.sql");
-			URL resourceUrl = Readxml.class.getClassLoader().getResource(xmlFilesPath+fileName);
-			System.out.println("resourceUrl 1: " + resourceUrl);
-			//URL resourceUrl2 = context.getResource(xmlFilesPath+fileName); //context.getResource("/WEB-INF/xml/eesti.xml");
-			//System.out.println("resourceUrl 2: " + resourceUrl2);
+			URL resourceUrl = context.getResource(xmlFilesPath+fileName); //context.getResource("/WEB-INF/xml/eesti.xml");
 			if(resourceUrl == null){
 				log.debug("[getFileForX] LOCAL XML NOT FOUND, DOWNLOADING");
 				URL bankURL = new URL(downloadURL);
-				//String path = context.getRealPath(xmlFilesPath);
-				String newFilePath = "";//path+fileName;
+				String path = context.getRealPath(xmlFilesPath);
+				String newFilePath = path+fileName;
 				System.out.println("newFilePath: " + newFilePath); // C:\Users\karlk\workspace\.metadata\.plugins\org.eclipse.wst.server.core\tmp1\wtpwebapps\Java-Proov-3F\WEB-INF\/WEB-INF/xml/eesti.xml
 				File newXmlFile = new File(newFilePath); //("WEB-INF/xml/eesti.xml"); // ./WEB-INF/xml/eesti.xml is the same thing				
 				FileUtils.copyURLToFile(bankURL, newXmlFile);
@@ -318,20 +326,7 @@ public class Readxml {
 
 
 
-//public static void main(String argv[]) {
-////doStuff();
-//
-////		List<Currency> swagCurrencies = getCurrencies();
-////		System.out.println("swagcurrencies size: " + swagCurrencies.size());
-////		for(Currency c : swagCurrencies){
-////			if(c != null){
-////				System.out.		println("CURRENCY: " + c.toString());
-////			}else{
-////				System.out.println("c IS NULL!!");
-////			}
-////			
-////		}
-//}
+
 
 /*
  * private static void doStuff(){
