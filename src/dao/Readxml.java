@@ -3,6 +3,7 @@ package dao;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.servlet.ServletContext;
+import javax.swing.plaf.synth.SynthSeparatorUI;
 import javax.xml.parsers.DocumentBuilder;
 
 import org.apache.commons.io.FileUtils;
@@ -42,7 +43,7 @@ import model.Currency;
 import model.Result;
 
 public class Readxml {
-	static Logger log = LoggerFactory.getLogger(Default.class); // info trace debug warn error
+	static Logger log = LoggerFactory.getLogger(Readxml.class); // info trace debug warn error
 
 	public static void main(String argv[]) {
 
@@ -73,7 +74,7 @@ public class Readxml {
 
 	public static List<Result> calculateResults(String inputMoneyAmount, String inputCurrency, String outputCurreny, String date){
 		// calculate using all the banks and their different currencies
-		
+		log.debug("[calculateResults]");
 		
 		
 		return null;
@@ -81,6 +82,8 @@ public class Readxml {
 	
 	// ATM USING ONLY FOR DOWNLOAD + DISPLAY:
 	public static List<Currency> downloadAllForDate(ServletContext context){//, Date date){
+		log.debug("[downloadAllForDate]");
+		
 		String day = "30";
 		String month = "12";
 		String year = "2010";
@@ -100,6 +103,7 @@ public class Readxml {
 		return bankOfEstoniaCurrencies;
 	}
 	public static FileInputStream getFileForX (ServletContext context, String downloadURL, String fileName){
+		log.debug("[getFileForX]");
 		try {
 			FileInputStream fis;
 			String xmlFilesPath = "/WEB-INF/xml/";
@@ -129,6 +133,7 @@ public class Readxml {
 		return null;
 	}
 	public static List<Currency> fisToCurrencies(FileInputStream fis){
+		log.debug("[fisToCurrencies]");
 		try {
 			List<Currency> returnCurrencies = new ArrayList<Currency>();
 
