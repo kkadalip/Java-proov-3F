@@ -39,6 +39,7 @@ import java.util.Date;
 import java.util.List;
 
 import model.Currency;
+import model.Result;
 
 public class Readxml {
 	static Logger log = LoggerFactory.getLogger(Default.class); // info trace debug warn error
@@ -69,7 +70,17 @@ public class Readxml {
 	// genereeri uus fail??
 	// eraldi fail, kus on põhivaluutad ja tõlked??
 
-	public static void downloadAllForDate(ServletContext context, Date date){
+
+	public static List<Result> calculateResults(String inputMoneyAmount, String inputCurrency, String outputCurreny, String date){
+		// calculate using all the banks and their different currencies
+		
+		
+		
+		return null;
+	}
+	
+	// ATM USING ONLY FOR DOWNLOAD + DISPLAY:
+	public static List<Currency> downloadAllForDate(ServletContext context){//, Date date){
 		String day = "30";
 		String month = "12";
 		String year = "2010";
@@ -81,7 +92,12 @@ public class Readxml {
 
 		// DOWNLOAD FOR X      URL(with date) and file name (eg eesti-2010-12-30)
 		FileInputStream fisEstonia = getFileForX(context, bankOfEstonia,"bankOfEstonia-"+timeString+".xml");
-		FileInputStream fisLithuania = getFileForX(context, bankOfEstonia,"bankOfLithuania-"+timeString+".xml");	
+		//FileInputStream fisLithuania = getFileForX(context, bankOfLithuania,"bankOfLithuania-"+timeString+".xml");
+		
+		List<Currency> bankOfEstoniaCurrencies = fisToCurrencies(fisEstonia);
+		//List<Result> resultsEstonia = 
+		
+		return bankOfEstoniaCurrencies;
 	}
 	public static FileInputStream getFileForX (ServletContext context, String downloadURL, String fileName){
 		try {
@@ -123,6 +139,7 @@ public class Readxml {
 
 			log.debug("Root element: " + doc.getDocumentElement().getNodeName());
 
+			// FOLLOWING IS SPECIFIC TO CERTAIN XML:
 			NodeList nList = doc.getElementsByTagName("Currency"); // row
 			log.debug(nList.getLength() + " nodes found");
 
@@ -170,7 +187,7 @@ public class Readxml {
 					//returnCurrencies.add(new Currency(name, text, rate, date));
 				}
 			}
-
+			return returnCurrencies;	
 		} catch (Exception e) {
 			log.error("[fisToCurrencies] failed!", e);
 		}
@@ -178,6 +195,12 @@ public class Readxml {
 	}
 
 
+	
+	
+	
+	
+	
+	
 
 
 
