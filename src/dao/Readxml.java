@@ -45,6 +45,8 @@ import model.Result;
 public class Readxml {
 	static Logger log = LoggerFactory.getLogger(Readxml.class); // info trace debug warn error
 
+	static FileInputStream fisEstonia;
+	
 	public static void main(String argv[]) {
 		//doStuff();
 
@@ -52,7 +54,7 @@ public class Readxml {
 		//		System.out.println("swagcurrencies size: " + swagCurrencies.size());
 		//		for(Currency c : swagCurrencies){
 		//			if(c != null){
-		//				System.out.println("CURRENCY: " + c.toString());
+		//				System.out.		println("CURRENCY: " + c.toString());
 		//			}else{
 		//				System.out.println("c IS NULL!!");
 		//			}
@@ -72,6 +74,9 @@ public class Readxml {
 
 	// uus objekt iga uue XML jaoks, sinna vajaminev info sisse, LIST nendest ja käia läbi, tagasi resultid
 	
+	// 1. vaata kas fail eksisteerib
+	// 2. vaata, kas link eksisteerib
+	
 	public static List<Result> calculateResults(Float inputMoneyAmount, String inputCurrency, String outputCurreny){ //, String date){
 		// calculate using all the banks and their different currencies
 		log.debug("[calculateResults]");
@@ -80,7 +85,8 @@ public class Readxml {
 		// GET XML FILE
 		// GET CORRECT THING
 		
-		// FAILINIMEDEST LIST, SIIN KÄIN NAD LÄBI JA PÄRIN VÄLJA ÕIGE ASJA + ARVUTAN?
+		
+		// FAILINIMEDEST LIST (model Bank nt), SIIN KÄIN NAD LÄBI JA PÄRIN VÄLJA ÕIGE ASJA + ARVUTAN?
 		return null;
 	}
 	// 1. get currency from different banks
@@ -104,7 +110,8 @@ public class Readxml {
 		String bankOfLithuania = "http://webservices.lb.lt/ExchangeRates/ExchangeRates.asmx/getExchangeRatesByDate?Date="+timeString; //"http://webservices.lb.lt/ExchangeRates/ExchangeRates.asmx/getExchangeRatesByDate?Date=2010-12-30";
 
 		// DOWNLOAD FOR X      URL(with date) and file name (eg eesti-2010-12-30)
-		FileInputStream fisEstonia = getFisForX(context, bankOfEstonia,"bankOfEstonia-"+timeString+".xml");
+		//FileInputStream fisEstonia = getFisForX(context, bankOfEstonia,"bankOfEstonia-"+timeString+".xml");
+		fisEstonia = getFisForX(context, bankOfEstonia,"bankOfEstonia-"+timeString+".xml");
 		FileInputStream fisLithuania = getFisForX(context, bankOfLithuania,"bankOfLithuania-"+timeString+".xml");
 		
 		List<Currency> bankOfEstoniaCurrencies = fisToCurrencies(fisEstonia);
@@ -158,6 +165,60 @@ public class Readxml {
 			return doc;
 		}catch(Exception e){
 			log.error("[fisToDocument] failed!", e);
+		}
+		return null;
+	}
+	public static Float fisToRate(FileInputStream fis){
+		try {
+			Float returnValue;
+			Document doc = fisToDocument(fis);
+			doc.getAttributes();
+			// Estonia
+			// node Currency attribute rate
+			// Lithuania
+			// node item, in which node currency and node rate
+//			log.debug("Root element: " + doc.getDocumentElement().getNodeName());
+//			// FOLLOWING IS SPECIFIC TO CERTAIN XML:
+//			NodeList nList = doc.getElementsByTagName("Currency"); // row
+//			log.debug(nList.getLength() + " nodes found");
+//			log.debug("----------------------------");
+//			log.debug("nList length: " + nList.getLength());
+//			Date date = null;
+//			if(doc.getElementsByTagName("Date").item(0) != null){
+//				String dateString = doc.getElementsByTagName("Date").item(0).getTextContent(); //.getTextContent(); //07.03.16        "January 2, 2010";
+//				log.debug("dateString: " + dateString);
+//				SimpleDateFormat format = new SimpleDateFormat("dd.MM.yy"); // new SimpleDateFormat("MMMM d, yyyy", Locale.ENGLISH); // DateFormat
+//				// java.text.ParseException: Unparseable date: ""
+//				date = format.parse(dateString);
+//				log.debug("DATE IS: " + date);
+//			}else{
+//				log.debug("NO DATE STRING IN XML");
+//			}
+//			// CURRENCY ELEMENTS:
+//			for (int temp = 0; temp < nList.getLength(); temp++) {
+//				Node nNode = nList.item(temp);
+//				//System.out.println("\nCurrent Element :" + nNode.getNodeName()); // Current Element :Currency
+//				if (nNode.getNodeType() == Node.ELEMENT_NODE) {
+//					Element eElement = (Element) nNode;
+//					String name = eElement.getAttribute("name"); // shortName
+//					String text = eElement.getAttribute("text"); // fullName
+//					Float rate;
+//					NumberFormat nf = new DecimalFormat ("#,#");
+//					try{
+//						rate = nf.parse(eElement.getAttribute("rate")).floatValue();
+//						//rate = Float.parseFloat(eElement.getAttribute("rate"));
+//					}catch(NumberFormatException e){
+//						e.printStackTrace();
+//						rate = null;
+//					}
+//					//				String dateString = eElement.getTextContent(); //07.03.16        "January 2, 2010";
+//					log.debug("name: " + eElement.getAttribute("name") + " text: " + eElement.getAttribute("text") + " rate: " + eElement.getAttribute("rate"));
+//					Currency addCurrency = new Currency(name, text, rate, date);
+//				}
+//			}
+//			//return 0;
+		} catch (Exception e) {
+			log.error("[fisToCurrencies] failed!", e);
 		}
 		return null;
 	}

@@ -21,5 +21,8 @@
 		<!-- saving url to file etc -->
 		<dependency org="commons-io" name="commons-io" rev="2.4"/>
 		
+		<!-- better XML DOM parsing -->
+		<dependency org="dom4j" name="dom4j" rev="1.6.1"/>
+		
 	</dependencies>
 </ivy-module>
