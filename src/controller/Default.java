@@ -60,7 +60,7 @@ public class Default extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		log.info("[doPost] START");
 		HttpSession httpSession = request.getSession(true);
-		
+		/*
 		String inputMoneyAmount = request.getParameter("inputMoneyAmount");
 		log.debug("inputMoneyAmount: " + inputMoneyAmount);
 		String inputCurrency = request.getParameter("inputCurrency");
@@ -114,11 +114,31 @@ public class Default extends HttpServlet {
 		List<Result> results = new ArrayList<Result>();
 		results.add(new Result(textOwner, text));
 		results.add(new Result("Whatever bank", "some result"));
-		String json = new Gson().toJson(results);
-		log.debug("JSON IS: " + json);
-	    response.setContentType("application/json");
-	    response.setCharacterEncoding("UTF-8");
-	    response.getWriter().write(json);
+		*/
+		
+		String inputMoneyAmount = request.getParameter("inputMoneyAmount");
+		log.debug("inputMoneyAmount: " + inputMoneyAmount);
+		String inputCurrency = request.getParameter("inputCurrency");
+		log.debug("inputCurrency: " + inputCurrency); // rate
+		String outputCurrency = request.getParameter("outputCurrency");
+		log.debug("outputCurrency: " + outputCurrency);
+		String selectedDate = request.getParameter("selectedDate");
+		log.debug("selectedDate: " + selectedDate);
+
+		// TODO java.lang.NumberFormatException: empty String
+		Float inputMoneyAmountFloat = Float.parseFloat(inputMoneyAmount);
+		//Float inputCurrencyFloat = Float.parseFloat(inputCurrency);
+		//Float outputCurrencyFloat = Float.parseFloat(outputCurrency);
+		
+		List<Result> results = Readxml.calculateResults(inputMoneyAmountFloat, inputCurrency, outputCurrency); //, date);
+
+//		
+//		
+//		String json = new Gson().toJson(results);
+//		log.debug("JSON IS: " + json);
+//	    response.setContentType("application/json");
+//	    response.setCharacterEncoding("UTF-8");
+//	    response.getWriter().write(json);
 
 	    //request.setAttribute("whatevers", results);
 	    //request.getRequestDispatcher("/WEB-INF/xml/whatevers.jsp").forward(request, response);

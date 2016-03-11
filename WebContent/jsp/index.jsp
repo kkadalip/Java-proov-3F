@@ -196,7 +196,7 @@
 							<td><select class="hoverShadow dataSelect" name="inputCurrency">
 									<c:forEach items="${requestScope['displayedCurrencies']}"
 										var="item">
-										<option id="input_${item._shortName}" value="${item._rate}">${item._shortName}
+										<option id="input_${item._shortName}" value="${item._shortName}">${item._shortName}
 											- ${item._fullName}</option>
 										<!-- 
 										<option id="input_${item._shortName}" value="${item._rate}">${item._shortName}
@@ -213,7 +213,7 @@
 									<!--<option value="empty"></option>-->
 									<c:forEach items="${requestScope['displayedCurrencies']}"
 										var="item">
-										<option id="output_${item._shortName}" value="${item._rate}">${item._shortName}
+										<option id="output_${item._shortName}" value="${item._shortName}">${item._shortName}
 											- ${item._fullName} - ${item._rate} - ${item._date}</option>
 									</c:forEach>
 							</select></td>

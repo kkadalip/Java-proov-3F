@@ -46,7 +46,6 @@ public class Readxml {
 	static Logger log = LoggerFactory.getLogger(Readxml.class); // info trace debug warn error
 
 	public static void main(String argv[]) {
-
 		//doStuff();
 
 		//		List<Currency> swagCurrencies = getCurrencies();
@@ -71,13 +70,24 @@ public class Readxml {
 	// genereeri uus fail??
 	// eraldi fail, kus on põhivaluutad ja tõlked??
 
-
-	public static List<Result> calculateResults(String inputMoneyAmount, String inputCurrency, String outputCurreny, String date){
+	// uus objekt iga uue XML jaoks, sinna vajaminev info sisse, LIST nendest ja käia läbi, tagasi resultid
+	
+	public static List<Result> calculateResults(Float inputMoneyAmount, String inputCurrency, String outputCurreny){ //, String date){
 		// calculate using all the banks and their different currencies
 		log.debug("[calculateResults]");
+		// PÄRI XML FAILIDEST VÄLJA (list neist mällu) ÕIGE ASI AED vmt
 		
+		// GET XML FILE
+		// GET CORRECT THING
 		
+		// FAILINIMEDEST LIST, SIIN KÄIN NAD LÄBI JA PÄRIN VÄLJA ÕIGE ASJA + ARVUTAN?
 		return null;
+	}
+	// 1. get currency from different banks
+	// 2. get rate
+	public static float getCurrenyRate(Currency c){
+		
+		return 0;
 	}
 	
 	// ATM USING ONLY FOR DOWNLOAD + DISPLAY:
@@ -94,15 +104,22 @@ public class Readxml {
 		String bankOfLithuania = "http://webservices.lb.lt/ExchangeRates/ExchangeRates.asmx/getExchangeRatesByDate?Date="+timeString; //"http://webservices.lb.lt/ExchangeRates/ExchangeRates.asmx/getExchangeRatesByDate?Date=2010-12-30";
 
 		// DOWNLOAD FOR X      URL(with date) and file name (eg eesti-2010-12-30)
-		FileInputStream fisEstonia = getFileForX(context, bankOfEstonia,"bankOfEstonia-"+timeString+".xml");
-		//FileInputStream fisLithuania = getFileForX(context, bankOfLithuania,"bankOfLithuania-"+timeString+".xml");
+		FileInputStream fisEstonia = getFisForX(context, bankOfEstonia,"bankOfEstonia-"+timeString+".xml");
+		FileInputStream fisLithuania = getFisForX(context, bankOfLithuania,"bankOfLithuania-"+timeString+".xml");
 		
 		List<Currency> bankOfEstoniaCurrencies = fisToCurrencies(fisEstonia);
+		List<Currency> bankOfLithuaniaCurrencies = fisToCurrencies(fisLithuania);
+		//List<List<Currency>> listOfCurrencies = null;
+		//listOfCurrencies.add(bankOfEstoniaCurrencies);
+		//listOfCurrencies.add(bankOfLithuaniaCurrencies);
+		
 		//List<Result> resultsEstonia = 
 		
+		// I should return the ones to display and then separately all of the lists in a list??
+			
 		return bankOfEstoniaCurrencies;
 	}
-	public static FileInputStream getFileForX (ServletContext context, String downloadURL, String fileName){
+	public static FileInputStream getFisForX (ServletContext context, String downloadURL, String fileName){
 		log.debug("[getFileForX]");
 		try {
 			FileInputStream fis;
@@ -132,16 +149,23 @@ public class Readxml {
 		} 
 		return null;
 	}
-	public static List<Currency> fisToCurrencies(FileInputStream fis){
-		log.debug("[fisToCurrencies]");
-		try {
-			List<Currency> returnCurrencies = new ArrayList<Currency>();
-
+	public static Document fisToDocument(FileInputStream fis){
+		try{
 			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 			DocumentBuilder db = dbf.newDocumentBuilder();
 			Document doc = db.parse(fis);
 			doc.getDocumentElement().normalize();
-
+			return doc;
+		}catch(Exception e){
+			log.error("[fisToDocument] failed!", e);
+		}
+		return null;
+	}
+	public static List<Currency> fisToCurrencies(FileInputStream fis){
+		log.debug("[fisToCurrencies]");
+		try {
+			List<Currency> returnCurrencies = new ArrayList<Currency>();
+			Document doc = fisToDocument(fis);
 			log.debug("Root element: " + doc.getDocumentElement().getNodeName());
 
 			// FOLLOWING IS SPECIFIC TO CERTAIN XML:
@@ -150,13 +174,17 @@ public class Readxml {
 
 			log.debug("----------------------------");
 			log.debug("nList length: " + nList.getLength());
-			String dateString = doc.getElementsByTagName("Date").item(0).getTextContent(); //.getTextContent(); //07.03.16        "January 2, 2010";
-			log.debug("dateString: " + dateString);
-			SimpleDateFormat format = new SimpleDateFormat("dd.MM.yy"); // new SimpleDateFormat("MMMM d, yyyy", Locale.ENGLISH); // DateFormat
-			// java.text.ParseException: Unparseable date: ""
-			Date date = format.parse(dateString);
-			log.debug("DATE IS: " + date);
-
+			Date date = null;
+			if(doc.getElementsByTagName("Date").item(0) != null){
+				String dateString = doc.getElementsByTagName("Date").item(0).getTextContent(); //.getTextContent(); //07.03.16        "January 2, 2010";
+				log.debug("dateString: " + dateString);
+				SimpleDateFormat format = new SimpleDateFormat("dd.MM.yy"); // new SimpleDateFormat("MMMM d, yyyy", Locale.ENGLISH); // DateFormat
+				// java.text.ParseException: Unparseable date: ""
+				date = format.parse(dateString);
+				log.debug("DATE IS: " + date);
+			}else{
+				log.debug("NO DATE STRING IN XML");
+			}
 			// CURRENCY ELEMENTS:
 			for (int temp = 0; temp < nList.getLength(); temp++) {
 				Node nNode = nList.item(temp);
