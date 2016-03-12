@@ -79,33 +79,24 @@ public class Readxml {
 		// GET CORRECT THING
 		
 		// SELECTED DATE FROM STRING TO DATE
-		SimpleDateFormat format = new SimpleDateFormat("dd.MM.yy");
-		Date date = null;
-		try {
-			date = format.parse(selectedDate);
-		} catch (java.text.ParseException e) {
-			e.printStackTrace();
-		}
-		log.debug("[calculateResults] DATE IS: " + date);
-		SimpleDateFormat format2 = new SimpleDateFormat("dd-MM-yy");
-		String dateInUrl = format2.format(date);
-		log.debug("[calculateResults] dateInUrl: " + dateInUrl);
 		
+		String dateInUrl = datepickerToUrlFormat(selectedDate);
 		
 		log.debug("[calculateResults] GETTING INPUT CURRENCY RATE FOR: " + inputCurrency);
-		String bankOfEstonia = "http://statistika.eestipank.ee/Reports?type=curd&format=xml&date1=2010-12-30&lng=est&print=off";
+		String bankOfEstonia = "http://statistika.eestipank.ee/Reports?type=curd&format=xml&date1="+dateInUrl+"&lng=est&print=off"; //String bankOfEstonia = "http://statistika.eestipank.ee/Reports?type=curd&format=xml&date1=2010-12-30&lng=est&print=off";
+		
 //		FileInputStream fisEST = getFisForX(context, bankOfEstonia,"bankOfEstonia-2010-12-30.xml");
 //		String fisESTinputRate = fisToRateEST(fisEST,inputCurrency);
 		//String fisEstoniaOutputRate = fisToRate(fisEstonia,outputCurreny); // java.io.IOException: Stream Closed
 		
-		String bankofEST = "bankOfEstonia-2010-12-30.xml";
+		String bankofEST = "bankOfEstonia-"+dateInUrl+".xml";//String bankofEST = "bankOfEstonia-2010-12-30.xml";
 		String fisESTinputRate = fisToRateEST(getFisForX(context, bankOfEstonia,bankofEST),inputCurrency);
 		String fisESToutputRate = fisToRateEST(getFisForX(context, bankOfEstonia,bankofEST),outputCurreny);
 		
 		log.debug("[calculateResults] going to parse fisEstoniaInputRate: " + fisESTinputRate + " and outputrate: " + fisESToutputRate);
 		
 		//FileInputStream fisLT = getFisForX(context, bankOfEstonia,"bankOfEstonia-2010-12-30.xml");
-		String bankOfLT = "bankOfLithuania-2010-12-30.xml";
+		String bankOfLT = "bankOfLithuania-"+dateInUrl+".xml"; //String bankOfLT = "bankOfLithuania-2010-12-30.xml";
 		Float fisLTinputRate = fisToRateLT(getFisForX(context, bankOfEstonia,bankOfLT),inputCurrency);
 		Float fisLToutputRate = fisToRateLT(getFisForX(context, bankOfEstonia,bankOfLT),outputCurreny);
 		
@@ -139,28 +130,43 @@ public class Readxml {
 	}
 	// 1. get currency from different banks
 	// 2. get rate
-	public static float getCurrenyRate(Currency c){
-		
-		return 0;
+//	public static float getCurrenyRate(Currency c){
+//		
+//		return 0;
+//	}
+	public static String datepickerToUrlFormat(String selectedDate){
+		SimpleDateFormat format = new SimpleDateFormat("dd.MM.yy");
+		Date date = null;
+		try {
+			date = format.parse(selectedDate);
+		} catch (java.text.ParseException e) {
+			e.printStackTrace();
+		}
+		log.debug("[datepickerToUrlFormat] DATE IS: " + date);
+		SimpleDateFormat format2 = new SimpleDateFormat("yyyy-MM-dd"); //("dd-MM-yy");
+		String dateInUrl = format2.format(date);
+		log.debug("[datepickerToUrlFormat] RESULT dateInUrl: " + dateInUrl);
+		return dateInUrl;
 	}
-	
 	// ATM USING ONLY FOR DOWNLOAD + DISPLAY:
-	public static List<Currency> downloadAllForDate(ServletContext context){//, Date date){
-		log.debug("[downloadAllForDate]");
+	public static List<Currency> downloadAllForDate(ServletContext context, String selectedDate){ //, Date date){
+		//log.debug("[downloadAllForDate]");
+		log.debug("[downloadAllForDate] selectedDate " + selectedDate);
 		
-		String day = "30";
-		String month = "12";
-		String year = "2010";
+//		String day = "30";
+//		String month = "12";
+//		String year = "2010";
+//		String timeString = year+"-"+month+"-"+day;
+		
+		String dateInUrl = datepickerToUrlFormat(selectedDate);
 
-		String timeString = year+"-"+month+"-"+day;
-
-		String bankOfEstonia = "http://statistika.eestipank.ee/Reports?type=curd&format=xml&date1="+timeString+"&lng=est&print=off"; //"http://statistika.eestipank.ee/Reports?type=curd&format=xml&date1=2010-12-30&lng=est&print=off";
-		String bankOfLithuania = "http://webservices.lb.lt/ExchangeRates/ExchangeRates.asmx/getExchangeRatesByDate?Date="+timeString; //"http://webservices.lb.lt/ExchangeRates/ExchangeRates.asmx/getExchangeRatesByDate?Date=2010-12-30";
+		String bankOfEstonia = "http://statistika.eestipank.ee/Reports?type=curd&format=xml&date1="+dateInUrl+"&lng=est&print=off"; //"http://statistika.eestipank.ee/Reports?type=curd&format=xml&date1=2010-12-30&lng=est&print=off";
+		String bankOfLithuania = "http://webservices.lb.lt/ExchangeRates/ExchangeRates.asmx/getExchangeRatesByDate?Date="+dateInUrl; //"http://webservices.lb.lt/ExchangeRates/ExchangeRates.asmx/getExchangeRatesByDate?Date=2010-12-30";
 
 		// DOWNLOAD FOR X      URL(with date) and file name (eg eesti-2010-12-30)
-		FileInputStream fisEstonia = getFisForX(context, bankOfEstonia,"bankOfEstonia-"+timeString+".xml");
+		FileInputStream fisEstonia = getFisForX(context, bankOfEstonia,"bankOfEstonia-"+dateInUrl+".xml");
 		//fisEstonia = getFisForX(context, bankOfEstonia,"bankOfEstonia-"+timeString+".xml");
-		FileInputStream fisLithuania = getFisForX(context, bankOfLithuania,"bankOfLithuania-"+timeString+".xml");
+		FileInputStream fisLithuania = getFisForX(context, bankOfLithuania,"bankOfLithuania-"+dateInUrl+".xml");
 		
 		List<Currency> bankOfEstoniaCurrencies = fisToCurrencies(fisEstonia);
 		List<Currency> bankOfLithuaniaCurrencies = fisToCurrencies(fisLithuania);

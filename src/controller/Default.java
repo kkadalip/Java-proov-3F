@@ -38,7 +38,10 @@ public class Default extends HttpServlet {
 		
 		// kontrolli, kas on olemas sessioonis või mitte
 		
-		List<Currency> displayedCurrencies = Readxml.downloadAllForDate(getServletContext());
+		// AT FIRST DOWNLOAD FOR DEFAULT DATE?
+		//String selectedDate = request.getParameter("selectedDate");
+		//log.debug("[doGet] selectedDate: " + selectedDate);
+		List<Currency> displayedCurrencies = Readxml.downloadAllForDate(getServletContext(), "30.12.2010");
 		request.setAttribute("displayedCurrencies", displayedCurrencies);
 		
 		
