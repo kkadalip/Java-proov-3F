@@ -84,6 +84,8 @@ input[type="text"] {
 	box-shadow: none;
 }
 .hoverShadow:focus {
+	
+	background-color: yellow;
 	border: solid 1px rgb(112,112,112); /*#707070*/
 	box-shadow: 0 2px 6px 1px rgb(150,150,150);
   	/* BEFORE box-shadow: 0 0 5px 1px rgb(150,150,150); */ /*#969696*/

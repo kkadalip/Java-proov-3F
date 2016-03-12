@@ -33,6 +33,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -52,21 +53,6 @@ public class Readxml {
 	static Logger log = LoggerFactory.getLogger(Readxml.class); // info trace debug warn error
 
 	//static FileInputStream fisEstonia;
-	
-	public static void main(String argv[]) {
-		//doStuff();
-
-		//		List<Currency> swagCurrencies = getCurrencies();
-		//		System.out.println("swagcurrencies size: " + swagCurrencies.size());
-		//		for(Currency c : swagCurrencies){
-		//			if(c != null){
-		//				System.out.		println("CURRENCY: " + c.toString());
-		//			}else{
-		//				System.out.println("c IS NULL!!");
-		//			}
-		//			
-		//		}
-	}
 
 	// 0) Download all XMLs (DATE!!, don't let user select newer dates!)
 	// 1) Get all possible currencies from XMLs
@@ -94,10 +80,36 @@ public class Readxml {
 		log.debug("[calculateResults] GETTING INPUT CURRENCY RATE FOR: " + inputCurrency);
 		String bankOfEstonia = "http://statistika.eestipank.ee/Reports?type=curd&format=xml&date1=2010-12-30&lng=est&print=off";
 		FileInputStream fisEstonia = getFisForX(context, bankOfEstonia,"bankOfEstonia-2010-12-30.xml");
-		String fisEstoniaRate = fisToRate(fisEstonia,inputCurrency);
+		String fisEstoniaInputRate = fisToRate(fisEstonia,inputCurrency);
+		//String fisEstoniaOutputRate = fisToRate(fisEstonia,outputCurreny); // java.io.IOException: Stream Closed
+		String fisEstoniaOutputRate = fisToRate(getFisForX(context, bankOfEstonia,"bankOfEstonia-2010-12-30.xml"),outputCurreny);
+		
+		log.debug("[calculateResults] going to parse fisEstoniaInputRate: " + fisEstoniaInputRate + " and outputrate: " + fisEstoniaOutputRate);
+		
+
+		DecimalFormat df = new DecimalFormat(); // new DecimalFormat("#.#");
+		DecimalFormatSymbols symbols = new DecimalFormatSymbols();
+		symbols.setDecimalSeparator(',');
+		//symbols.setGroupingSeparator(' ');
+		df.setDecimalFormatSymbols(symbols);
+		//df.parse(p);
+		//float f = df.parse(str).floatValue();
+		
+		Float inputCurrencyFloat = null;
+		Float outputCurrencyFloat = null;
+		try {
+			inputCurrencyFloat = df.parse(fisEstoniaInputRate).floatValue(); // Float.parseFloat(fisEstoniaInputRate);
+			outputCurrencyFloat = df.parse(fisEstoniaOutputRate).floatValue(); // Float.parseFloat(fisEstoniaOutputRate);
+		} catch (java.text.ParseException e) {
+			e.printStackTrace();
+		}
+		Float outputAmountEstonia = inputCurrencyFloat / outputCurrencyFloat * inputMoneyAmount;
+
+		List<Result> resultsList = new ArrayList<Result>();
+		resultsList.add(new Result("Bank of Estonia", outputAmountEstonia.toString()));
 		
 		// FAILINIMEDEST LIST (model Bank nt), SIIN KÄIN NAD LÄBI JA PÄRIN VÄLJA ÕIGE ASJA + ARVUTAN?
-		return null;
+		return resultsList;
 	}
 	// 1. get currency from different banks
 	// 2. get rate
@@ -179,10 +191,11 @@ public class Readxml {
 		return null;
 	}
 	public static String fisToRate(FileInputStream fis, String inputCurrency){
+		String resultRate = null;
 		try {
 			log.debug("[fisToRate]");
 			//Float returnValue;
-			String resultRate;
+			
 			Document doc = fisToDocument(fis);
 			XPath xPath =  XPathFactory.newInstance().newXPath();
 			
@@ -196,7 +209,6 @@ public class Readxml {
 			}else{
 				log.debug("[fistoRate] NO RATE?");
 			}
-			
 			
 			// Estonia
 			// node Currency attribute rate
@@ -245,7 +257,7 @@ public class Readxml {
 		} catch (Exception e) {
 			log.error("[fisToCurrencies] failed!", e);
 		}
-		return null;
+		return resultRate;
 	}
 	public static List<Currency> fisToCurrencies(FileInputStream fis){
 		log.debug("[fisToCurrencies]");
@@ -326,8 +338,22 @@ public class Readxml {
 
 
 
+/*
+public static void main(String argv[]) {
+	//doStuff();
 
-
+	//		List<Currency> swagCurrencies = getCurrencies();
+	//		System.out.println("swagcurrencies size: " + swagCurrencies.size());
+	//		for(Currency c : swagCurrencies){
+	//			if(c != null){
+	//				System.out.		println("CURRENCY: " + c.toString());
+	//			}else{
+	//				System.out.println("c IS NULL!!");
+	//			}
+	//			
+	//		}
+}
+*/
 
 /*
  * private static void doStuff(){

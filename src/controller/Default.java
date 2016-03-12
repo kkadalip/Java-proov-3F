@@ -131,14 +131,12 @@ public class Default extends HttpServlet {
 		//Float outputCurrencyFloat = Float.parseFloat(outputCurrency);
 		
 		List<Result> results = Readxml.calculateResults(getServletContext(), inputMoneyAmountFloat, inputCurrency, outputCurrency); //, date);
-
-//		
-//		
-//		String json = new Gson().toJson(results);
-//		log.debug("JSON IS: " + json);
-//	    response.setContentType("application/json");
-//	    response.setCharacterEncoding("UTF-8");
-//	    response.getWriter().write(json);
+		
+		String json = new Gson().toJson(results);
+		log.debug("JSON IS: " + json);
+	    response.setContentType("application/json");
+	    response.setCharacterEncoding("UTF-8");
+	    response.getWriter().write(json);
 
 	    //request.setAttribute("whatevers", results);
 	    //request.getRequestDispatcher("/WEB-INF/xml/whatevers.jsp").forward(request, response);
