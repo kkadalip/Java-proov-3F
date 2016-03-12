@@ -147,8 +147,13 @@
 	
 
 	$(function() {
-		$("#datepicker").datepicker();
-		$("#datepicker").datepicker("option", "dateFormat", "dd.mm.yy" );
+		$("#datepicker").datepicker({ dateFormat: "dd.mm.yy", maxDate: new Date(2010, 11, 30) });
+		
+		//$("#datepicker").datepicker();
+		//$("#datepicker").datepicker("option", "dateFormat", "dd.mm.yy");
+		
+		//$( "#datepicker" ).datepicker({ minDate: -20, maxDate: "+1M +10D" });
+		
 		//var date = $('#datepicker').datepicker({ dateFormat: 'dd-mm-yy' }).val();
 	});
 </script>

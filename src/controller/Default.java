@@ -31,6 +31,16 @@ public class Default extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		log.info("[doGet] START");
 		//HttpSession httpSession = request.getSession(true);
+		//String userName = (String)
+		
+		//Date sessionDate = (Date) request.getAttribute("selectedDate"); //setAttribute("SESSIONuserName", userName);
+		//Date date = new Date();
+		
+		// kontrolli, kas on olemas sessioonis või mitte
+		
+		List<Currency> displayedCurrencies = Readxml.downloadAllForDate(getServletContext());
+		request.setAttribute("displayedCurrencies", displayedCurrencies);
+		
 		
 		// sessiooni võiks sellegipoolest salvestada (refresh page jmt jaoks)
 		
@@ -38,8 +48,6 @@ public class Default extends HttpServlet {
 		//URL resourceUrl = context.getResource("/WEB-INF/test/foo.txt");
 		
 		//List<Currency> displayedCurrencies = Readxml.getCurrencies(getServletContext()); // TODO add date, get by date, default will be current day (atm the latest possible, later dates need to be disabled!)
-		List<Currency> displayedCurrencies = Readxml.downloadAllForDate(getServletContext());
-		request.setAttribute("displayedCurrencies", displayedCurrencies);
 		
 		// kontrolli, kas on sessiooni var-is olemas, kui ei, siis lisa, tglt ajaxiga javascripti abil teha??
 		//@SuppressWarnings("unchecked")
@@ -59,7 +67,8 @@ public class Default extends HttpServlet {
 	// NOT USING:
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		log.info("[doPost] START");
-		HttpSession httpSession = request.getSession(true);
+		//HttpSession httpSession = request.getSession(true);
+		
 		/*
 		String inputMoneyAmount = request.getParameter("inputMoneyAmount");
 		log.debug("inputMoneyAmount: " + inputMoneyAmount);
