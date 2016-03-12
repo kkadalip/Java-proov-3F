@@ -81,24 +81,25 @@ public class Readxml {
 		// SELECTED DATE FROM STRING TO DATE
 		
 		String dateInUrl = datepickerToUrlFormat(selectedDate);
-		
-		log.debug("[calculateResults] GETTING INPUT CURRENCY RATE FOR: " + inputCurrency);
-		String bankOfEstonia = "http://statistika.eestipank.ee/Reports?type=curd&format=xml&date1="+dateInUrl+"&lng=est&print=off"; //String bankOfEstonia = "http://statistika.eestipank.ee/Reports?type=curd&format=xml&date1=2010-12-30&lng=est&print=off";
-		
+
 //		FileInputStream fisEST = getFisForX(context, bankOfEstonia,"bankOfEstonia-2010-12-30.xml");
 //		String fisESTinputRate = fisToRateEST(fisEST,inputCurrency);
 		//String fisEstoniaOutputRate = fisToRate(fisEstonia,outputCurreny); // java.io.IOException: Stream Closed
 		
-		String bankofEST = "bankOfEstonia-"+dateInUrl+".xml";//String bankofEST = "bankOfEstonia-2010-12-30.xml";
-		String fisESTinputRate = fisToRateEST(getFisForX(context, bankOfEstonia,bankofEST),inputCurrency);
-		String fisESToutputRate = fisToRateEST(getFisForX(context, bankOfEstonia,bankofEST),outputCurreny);
+		
+		log.debug("[calculateResults] GETTING INPUT CURRENCY RATE FOR: " + inputCurrency);
+		String bankOfESTurl = "http://statistika.eestipank.ee/Reports?type=curd&format=xml&date1="+dateInUrl+"&lng=est&print=off"; //String bankOfEstonia = "http://statistika.eestipank.ee/Reports?type=curd&format=xml&date1=2010-12-30&lng=est&print=off";		
+		String bankofESTfileName = "bankOfEstonia-"+dateInUrl+".xml";//String bankofEST = "bankOfEstonia-2010-12-30.xml";
+		String fisESTinputRate = fisToRateEST(getFisForX(context, bankOfESTurl,bankofESTfileName),inputCurrency);
+		String fisESToutputRate = fisToRateEST(getFisForX(context, bankOfESTurl,bankofESTfileName),outputCurreny);
 		
 		log.debug("[calculateResults] going to parse fisEstoniaInputRate: " + fisESTinputRate + " and outputrate: " + fisESToutputRate);
 		
 		//FileInputStream fisLT = getFisForX(context, bankOfEstonia,"bankOfEstonia-2010-12-30.xml");
-		String bankOfLT = "bankOfLithuania-"+dateInUrl+".xml"; //String bankOfLT = "bankOfLithuania-2010-12-30.xml";
-		Float fisLTinputRate = fisToRateLT(getFisForX(context, bankOfEstonia,bankOfLT),inputCurrency);
-		Float fisLToutputRate = fisToRateLT(getFisForX(context, bankOfEstonia,bankOfLT),outputCurreny);
+		String bankOfLTurl = "http://webservices.lb.lt/ExchangeRates/ExchangeRates.asmx/getExchangeRatesByDate?Date="+dateInUrl;
+		String bankOfLTfileName = "bankOfLithuania-"+dateInUrl+".xml"; //String bankOfLT = "bankOfLithuania-2010-12-30.xml";
+		Float fisLTinputRate = fisToRateLT(getFisForX(context, bankOfLTurl,bankOfLTfileName),inputCurrency);
+		Float fisLToutputRate = fisToRateLT(getFisForX(context, bankOfLTurl,bankOfLTfileName),outputCurreny);
 		
 		DecimalFormat df = new DecimalFormat(); // new DecimalFormat("#.#");
 		DecimalFormatSymbols symbols = new DecimalFormatSymbols();
@@ -234,12 +235,16 @@ public class Readxml {
 			String expression = "//Currency[@name='"+inputCurrency+"']"; //"/currencies/currency";	    // EG Currency name="AED" rate="3,12312321"     
 			//NodeList nodeList = (NodeList) xPath.compile(expression).evaluate(doc, XPathConstants.NODESET);
 			Node node = (Node) xPath.compile(expression).evaluate(doc, XPathConstants.NODE);
-			if (node.getNodeType() == Node.ELEMENT_NODE) {
-				Element eElement = (Element) node;
-				resultRate = eElement.getAttribute("rate");
-				log.debug("[fisToRateEST] I HAVE RATE, RATE IS: " + resultRate);
+			if(node != null){
+				if (node.getNodeType() == Node.ELEMENT_NODE) {
+					Element eElement = (Element) node;
+					resultRate = eElement.getAttribute("rate");
+					log.debug("[fisToRateEST] HAVE NODE! I HAVE RATE, RATE IS: " + resultRate);
+				}else{
+					log.debug("[fisToRateEST] NO RATE?");
+				}
 			}else{
-				log.debug("[fisToRateEST] NO RATE?");
+				log.error("[fisToRateEST] NO NODE!!!");
 			}
 			
 			// Estonia
@@ -310,20 +315,23 @@ public class Readxml {
 			log.debug("[fisToRateLT] expression: " + expression);
 			//NodeList nodeList = (NodeList) xPath.compile(expression).evaluate(doc, XPathConstants.NODESET);
 			Node node = (Node) xPath.compile(expression).evaluate(doc, XPathConstants.NODE);
-			String currencyRate = node.getTextContent(); // node.getNodeValue();
-			Float currencyRateFloat = Float.parseFloat(currencyRate);
-			log.debug("[fisToRateLT] currencyRateFloat is: " + currencyRateFloat);
-			
-			// For Quantity, result rate is rate / quantity for LT!!!
-			String expressionQuantity = "//item[currency='"+inputCurrency+"']/quantity[.]";
-			Node nodeQuantity = (Node) xPath.compile(expressionQuantity).evaluate(doc, XPathConstants.NODE);
-			String quantity = nodeQuantity.getTextContent();
-			Float quantityFloat = Float.parseFloat(quantity);
-			log.debug("[fisToRateLT] quantityFloat is: " + quantityFloat);
-			
-			resultRate = currencyRateFloat / quantityFloat;
-			log.debug("[fisToRateLT] rate is: " + resultRate);
-			
+			if(node != null){
+				String currencyRate = node.getTextContent(); // node.getNodeValue();
+				Float currencyRateFloat = Float.parseFloat(currencyRate);
+				log.debug("[fisToRateLT] HAVE NODE AND currencyRateFloat is: " + currencyRateFloat);
+				// For Quantity, result rate is rate / quantity for LT!!!
+				String expressionQuantity = "//item[currency='"+inputCurrency+"']/quantity[.]";
+				Node nodeQuantity = (Node) xPath.compile(expressionQuantity).evaluate(doc, XPathConstants.NODE);
+				String quantity = nodeQuantity.getTextContent();
+				Float quantityFloat = Float.parseFloat(quantity);
+				log.debug("[fisToRateLT] quantityFloat is: " + quantityFloat);
+				
+				resultRate = currencyRateFloat / quantityFloat;
+				log.debug("[fisToRateLT] rate is: " + resultRate);
+			}else{
+				log.error("[fisToRateLT] I DO NOT HAVE NODE!!!!!!!!!!");
+				return null;
+			}
 			
 //			if (node.getNodeType() == Node.ELEMENT_NODE) {
 //				Element eElement = (Element) node;
