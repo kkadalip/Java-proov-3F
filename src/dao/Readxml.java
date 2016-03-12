@@ -79,14 +79,19 @@ public class Readxml {
 		
 		log.debug("[calculateResults] GETTING INPUT CURRENCY RATE FOR: " + inputCurrency);
 		String bankOfEstonia = "http://statistika.eestipank.ee/Reports?type=curd&format=xml&date1=2010-12-30&lng=est&print=off";
-		FileInputStream fisEstonia = getFisForX(context, bankOfEstonia,"bankOfEstonia-2010-12-30.xml");
-		String fisEstoniaInputRate = fisToRate(fisEstonia,inputCurrency);
+		FileInputStream fisEST = getFisForX(context, bankOfEstonia,"bankOfEstonia-2010-12-30.xml");
+		String fisESTinputRate = fisToRateEST(fisEST,inputCurrency);
 		//String fisEstoniaOutputRate = fisToRate(fisEstonia,outputCurreny); // java.io.IOException: Stream Closed
-		String fisEstoniaOutputRate = fisToRate(getFisForX(context, bankOfEstonia,"bankOfEstonia-2010-12-30.xml"),outputCurreny);
+		String fisESToutputRate = fisToRateEST(getFisForX(context, bankOfEstonia,"bankOfEstonia-2010-12-30.xml"),outputCurreny);
 		
-		log.debug("[calculateResults] going to parse fisEstoniaInputRate: " + fisEstoniaInputRate + " and outputrate: " + fisEstoniaOutputRate);
+		log.debug("[calculateResults] going to parse fisEstoniaInputRate: " + fisESTinputRate + " and outputrate: " + fisESToutputRate);
 		
-
+		FileInputStream fisLT = getFisForX(context, bankOfEstonia,"bankOfEstonia-2010-12-30.xml");
+//		String fisLTinputRate = fisToRateLT(getFisForX(context, bankOfEstonia,"bankOfLithuania-2010-12-30.xml"),inputCurrency);
+//		String fisLToutputRate = fisToRateLT(getFisForX(context, bankOfEstonia,"bankOfLithuania-2010-12-30.xml"),outputCurreny);
+		Float fisLTinputRate = fisToRateLT(getFisForX(context, bankOfEstonia,"bankOfLithuania-2010-12-30.xml"),inputCurrency);
+		Float fisLToutputRate = fisToRateLT(getFisForX(context, bankOfEstonia,"bankOfLithuania-2010-12-30.xml"),outputCurreny);
+		
 		DecimalFormat df = new DecimalFormat(); // new DecimalFormat("#.#");
 		DecimalFormatSymbols symbols = new DecimalFormatSymbols();
 		symbols.setDecimalSeparator(',');
@@ -95,19 +100,23 @@ public class Readxml {
 		//df.parse(p);
 		//float f = df.parse(str).floatValue();
 		
-		Float inputCurrencyFloat = null;
-		Float outputCurrencyFloat = null;
+		List<Result> resultsList = new ArrayList<Result>();
 		try {
-			inputCurrencyFloat = df.parse(fisEstoniaInputRate).floatValue(); // Float.parseFloat(fisEstoniaInputRate);
-			outputCurrencyFloat = df.parse(fisEstoniaOutputRate).floatValue(); // Float.parseFloat(fisEstoniaOutputRate);
+			Float inputCurrencyFloatEST = df.parse(fisESTinputRate).floatValue(); // Float.parseFloat(fisEstoniaInputRate);
+			Float outputCurrencyFloatEST = df.parse(fisESToutputRate).floatValue(); // Float.parseFloat(fisEstoniaOutputRate);
+			
+//			Float inputCurrencyFloatLT = df.parse(fisLTinputRate).floatValue();
+//			Float outputCurrencyFloatLT = df.parse(fisLToutputRate).floatValue();
+			
+			Float outputAmountEstonia = inputCurrencyFloatEST / outputCurrencyFloatEST * inputMoneyAmount;
+			Float outputAmountLithuania = fisLTinputRate / fisLToutputRate * inputMoneyAmount;
+			
+			resultsList.add(new Result("Bank of Estonia", outputAmountEstonia.toString()));
+			resultsList.add(new Result("Bank of Lithuania", outputAmountLithuania.toString()));
 		} catch (java.text.ParseException e) {
 			e.printStackTrace();
 		}
-		Float outputAmountEstonia = inputCurrencyFloat / outputCurrencyFloat * inputMoneyAmount;
 
-		List<Result> resultsList = new ArrayList<Result>();
-		resultsList.add(new Result("Bank of Estonia", outputAmountEstonia.toString()));
-		
 		// FAILINIMEDEST LIST (model Bank nt), SIIN KÄIN NAD LÄBI JA PÄRIN VÄLJA ÕIGE ASJA + ARVUTAN?
 		return resultsList;
 	}
@@ -190,10 +199,10 @@ public class Readxml {
 		}
 		return null;
 	}
-	public static String fisToRate(FileInputStream fis, String inputCurrency){
+	public static String fisToRateEST(FileInputStream fis, String inputCurrency){
 		String resultRate = null;
 		try {
-			log.debug("[fisToRate]");
+			log.debug("[fisToRateEST]");
 			//Float returnValue;
 			
 			Document doc = fisToDocument(fis);
@@ -205,9 +214,9 @@ public class Readxml {
 			if (node.getNodeType() == Node.ELEMENT_NODE) {
 				Element eElement = (Element) node;
 				resultRate = eElement.getAttribute("rate");
-				log.debug("[fistoRate] I HAVE RATE, RATE IS: " + resultRate);
+				log.debug("[fisToRateEST] I HAVE RATE, RATE IS: " + resultRate);
 			}else{
-				log.debug("[fistoRate] NO RATE?");
+				log.debug("[fisToRateEST] NO RATE?");
 			}
 			
 			// Estonia
@@ -255,7 +264,53 @@ public class Readxml {
 //			}
 //			//return 0;
 		} catch (Exception e) {
-			log.error("[fisToCurrencies] failed!", e);
+			log.error("[fisToRateEST] failed!", e);
+		}
+		return resultRate;
+	}
+	public static Float fisToRateLT(FileInputStream fis, String inputCurrency){
+		//String currencyRate = null;
+		Float resultRate = null;
+		try {
+			log.debug("[fisToRateLT]");
+			//Float returnValue;
+			
+			// Estonia
+			// node Currency attribute rate
+			// Lithuania
+			// node item, in which node currency and node rate
+			Document doc = fisToDocument(fis);
+			XPath xPath =  XPathFactory.newInstance().newXPath();
+			
+			//String expression = "//item/currency[.='"+inputCurrency+"']"+"/../rate[.]"; //"/currencies/currency";	    // EG Currency name="AED" rate="3,12312321"     
+			String expression = "//item[currency='"+inputCurrency+"']/rate[.]";
+			log.debug("[fisToRateLT] expression: " + expression);
+			//NodeList nodeList = (NodeList) xPath.compile(expression).evaluate(doc, XPathConstants.NODESET);
+			Node node = (Node) xPath.compile(expression).evaluate(doc, XPathConstants.NODE);
+			String currencyRate = node.getTextContent(); // node.getNodeValue();
+			Float currencyRateFloat = Float.parseFloat(currencyRate);
+			log.debug("[fisToRateLT] currencyRateFloat is: " + currencyRateFloat);
+			
+			// For Quantity, result rate is rate / quantity for LT!!!
+			String expressionQuantity = "//item[currency='"+inputCurrency+"']/quantity[.]";
+			Node nodeQuantity = (Node) xPath.compile(expressionQuantity).evaluate(doc, XPathConstants.NODE);
+			String quantity = nodeQuantity.getTextContent();
+			Float quantityFloat = Float.parseFloat(quantity);
+			log.debug("[fisToRateLT] quantityFloat is: " + quantityFloat);
+			
+			resultRate = currencyRateFloat / quantityFloat;
+			log.debug("[fisToRateLT] rate is: " + resultRate);
+			
+			
+//			if (node.getNodeType() == Node.ELEMENT_NODE) {
+//				Element eElement = (Element) node;
+//				resultRate = eElement.getAttribute("rate");
+//				log.debug("[fisToRateLT] I HAVE RATE, RATE IS: " + resultRate);
+//			}else{
+//				log.debug("[fisToRateLT] NO RATE?");
+//			}
+		} catch (Exception e) {
+			log.error("[fisToRateLT] failed!", e);
 		}
 		return resultRate;
 	}
