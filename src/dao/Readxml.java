@@ -87,6 +87,9 @@ public class Readxml {
 			e.printStackTrace();
 		}
 		log.debug("[calculateResults] DATE IS: " + date);
+		SimpleDateFormat format2 = new SimpleDateFormat("dd-MM-yy");
+		String dateInUrl = format2.format(date);
+		log.debug("[calculateResults] dateInUrl: " + dateInUrl);
 		
 		
 		log.debug("[calculateResults] GETTING INPUT CURRENCY RATE FOR: " + inputCurrency);
