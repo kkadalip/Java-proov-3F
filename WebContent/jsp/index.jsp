@@ -193,17 +193,25 @@
 				<table style="table-layour: fixed; width: 100%">
 					<tbody>
 						<tr>
-							<td>
-								Select date:
+							<td class="tdInfo">
+								Date:
 							</td>
 							<td>
 								<input class="hoverShadow dataEntry" type="text" id="datepicker" name="selectedDate">
 							</td>
 						</tr>
-					
 						<tr>
-							<td><input class="hoverShadow dataEntry" type="text" placeholder=""
-								name="inputMoneyAmount" /></td>
+							<td class="tdInfo">
+								Amount:
+							</td>
+							<td>
+								<input class="hoverShadow dataEntry" type="text" placeholder=""name="inputMoneyAmount" />
+							</td>
+						</tr>
+						<tr>
+							<td class="tdInfo">
+								Input:
+							</td>
 							<!-- <td style="width:3px"></td>  -->
 							<td><select class="hoverShadow dataSelect" name="inputCurrency">
 									<c:forEach items="${requestScope['displayedCurrencies']}"
@@ -218,15 +226,18 @@
 							</select></td>
 						</tr>
 						<tr>
-							<td><input class="hoverShadow dataEntry" type="text" placeholder=""
-								name="outputResult" id="outResult" /></td>
+							<!-- <td> <input class="hoverShadow dataEntry" type="text" placeholder=""
+								name="outputResult" id="outResult" /> </td> -->
+							<td class="tdInfo">Output:</td>
 							<!-- <td style="width:3px"></td>  -->
 							<td><select class="hoverShadow dataSelect" name="outputCurrency">
 									<!--<option value="empty"></option>-->
 									<c:forEach items="${requestScope['displayedCurrencies']}"
 										var="item">
-										<option id="output_${item._shortName}" value="${item._shortName}">${item._shortName}
-											- ${item._fullName} - ${item._rate} - ${item._date}</option>
+										<option id="input_${item._shortName}" value="${item._shortName}">${item._shortName} - ${item._fullName}</option>
+										<!-- 
+										<option id="output_${item._shortName}" value="${item._shortName}">${item._shortName} - ${item._fullName} - ${item._rate} - ${item._date}</option>
+											 -->
 									</c:forEach>
 							</select></td>
 						</tr>

@@ -33,7 +33,9 @@ input[type="text"] {
 	/*color: rgb(38,38,38) !important;*/
 	display: block;
     text-align: right;
-	/*width: 100%;*/
+	width: 100%;
+	box-sizing:border-box;
+    -moz-box-sizing:border-box;
 	height: 28px;
 	line-height: 28px;
 	padding: 0 8px;
@@ -168,13 +170,18 @@ input[type="text"]:focus {
     
     border-radius: 2px;
 }
-
+#resultsTableContainer td {
+	/*width: 100%;*/
+}
 #resultsTableContainer table {
 
 	/*border-collapse: collapse;*/
 	width: 100%;
-	margin-top: 30px;
-	
+	margin-top: 30px;	
+}
+.tdInfo {
+	text-align: left;
+	padding-right: 10px;
 }
 
 
