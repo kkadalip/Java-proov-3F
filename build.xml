@@ -49,6 +49,7 @@
 	<target name="war" depends="compile">  
 		<war destfile="${war.file}" webxml="${web_content.dir}/WEB-INF/web.xml">
 			<classes dir="${classes.dir}" />
+			<fileset dir="${web_content.dir}" /> <!-- excludes="**/servlet-api-jar-2.5.jar" -->
 			<zipfileset dir="${META-INF.dir}" includes="*" prefix="WEB-INF/classes/META-INF" />
 			<!--<zipfileset dir="${src.dir}" includes="*.sql" prefix="WEB-INF/classes" />-->
 			<zipfileset dir="${src.dir}" includes="*.properties" prefix="WEB-INF/classes" />

@@ -3,7 +3,7 @@
 	xmlns="http://xmlns.jcp.org/xml/ns/javaee"
 	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
 	id="WebApp_ID" version="3.1">
-	<display-name>Java-proov-2H</display-name>
+	<display-name>Java proov 3 Finestmedia</display-name>
 	<servlet>
 		<display-name>Default</display-name>
 		<servlet-name>Default</servlet-name>

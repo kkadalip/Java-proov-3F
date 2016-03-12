@@ -79,18 +79,20 @@ public class Readxml {
 		
 		log.debug("[calculateResults] GETTING INPUT CURRENCY RATE FOR: " + inputCurrency);
 		String bankOfEstonia = "http://statistika.eestipank.ee/Reports?type=curd&format=xml&date1=2010-12-30&lng=est&print=off";
-		FileInputStream fisEST = getFisForX(context, bankOfEstonia,"bankOfEstonia-2010-12-30.xml");
-		String fisESTinputRate = fisToRateEST(fisEST,inputCurrency);
+//		FileInputStream fisEST = getFisForX(context, bankOfEstonia,"bankOfEstonia-2010-12-30.xml");
+//		String fisESTinputRate = fisToRateEST(fisEST,inputCurrency);
 		//String fisEstoniaOutputRate = fisToRate(fisEstonia,outputCurreny); // java.io.IOException: Stream Closed
-		String fisESToutputRate = fisToRateEST(getFisForX(context, bankOfEstonia,"bankOfEstonia-2010-12-30.xml"),outputCurreny);
+		
+		String bankofEST = "bankOfEstonia-2010-12-30.xml";
+		String fisESTinputRate = fisToRateEST(getFisForX(context, bankOfEstonia,bankofEST),inputCurrency);
+		String fisESToutputRate = fisToRateEST(getFisForX(context, bankOfEstonia,bankofEST),outputCurreny);
 		
 		log.debug("[calculateResults] going to parse fisEstoniaInputRate: " + fisESTinputRate + " and outputrate: " + fisESToutputRate);
 		
-		FileInputStream fisLT = getFisForX(context, bankOfEstonia,"bankOfEstonia-2010-12-30.xml");
-//		String fisLTinputRate = fisToRateLT(getFisForX(context, bankOfEstonia,"bankOfLithuania-2010-12-30.xml"),inputCurrency);
-//		String fisLToutputRate = fisToRateLT(getFisForX(context, bankOfEstonia,"bankOfLithuania-2010-12-30.xml"),outputCurreny);
-		Float fisLTinputRate = fisToRateLT(getFisForX(context, bankOfEstonia,"bankOfLithuania-2010-12-30.xml"),inputCurrency);
-		Float fisLToutputRate = fisToRateLT(getFisForX(context, bankOfEstonia,"bankOfLithuania-2010-12-30.xml"),outputCurreny);
+		//FileInputStream fisLT = getFisForX(context, bankOfEstonia,"bankOfEstonia-2010-12-30.xml");
+		String bankOfLT = "bankOfLithuania-2010-12-30.xml";
+		Float fisLTinputRate = fisToRateLT(getFisForX(context, bankOfEstonia,bankOfLT),inputCurrency);
+		Float fisLToutputRate = fisToRateLT(getFisForX(context, bankOfEstonia,bankOfLT),outputCurreny);
 		
 		DecimalFormat df = new DecimalFormat(); // new DecimalFormat("#.#");
 		DecimalFormatSymbols symbols = new DecimalFormatSymbols();
