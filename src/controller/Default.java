@@ -139,7 +139,7 @@ public class Default extends HttpServlet {
 		//Float inputCurrencyFloat = Float.parseFloat(inputCurrency);
 		//Float outputCurrencyFloat = Float.parseFloat(outputCurrency);
 		
-		List<Result> results = Readxml.calculateResults(getServletContext(), inputMoneyAmountFloat, inputCurrency, outputCurrency); //, date);
+		List<Result> results = Readxml.calculateResults(getServletContext(), inputMoneyAmountFloat, inputCurrency, outputCurrency, selectedDate); //, date);
 		
 		String json = new Gson().toJson(results);
 		log.debug("JSON IS: " + json);

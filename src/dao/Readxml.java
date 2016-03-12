@@ -69,13 +69,25 @@ public class Readxml {
 	// 1. vaata kas fail eksisteerib
 	// 2. vaata, kas link eksisteerib
 	
-	public static List<Result> calculateResults(ServletContext context, Float inputMoneyAmount, String inputCurrency, String outputCurreny){ //, String date){
-		// calculate using all the banks and their different currencies
+	public static List<Result> calculateResults(ServletContext context, Float inputMoneyAmount, String inputCurrency, String outputCurreny, String selectedDate){ //, String date){
 		log.debug("[calculateResults]");
+		// calculate using all the banks and their different currencies
+
 		// PÄRI XML FAILIDEST VÄLJA (list neist mällu) ÕIGE ASI AED vmt
 		
 		// GET XML FILE
 		// GET CORRECT THING
+		
+		// SELECTED DATE FROM STRING TO DATE
+		SimpleDateFormat format = new SimpleDateFormat("dd.MM.yy");
+		Date date = null;
+		try {
+			date = format.parse(selectedDate);
+		} catch (java.text.ParseException e) {
+			e.printStackTrace();
+		}
+		log.debug("[calculateResults] DATE IS: " + date);
+		
 		
 		log.debug("[calculateResults] GETTING INPUT CURRENCY RATE FOR: " + inputCurrency);
 		String bankOfEstonia = "http://statistika.eestipank.ee/Reports?type=curd&format=xml&date1=2010-12-30&lng=est&print=off";
@@ -329,6 +341,8 @@ public class Readxml {
 
 			log.debug("----------------------------");
 			log.debug("nList length: " + nList.getLength());
+			
+			/*
 			Date date = null;
 			if(doc.getElementsByTagName("Date").item(0) != null){
 				String dateString = doc.getElementsByTagName("Date").item(0).getTextContent(); //.getTextContent(); //07.03.16        "January 2, 2010";
@@ -340,6 +354,8 @@ public class Readxml {
 			}else{
 				log.debug("NO DATE STRING IN XML");
 			}
+			*/
+			
 			// CURRENCY ELEMENTS:
 			for (int temp = 0; temp < nList.getLength(); temp++) {
 				Node nNode = nList.item(temp);
@@ -369,7 +385,9 @@ public class Readxml {
 					//				System.out.println("DATE IS: " + date);
 
 					log.debug("name: " + eElement.getAttribute("name") + " text: " + eElement.getAttribute("text") + " rate: " + eElement.getAttribute("rate"));
-					Currency addCurrency = new Currency(name, text, rate, date);
+					Currency addCurrency = new Currency(name, text, rate); //, date); // CURRENCY DOESN'T NEED DATE
+					
+					
 					//System.out.println("addcurrency " + addCurrency.toString());
 					returnCurrencies.add(addCurrency);
 					//returnCurrencies.add(new Currency(name, text, rate, date));
