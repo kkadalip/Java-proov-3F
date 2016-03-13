@@ -8,16 +8,14 @@ body {
 	background: rgb(239, 239, 239);
 	color: rgb(0,0,0);
 }
-#floating-box-container{
+.floating-box-container{
     text-align: center;
 }
-#floating-box {
+.floating-box {
     display: inline-block;
     background: rgb(255,255,255);
-    box-shadow: 0px 1px 4px 0px rgba(0,0,0,0.2);
-    padding: 20px 20px 24px 20px;
-    line-height: 1.2;
-    margin: 30px 10px 10px 10px;
+    box-shadow: 0px 1px 4px 0px rgba(0,0,0,0.2); 
+    /*line-height: 1.2;*/
     
     /*width: 150px;
     height: 75px;
@@ -25,6 +23,25 @@ body {
     /*display: flex;
     flex-direction: row-reverse;*/
     /* border: 3px solid #73AD21; */
+    
+    min-width: 400px;
+}
+
+#floating-box-top{
+	/*
+	padding: 5px 10px;
+	margin: 5px 10px;
+	*/
+	margin: 20px 10px 5px 10px;
+	padding: 0 20px;
+    font-size: 22px;
+}
+#floating-box-top p{
+	margin: 10px;
+}
+#floating-box-main{
+	padding: 30px 20px;
+	margin: 5px 10px;
 }
 
 .dataEntry {
