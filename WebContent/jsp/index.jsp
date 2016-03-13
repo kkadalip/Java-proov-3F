@@ -138,6 +138,12 @@
 						//    .append($("<td>").text("Result: " + result._resultValue))
 					});
 					$('#resultsTableContainer').html($table);
+					
+					var $ul = $("<ul>");
+					$.each(responseJson, function(index, item) { // Iterate over the JSON array.
+			            $("<li>").text(item).appendTo($ul);      // Create HTML <li> element, set its text content with currently iterated item and append it to the <ul>.
+			        });
+					$("#errorsTableContainer").html($ul);
 
 					//$.get("Something", function(responseXml) {                // Execute Ajax GET request on URL of "someservlet" and execute the following function with Ajax response XML...
 					//    $("#somediv").html($(responseXml).find("data").html()); // Parse XML, find <data> element and append its HTML to HTML DOM element with ID "somediv".

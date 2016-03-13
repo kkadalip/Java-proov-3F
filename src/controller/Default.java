@@ -89,9 +89,19 @@ public class Default extends HttpServlet {
 			}
 		}else{
 			log.debug("HAVE ERRORS, will display them SoonTM");
+			List<String> list = new ArrayList<String>();
+		    list.add("some error 1");
+		    list.add("some error 2");
+		    list.add("some error 3");
 			for(String error : errors){
 				log.debug("[doPost] Errorslist error: " + error);
+				list.add("err " + error);
 			}
+		    String json = new Gson().toJson(list);
+
+		    response.setContentType("application/json");
+		    response.setCharacterEncoding("UTF-8");
+		    response.getWriter().write(json);
 		}
 		
 	    //request.setAttribute("whatevers", results);
