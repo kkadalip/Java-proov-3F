@@ -60,13 +60,12 @@ public class Default extends HttpServlet {
 		List<String> errors = new ArrayList<String>(); // if no errors... do the calculations etc...
 		
 		String inputMoneyAmount = request.getParameter("inputMoneyAmount");
-		if(inputMoneyAmount == null){
+		if(inputMoneyAmount == null || inputMoneyAmount.isEmpty()){
 			log.error("[doPost] inputMoneyAmount NULL!");
 			errors.add("Input money amount is empty!");
 		}else{
 			log.debug("[doPost] inputMoneyAmount: " + inputMoneyAmount);
 		}
-		
 		
 		String inputCurrency = request.getParameter("inputCurrency");
 		log.debug("[doPost] inputCurrency: " + inputCurrency); // rate
@@ -75,8 +74,7 @@ public class Default extends HttpServlet {
 		String selectedDate = request.getParameter("selectedDate");
 		log.debug("[doPost] selectedDate: " + selectedDate);
 
-		// TODO java.lang.NumberFormatException: empty String
-		if(!errors.isEmpty()){
+		if(errors.isEmpty()){
 			log.debug("NO ERRORS, CONTINUING doPost!");
 			try{
 				Float inputMoneyAmountFloat = Float.parseFloat(inputMoneyAmount);
@@ -91,6 +89,9 @@ public class Default extends HttpServlet {
 			}
 		}else{
 			log.debug("HAVE ERRORS, will display them SoonTM");
+			for(String error : errors){
+				log.debug("[doPost] Errorslist error: " + error);
+			}
 		}
 		
 	    //request.setAttribute("whatevers", results);
