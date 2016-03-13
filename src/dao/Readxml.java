@@ -246,51 +246,6 @@ public class Readxml {
 			}else{
 				log.error("[fisToRateEST] NO NODE!!!");
 			}
-			
-			// Estonia
-			// node Currency attribute rate
-			// Lithuania
-			// node item, in which node currency and node rate
-//			log.debug("Root element: " + doc.getDocumentElement().getNodeName());
-//			// FOLLOWING IS SPECIFIC TO CERTAIN XML:
-//			NodeList nList = doc.getElementsByTagName("Currency"); // row
-//			log.debug(nList.getLength() + " nodes found");
-//			log.debug("----------------------------");
-//			log.debug("nList length: " + nList.getLength());
-//			Date date = null;
-//			if(doc.getElementsByTagName("Date").item(0) != null){
-//				String dateString = doc.getElementsByTagName("Date").item(0).getTextContent(); //.getTextContent(); //07.03.16        "January 2, 2010";
-//				log.debug("dateString: " + dateString);
-//				SimpleDateFormat format = new SimpleDateFormat("dd.MM.yy"); // new SimpleDateFormat("MMMM d, yyyy", Locale.ENGLISH); // DateFormat
-//				// java.text.ParseException: Unparseable date: ""
-//				date = format.parse(dateString);
-//				log.debug("DATE IS: " + date);
-//			}else{
-//				log.debug("NO DATE STRING IN XML");
-//			}
-//			// CURRENCY ELEMENTS:
-//			for (int temp = 0; temp < nList.getLength(); temp++) {
-//				Node nNode = nList.item(temp);
-//				//System.out.println("\nCurrent Element :" + nNode.getNodeName()); // Current Element :Currency
-//				if (nNode.getNodeType() == Node.ELEMENT_NODE) {
-//					Element eElement = (Element) nNode;
-//					String name = eElement.getAttribute("name"); // shortName
-//					String text = eElement.getAttribute("text"); // fullName
-//					Float rate;
-//					NumberFormat nf = new DecimalFormat ("#,#");
-//					try{
-//						rate = nf.parse(eElement.getAttribute("rate")).floatValue();
-//						//rate = Float.parseFloat(eElement.getAttribute("rate"));
-//					}catch(NumberFormatException e){
-//						e.printStackTrace();
-//						rate = null;
-//					}
-//					//				String dateString = eElement.getTextContent(); //07.03.16        "January 2, 2010";
-//					log.debug("name: " + eElement.getAttribute("name") + " text: " + eElement.getAttribute("text") + " rate: " + eElement.getAttribute("rate"));
-//					Currency addCurrency = new Currency(name, text, rate, date);
-//				}
-//			}
-//			//return 0;
 		} catch (Exception e) {
 			log.error("[fisToRateEST] failed!", e);
 		}
@@ -356,24 +311,7 @@ public class Readxml {
 			NodeList nList = doc.getElementsByTagName("Currency"); // row
 			log.debug(nList.getLength() + " nodes found");
 
-			log.debug("----------------------------");
-			log.debug("nList length: " + nList.getLength());
-			
-			/*
-			Date date = null;
-			if(doc.getElementsByTagName("Date").item(0) != null){
-				String dateString = doc.getElementsByTagName("Date").item(0).getTextContent(); //.getTextContent(); //07.03.16        "January 2, 2010";
-				log.debug("dateString: " + dateString);
-				SimpleDateFormat format = new SimpleDateFormat("dd.MM.yy"); // new SimpleDateFormat("MMMM d, yyyy", Locale.ENGLISH); // DateFormat
-				// java.text.ParseException: Unparseable date: ""
-				date = format.parse(dateString);
-				log.debug("DATE IS: " + date);
-			}else{
-				log.debug("NO DATE STRING IN XML");
-			}
-			*/
-			
-			// CURRENCY ELEMENTS:
+			// CURRENCY ELEMENTS: // TODO REPLACE WITH XPATH
 			for (int temp = 0; temp < nList.getLength(); temp++) {
 				Node nNode = nList.item(temp);
 				//System.out.println("\nCurrent Element :" + nNode.getNodeName()); // Current Element :Currency
@@ -392,22 +330,9 @@ public class Readxml {
 						e.printStackTrace();
 						rate = null;
 					}
-
-
-					//				String dateString = eElement.getTextContent(); //07.03.16        "January 2, 2010";
-					//				System.out.println("dateString: " + dateString);
-					//				SimpleDateFormat format = new SimpleDateFormat("dd.MM.yy"); // new SimpleDateFormat("MMMM d, yyyy", Locale.ENGLISH); // DateFormat
-					//				// java.text.ParseException: Unparseable date: ""
-					//				Date date = format.parse(dateString);
-					//				System.out.println("DATE IS: " + date);
-
 					log.debug("name: " + eElement.getAttribute("name") + " text: " + eElement.getAttribute("text") + " rate: " + eElement.getAttribute("rate"));
-					Currency addCurrency = new Currency(name, text, rate); //, date); // CURRENCY DOESN'T NEED DATE
-					
-					
-					//System.out.println("addcurrency " + addCurrency.toString());
+					Currency addCurrency = new Currency(name, text, rate);
 					returnCurrencies.add(addCurrency);
-					//returnCurrencies.add(new Currency(name, text, rate, date));
 				}
 			}
 			return returnCurrencies;	
@@ -429,6 +354,170 @@ public class Readxml {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//public static List<Currency> fisToCurrencies(FileInputStream fis){
+//	log.debug("[fisToCurrencies]");
+//	try {
+//		List<Currency> returnCurrencies = new ArrayList<Currency>();
+//		Document doc = fisToDocument(fis);
+//		log.debug("Root element: " + doc.getDocumentElement().getNodeName());
+//
+//		// FOLLOWING IS SPECIFIC TO CERTAIN XML:
+//		NodeList nList = doc.getElementsByTagName("Currency"); // row
+//		log.debug(nList.getLength() + " nodes found");
+//
+//		log.debug("----------------------------");
+//		log.debug("nList length: " + nList.getLength());
+//		
+//		/*
+//		Date date = null;
+//		if(doc.getElementsByTagName("Date").item(0) != null){
+//			String dateString = doc.getElementsByTagName("Date").item(0).getTextContent(); //.getTextContent(); //07.03.16        "January 2, 2010";
+//			log.debug("dateString: " + dateString);
+//			SimpleDateFormat format = new SimpleDateFormat("dd.MM.yy"); // new SimpleDateFormat("MMMM d, yyyy", Locale.ENGLISH); // DateFormat
+//			// java.text.ParseException: Unparseable date: ""
+//			date = format.parse(dateString);
+//			log.debug("DATE IS: " + date);
+//		}else{
+//			log.debug("NO DATE STRING IN XML");
+//		}
+//		*/
+//		
+//		// CURRENCY ELEMENTS:
+//		for (int temp = 0; temp < nList.getLength(); temp++) {
+//			Node nNode = nList.item(temp);
+//			//System.out.println("\nCurrent Element :" + nNode.getNodeName()); // Current Element :Currency
+//			if (nNode.getNodeType() == Node.ELEMENT_NODE) {
+//				Element eElement = (Element) nNode;
+//				//System.out.println("I HAVE NODE!");
+//
+//				String name = eElement.getAttribute("name"); // shortName
+//				String text = eElement.getAttribute("text"); // fullName
+//				Float rate;
+//				NumberFormat nf = new DecimalFormat ("#,#");
+//				try{
+//					rate = nf.parse(eElement.getAttribute("rate")).floatValue();
+//					//rate = Float.parseFloat(eElement.getAttribute("rate"));
+//				}catch(NumberFormatException e){
+//					e.printStackTrace();
+//					rate = null;
+//				}
+//
+//				//				String dateString = eElement.getTextContent(); //07.03.16        "January 2, 2010";
+//				//				System.out.println("dateString: " + dateString);
+//				//				SimpleDateFormat format = new SimpleDateFormat("dd.MM.yy"); // new SimpleDateFormat("MMMM d, yyyy", Locale.ENGLISH); // DateFormat
+//				//				// java.text.ParseException: Unparseable date: ""
+//				//				Date date = format.parse(dateString);
+//				//				System.out.println("DATE IS: " + date);
+//
+//				log.debug("name: " + eElement.getAttribute("name") + " text: " + eElement.getAttribute("text") + " rate: " + eElement.getAttribute("rate"));
+//				Currency addCurrency = new Currency(name, text, rate); //, date); // CURRENCY DOESN'T NEED DATE
+//				
+//				
+//				//System.out.println("addcurrency " + addCurrency.toString());
+//				returnCurrencies.add(addCurrency);
+//				//returnCurrencies.add(new Currency(name, text, rate, date));
+//			}
+//		}
+//		return returnCurrencies;	
+//	} catch (Exception e) {
+//		log.error("[fisToCurrencies] failed!", e);
+//	}
+//	return null;
+//}
+
+/*
+ * 	public static String fisToRateEST(FileInputStream fis, String inputCurrency){
+		String resultRate = null;
+		try {
+			log.debug("[fisToRateEST]");
+			//Float returnValue;
+			
+			Document doc = fisToDocument(fis);
+			XPath xPath =  XPathFactory.newInstance().newXPath();
+			
+			String expression = "//Currency[@name='"+inputCurrency+"']"; //"/currencies/currency";	    // EG Currency name="AED" rate="3,12312321"     
+			//NodeList nodeList = (NodeList) xPath.compile(expression).evaluate(doc, XPathConstants.NODESET);
+			Node node = (Node) xPath.compile(expression).evaluate(doc, XPathConstants.NODE);
+			if(node != null){
+				if (node.getNodeType() == Node.ELEMENT_NODE) {
+					Element eElement = (Element) node;
+					resultRate = eElement.getAttribute("rate");
+					log.debug("[fisToRateEST] HAVE NODE! I HAVE RATE, RATE IS: " + resultRate);
+				}else{
+					log.debug("[fisToRateEST] NO RATE?");
+				}
+			}else{
+				log.error("[fisToRateEST] NO NODE!!!");
+			}
+			
+			// Estonia
+			// node Currency attribute rate
+			// Lithuania
+			// node item, in which node currency and node rate
+//			log.debug("Root element: " + doc.getDocumentElement().getNodeName());
+//			// FOLLOWING IS SPECIFIC TO CERTAIN XML:
+//			NodeList nList = doc.getElementsByTagName("Currency"); // row
+//			log.debug(nList.getLength() + " nodes found");
+//			log.debug("----------------------------");
+//			log.debug("nList length: " + nList.getLength());
+//			Date date = null;
+//			if(doc.getElementsByTagName("Date").item(0) != null){
+//				String dateString = doc.getElementsByTagName("Date").item(0).getTextContent(); //.getTextContent(); //07.03.16        "January 2, 2010";
+//				log.debug("dateString: " + dateString);
+//				SimpleDateFormat format = new SimpleDateFormat("dd.MM.yy"); // new SimpleDateFormat("MMMM d, yyyy", Locale.ENGLISH); // DateFormat
+//				// java.text.ParseException: Unparseable date: ""
+//				date = format.parse(dateString);
+//				log.debug("DATE IS: " + date);
+//			}else{
+//				log.debug("NO DATE STRING IN XML");
+//			}
+//			// CURRENCY ELEMENTS:
+//			for (int temp = 0; temp < nList.getLength(); temp++) {
+//				Node nNode = nList.item(temp);
+//				//System.out.println("\nCurrent Element :" + nNode.getNodeName()); // Current Element :Currency
+//				if (nNode.getNodeType() == Node.ELEMENT_NODE) {
+//					Element eElement = (Element) nNode;
+//					String name = eElement.getAttribute("name"); // shortName
+//					String text = eElement.getAttribute("text"); // fullName
+//					Float rate;
+//					NumberFormat nf = new DecimalFormat ("#,#");
+//					try{
+//						rate = nf.parse(eElement.getAttribute("rate")).floatValue();
+//						//rate = Float.parseFloat(eElement.getAttribute("rate"));
+//					}catch(NumberFormatException e){
+//						e.printStackTrace();
+//						rate = null;
+//					}
+//					//				String dateString = eElement.getTextContent(); //07.03.16        "January 2, 2010";
+//					log.debug("name: " + eElement.getAttribute("name") + " text: " + eElement.getAttribute("text") + " rate: " + eElement.getAttribute("rate"));
+//					Currency addCurrency = new Currency(name, text, rate, date);
+//				}
+//			}
+//			//return 0;
+		} catch (Exception e) {
+			log.error("[fisToRateEST] failed!", e);
+		}
+		return resultRate;
+	}
+ */
 
 /*
 public static void main(String argv[]) {
