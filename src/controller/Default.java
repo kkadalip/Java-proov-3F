@@ -2,10 +2,9 @@ package controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.LinkedHashMap;
+//import java.util.Date;
+//import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -58,16 +57,14 @@ public class Default extends HttpServlet {
 		//HttpSession httpSession = request.getSession(true);
 		boolean ajax = "XMLHttpRequest".equals(request.getHeader("X-Requested-With"));
 		if(ajax){
-			log.debug("AJAX POST!!!");
+			log.debug("[doPost] AJAX POST!!!");
 			// Handle ajax (JSON) response.
-
-
 			List<String> errors = new ArrayList<String>(); // if no errors... do the calculations etc...
 
 			String inputMoneyAmount = request.getParameter("inputMoneyAmount");
 			if(inputMoneyAmount == null || inputMoneyAmount.isEmpty()){
 				log.error("[doPost] inputMoneyAmount NULL!");
-				errors.add("Input money amount is empty!");
+				errors.add("[doPost] Input money amount is empty!");
 			}else{
 				log.debug("[doPost] inputMoneyAmount: " + inputMoneyAmount);
 			}
@@ -101,25 +98,17 @@ public class Default extends HttpServlet {
 			}else{
 				log.debug("HAVE ERRORS, will display them SoonTM");
 				List<String> list = new ArrayList<String>();
-				//list.add("some error 1");
-				//list.add("some error 2");
-				//list.add("some error 3");
+				//list.add("some example error");
 				for(String error : errors){
 					log.debug("[doPost] Errorslist error: " + error);
 					list.add(error);
 				}
 				String json = new Gson().toJson(list);
 				log.debug("[doPost]  Errors json: " + json);
-				//response.sendError(400);
-				//response.setStatus(404);
-				//response.setHeader("Answertype", "error");
 				response.setContentType("application/json");
 				response.setCharacterEncoding("UTF-8");
 				response.getWriter().write(json);
 			}
-
-			//request.setAttribute("whatevers", results);
-			//request.getRequestDispatcher("/WEB-INF/xml/whatevers.jsp").forward(request, response);
 		}else{
 			log.error("[doPost] REGULAR POST!!!"); // Handle regular (JSP) response here.
 		}
@@ -174,6 +163,12 @@ public class Default extends HttpServlet {
 //Float inputCurrencyFloat = Float.parseFloat(inputCurrency);
 //Float outputCurrencyFloat = Float.parseFloat(outputCurrency);
 
+//response.sendError(400);
+//response.setStatus(404);
+//response.setHeader("Answertype", "error");
+
+//request.setAttribute("whatevers", results);
+//request.getRequestDispatcher("/WEB-INF/xml/whatevers.jsp").forward(request, response);
 
 /*
 String inputMoneyAmount = request.getParameter("inputMoneyAmount");

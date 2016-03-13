@@ -1,9 +1,9 @@
 package dao;
 
 import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
+//import javax.xml.parsers.ParserConfigurationException;
 import javax.servlet.ServletContext;
-import javax.swing.plaf.synth.SynthSeparatorUI;
+//import javax.swing.plaf.synth.SynthSeparatorUI;
 import javax.xml.parsers.DocumentBuilder;
 
 import org.apache.commons.io.FileUtils;
@@ -12,26 +12,26 @@ import org.slf4j.LoggerFactory;
 //import org.apache.tools.ant.util.FileUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
+//import org.xml.sax.SAXException;
 
-import com.sun.xml.internal.messaging.saaj.packaging.mime.internet.ParseException;
+//import com.sun.xml.internal.messaging.saaj.packaging.mime.internet.ParseException;
 
-import controller.Default;
+//import controller.Default;
 
 //import ch.qos.logback.core.util.FileUtil;
 
 import org.w3c.dom.Node;
 import org.w3c.dom.Element;
-import org.w3c.dom.NamedNodeMap;
+//import org.w3c.dom.NamedNodeMap;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
+//import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.text.DateFormat;
+//import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
@@ -43,11 +43,11 @@ import java.util.List;
 import model.Currency;
 import model.Result;
 
-import org.w3c.dom.*;
-import org.xml.sax.*;
-import javax.xml.parsers.*;
+//import org.w3c.dom.*;
+//import org.xml.sax.*;
+//import javax.xml.parsers.*;
+//import java.io.*;
 import javax.xml.xpath.*;
-import java.io.*;
 
 public class Readxml {
 	static Logger log = LoggerFactory.getLogger(Readxml.class); // info trace debug warn error
@@ -170,7 +170,9 @@ public class Readxml {
 		FileInputStream fisLithuania = getFisForX(context, bankOfLithuania,"bankOfLithuania-"+dateInUrl+".xml");
 		
 		List<Currency> bankOfEstoniaCurrencies = fisToCurrencies(fisEstonia);
+		// TODO
 		List<Currency> bankOfLithuaniaCurrencies = fisToCurrencies(fisLithuania);
+		
 		//List<List<Currency>> listOfCurrencies = null;
 		//listOfCurrencies.add(bankOfEstoniaCurrencies);
 		//listOfCurrencies.add(bankOfLithuaniaCurrencies);
