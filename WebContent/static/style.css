@@ -157,8 +157,8 @@ body {
 }
 #swapCurrenciesBtn:focus {
 	outline: none;
-	background-color: yellow;
-	background-image: -webkit-linear-gradient(top,rgb(250,250,0),rgb(230,230,0));
+	/*background-color: yellow;*/
+	background-image: -webkit-linear-gradient(top,rgb(255,255,0),rgb(230,230,0));
 	border: solid 1px rgb(112,112,112); /*#707070*/
 	box-shadow: 0 2px 6px 1px rgb(200,200,200);
 }
@@ -167,6 +167,7 @@ body {
 }
 #swapCurrenciesBtn:active {
 	/*box-shadow: inset 0 0 0 1px rgb(74,74,74), inset 0 5px 30px rgb(48,48,48);*/
+	background-image: -webkit-linear-gradient(top,rgb(250,250,250),rgb(230,230,230));
 	box-shadow: inset 0 0 0 1px rgb(74,74,74), inset 0 5px 30px rgb(48,48,48);
 	border: none;
 	/*font-size: 12px;*/
@@ -205,17 +206,29 @@ body {
 	border-radius: 2px;
 }
 .gradientButton:focus {
-	outline: none
+	outline: none;
+	/*background-color: yellow;*/
+	color: black;
+	background-image: -webkit-linear-gradient(top,rgb(255,255,0),rgb(230,230,0));
+	border: solid 1px rgb(112,112,112); /*#707070*/
+	box-shadow: 0 2px 6px 1px rgb(200,200,200);
 }
 .gradientButton:hover {
-	box-shadow: 0 2px 6px 1px rgb(200,200,200);
+	box-shadow: 0 2px 6px 1px rgb(150,150,150);
 	/*box-shadow: inset 0 0 0 1px #27496d,0 5px 15px #193047;*/
 }
 .gradientButton:active {
-	box-shadow: inset 0 0 0 1px #27496d,inset 0 5px 30px #193047;
-	/*font-size: 16px;*/
+	border: solid 1px #27496d;
+	/*box-shadow: inset 0 0 0 1px #27496d,inset 0 5px 30px #193047;*/
+	box-shadow: inset 0 5px 30px #193047;
 	color: rgb(240,240,240);
+	background-image: -webkit-linear-gradient(top,#6496c8,#346392);
 }
+
+
+
+
+
 /*
 .customButton {
 	color: #fff;
