@@ -127,8 +127,9 @@
 					
 					// I GOT ERRORS:
 					if(typeof responseJson[0] === 'string'){
-						console.log("responseJson[0]: " + responseJson[0] +" is string, therefore probably error messages");
+						//console.log("responseJson[0]: " + responseJson[0] +" is string, therefore probably error messages");
 						var $ul = $("<ul>");
+						$("<li>").appendTo($ul).text("Errors:");
 						$.each(responseJson, function(index, item) { // Iterate over the JSON array.
 							console.log("2index " + index + " item " + item);
 				            $("<li>").text(item).appendTo($ul);      // Create HTML <li> element, set its text content with currently iterated item and append it to the <ul>.
@@ -140,7 +141,7 @@
 						$("<tr>").appendTo($table).append($("<th>").text("Bank:")).append($("<th>").text("Result:"));
 
 						$.each(responseJson, function(index, result) { // Iterate over the JSON array.
-							console.log("1index " + index + " item " + result);
+							//console.log("1index " + index + " item " + result);
 							$("<tr>").appendTo($table).append(
 									$("<td>").text(result._bankName)).append(
 									$("<td>").text(result._resultValue));
@@ -233,12 +234,12 @@
 						<tbody>
 							<tr>
 								<td class="tdInfo">Date:</td>
-								<td><input class="hoverShadow dataEntry" type="text"
+								<td><input required="required" class="hoverShadow dataEntry" type="text"
 									id="datepicker" name="selectedDate"></td>
 							</tr>
 							<tr>
 								<td class="tdInfo">Amount:</td>
-								<td><input class="hoverShadow dataEntry" type="number"
+								<td><input required="required" class="hoverShadow dataEntry" type="number"
 									min="0" step="any" name="inputMoneyAmount" placeholder="" /></td>
 							</tr>
 							<tr>
@@ -283,7 +284,9 @@
 					<input class="gradientButton" type="submit" value="Done"> <br>
 				</form>
 
-				<div id="errorsTableContainer">errors here</div>
+				<div id="errorsTableContainer">
+				
+				</div>
 
 				<div id="resultsTableContainer"></div>
 

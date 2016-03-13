@@ -76,13 +76,19 @@ public class Default extends HttpServlet {
 			log.debug("[doPost] inputCurrency: " + inputCurrency); // rate
 			String outputCurrency = request.getParameter("outputCurrency");
 			log.debug("[doPost] outputCurrency: " + outputCurrency);
+			
 			String selectedDate = request.getParameter("selectedDate");
-			log.debug("[doPost] selectedDate: " + selectedDate);
+			if(selectedDate == null || selectedDate.isEmpty()){
+				errors.add("Select a date!");
+			}else{
+				log.debug("[doPost] selectedDate: " + selectedDate);
+			}
 
 			if(errors.isEmpty()){
 				log.debug("NO ERRORS, CONTINUING doPost!");
 				try{
 					Float inputMoneyAmountFloat = Float.parseFloat(inputMoneyAmount);
+					// TODO make sure Date has been validated before!!!
 					List<Result> results = Readxml.calculateResults(getServletContext(), inputMoneyAmountFloat, inputCurrency, outputCurrency, selectedDate); //, date);
 					String json = new Gson().toJson(results);
 					log.debug("[doPost] results json: " + json);
@@ -95,12 +101,12 @@ public class Default extends HttpServlet {
 			}else{
 				log.debug("HAVE ERRORS, will display them SoonTM");
 				List<String> list = new ArrayList<String>();
-				list.add("some error 1");
-				list.add("some error 2");
-				list.add("some error 3");
+				//list.add("some error 1");
+				//list.add("some error 2");
+				//list.add("some error 3");
 				for(String error : errors){
 					log.debug("[doPost] Errorslist error: " + error);
-					list.add("err " + error);
+					list.add(error);
 				}
 				String json = new Gson().toJson(list);
 				log.debug("[doPost]  Errors json: " + json);
