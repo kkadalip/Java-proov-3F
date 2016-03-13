@@ -94,10 +94,7 @@
 	 */
 
 	// Ajaxifying an existing form
-	$(document).on(
-			"submit",
-			"#someform",
-			function(event) {
+	$(document).on("submit","#someform",function(event) {
 				console.log("submitting the ajax post form");
 				var $form = $(this);
 				/*
@@ -106,9 +103,9 @@
 				});
 				 */
 
-				$.post($form.attr("action"), $form.serialize(), function(
-						responseJson) { // responseText responseJson responseXml
-					// ...
+				$.post($form.attr("action"), $form.serialize(), function(responseJson) { // responseText responseJson responseXml
+					console.log("responseJson is: " + responseJson);
+				
 					//$("#somediv").html($(responseXml).find("data").html());
 
 					/*
@@ -123,27 +120,40 @@
 					//	$("<option>").val(key).text(value).appendTo($select); // Create HTML <option> element, set its value with currently iterated key and its text content with currently iterated item and finally append it to the <select>.
 					//});
 					//var $table = $("<table>").appendTo($("#somediv")); // Create HTML <table> element and append it to HTML DOM element with ID "somediv".
-					var $table = $("<table>"); //.appendTo($("#somediv"));
-					$("<tr>").appendTo($table).append($("<th>").text("Bank:"))
-							.append($("<th>").text("Result:"));
-
-					$.each(responseJson, function(index, result) { // Iterate over the JSON array.
-						$("<tr>").appendTo($table).append(
-								$("<td>").text(result._bankName)).append(
-								$("<td>").text(result._resultValue));
-						//$("<tr>").($table)                     
-
-						//$("<tr>").appendTo($table) // Create HTML <tr> element, set its text content with currently iterated item and append it to the <table>.
-						//	.append($("<td>").text("Bank: " + result._bankName))        // Create HTML <td> element, set its text content with id of currently iterated product and append it to the <tr>.
-						//    .append($("<td>").text("Result: " + result._resultValue))
-					});
-					$('#resultsTableContainer').html($table);
 					
-					var $ul = $("<ul>");
-					$.each(responseJson, function(index, item) { // Iterate over the JSON array.
-			            $("<li>").text(item).appendTo($ul);      // Create HTML <li> element, set its text content with currently iterated item and append it to the <ul>.
-			        });
-					$("#errorsTableContainer").html($ul);
+					// EMPTY BOTH RESULTS AND ERRORS HOLDERS:
+					$("#errorsTableContainer").html("");
+					$('#resultsTableContainer').html("");
+					
+					// I GOT ERRORS:
+					if(typeof responseJson[0] === 'string'){
+						console.log("responseJson[0]: " + responseJson[0] +" is string, therefore probably error messages");
+						var $ul = $("<ul>");
+						$.each(responseJson, function(index, item) { // Iterate over the JSON array.
+							console.log("2index " + index + " item " + item);
+				            $("<li>").text(item).appendTo($ul);      // Create HTML <li> element, set its text content with currently iterated item and append it to the <ul>.
+				        });
+						$("#errorsTableContainer").html($ul);
+					}else{
+						// I GOT RESULTS:
+						var $table = $("<table>"); //.appendTo($("#somediv"));
+						$("<tr>").appendTo($table).append($("<th>").text("Bank:")).append($("<th>").text("Result:"));
+
+						$.each(responseJson, function(index, result) { // Iterate over the JSON array.
+							console.log("1index " + index + " item " + result);
+							$("<tr>").appendTo($table).append(
+									$("<td>").text(result._bankName)).append(
+									$("<td>").text(result._resultValue));
+							//$("<tr>").($table)                     
+
+							//$("<tr>").appendTo($table) // Create HTML <tr> element, set its text content with currently iterated item and append it to the <table>.
+							//	.append($("<td>").text("Bank: " + result._bankName))        // Create HTML <td> element, set its text content with id of currently iterated product and append it to the <tr>.
+							//    .append($("<td>").text("Result: " + result._resultValue))
+						});
+						$('#resultsTableContainer').html($table);
+					}
+					
+
 
 					//$.get("Something", function(responseXml) {                // Execute Ajax GET request on URL of "someservlet" and execute the following function with Ajax response XML...
 					//    $("#somediv").html($(responseXml).find("data").html()); // Parse XML, find <data> element and append its HTML to HTML DOM element with ID "somediv".

@@ -31,24 +31,24 @@ public class Default extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		log.info("[doGet] START");
 		HttpSession httpSession = request.getSession(true);
-		
+
 		// DATE IN SESSION? (also try to convert + parse check, otherwise fall back to default etc.. TODO. (JS AJAX?)
 		String sessionDate = (String) httpSession.getAttribute("sessionDate");
 		if(sessionDate == null || sessionDate.isEmpty()){
 			sessionDate = "30.12.2010";
 		}
-		
+
 		// AT FIRST DOWNLOAD FOR DEFAULT DATE?
 		//String selectedDate = request.getParameter("selectedDate");
 		//log.debug("[doGet] selectedDate: " + selectedDate);
 		List<Currency> displayedCurrencies = Readxml.downloadAllForDate(getServletContext(), sessionDate); //"30.12.2010");
 		request.setAttribute("displayedCurrencies", displayedCurrencies);
-		
+
 		//ServletContext context = getContext();
 		//URL resourceUrl = context.getResource("/WEB-INF/test/foo.txt");
-		
+
 		//List<Currency> displayedCurrencies = Readxml.getCurrencies(getServletContext()); // TODO add date, get by date, default will be current day (atm the latest possible, later dates need to be disabled!)
-		
+
 		request.getRequestDispatcher("jsp/index.jsp").forward(request, response);
 	}
 
@@ -56,57 +56,67 @@ public class Default extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		log.info("[doPost] START");
 		//HttpSession httpSession = request.getSession(true);
-		
-		List<String> errors = new ArrayList<String>(); // if no errors... do the calculations etc...
-		
-		String inputMoneyAmount = request.getParameter("inputMoneyAmount");
-		if(inputMoneyAmount == null || inputMoneyAmount.isEmpty()){
-			log.error("[doPost] inputMoneyAmount NULL!");
-			errors.add("Input money amount is empty!");
-		}else{
-			log.debug("[doPost] inputMoneyAmount: " + inputMoneyAmount);
-		}
-		
-		String inputCurrency = request.getParameter("inputCurrency");
-		log.debug("[doPost] inputCurrency: " + inputCurrency); // rate
-		String outputCurrency = request.getParameter("outputCurrency");
-		log.debug("[doPost] outputCurrency: " + outputCurrency);
-		String selectedDate = request.getParameter("selectedDate");
-		log.debug("[doPost] selectedDate: " + selectedDate);
+		boolean ajax = "XMLHttpRequest".equals(request.getHeader("X-Requested-With"));
+		if(ajax){
+			log.debug("AJAX POST!!!");
+			// Handle ajax (JSON) response.
 
-		if(errors.isEmpty()){
-			log.debug("NO ERRORS, CONTINUING doPost!");
-			try{
-				Float inputMoneyAmountFloat = Float.parseFloat(inputMoneyAmount);
-				List<Result> results = Readxml.calculateResults(getServletContext(), inputMoneyAmountFloat, inputCurrency, outputCurrency, selectedDate); //, date);
-				String json = new Gson().toJson(results);
-				log.debug("[doPost] JSON IS: " + json);
-			    response.setContentType("application/json");
-			    response.setCharacterEncoding("UTF-8");
-			    response.getWriter().write(json);
-			}catch(NumberFormatException e){
-				log.error("[doPost] number field to float FAILED!",e);
-			}
-		}else{
-			log.debug("HAVE ERRORS, will display them SoonTM");
-			List<String> list = new ArrayList<String>();
-		    list.add("some error 1");
-		    list.add("some error 2");
-		    list.add("some error 3");
-			for(String error : errors){
-				log.debug("[doPost] Errorslist error: " + error);
-				list.add("err " + error);
-			}
-		    String json = new Gson().toJson(list);
 
-		    response.setContentType("application/json");
-		    response.setCharacterEncoding("UTF-8");
-		    response.getWriter().write(json);
+			List<String> errors = new ArrayList<String>(); // if no errors... do the calculations etc...
+
+			String inputMoneyAmount = request.getParameter("inputMoneyAmount");
+			if(inputMoneyAmount == null || inputMoneyAmount.isEmpty()){
+				log.error("[doPost] inputMoneyAmount NULL!");
+				errors.add("Input money amount is empty!");
+			}else{
+				log.debug("[doPost] inputMoneyAmount: " + inputMoneyAmount);
+			}
+
+			String inputCurrency = request.getParameter("inputCurrency");
+			log.debug("[doPost] inputCurrency: " + inputCurrency); // rate
+			String outputCurrency = request.getParameter("outputCurrency");
+			log.debug("[doPost] outputCurrency: " + outputCurrency);
+			String selectedDate = request.getParameter("selectedDate");
+			log.debug("[doPost] selectedDate: " + selectedDate);
+
+			if(errors.isEmpty()){
+				log.debug("NO ERRORS, CONTINUING doPost!");
+				try{
+					Float inputMoneyAmountFloat = Float.parseFloat(inputMoneyAmount);
+					List<Result> results = Readxml.calculateResults(getServletContext(), inputMoneyAmountFloat, inputCurrency, outputCurrency, selectedDate); //, date);
+					String json = new Gson().toJson(results);
+					log.debug("[doPost] results json: " + json);
+					response.setContentType("application/json");
+					response.setCharacterEncoding("UTF-8");
+					response.getWriter().write(json);
+				}catch(NumberFormatException e){
+					log.error("[doPost] number field to float FAILED!",e);
+				}
+			}else{
+				log.debug("HAVE ERRORS, will display them SoonTM");
+				List<String> list = new ArrayList<String>();
+				list.add("some error 1");
+				list.add("some error 2");
+				list.add("some error 3");
+				for(String error : errors){
+					log.debug("[doPost] Errorslist error: " + error);
+					list.add("err " + error);
+				}
+				String json = new Gson().toJson(list);
+				log.debug("[doPost]  Errors json: " + json);
+				//response.sendError(400);
+				//response.setStatus(404);
+				//response.setHeader("Answertype", "error");
+				response.setContentType("application/json");
+				response.setCharacterEncoding("UTF-8");
+				response.getWriter().write(json);
+			}
+
+			//request.setAttribute("whatevers", results);
+			//request.getRequestDispatcher("/WEB-INF/xml/whatevers.jsp").forward(request, response);
+		}else{
+			log.error("[doPost] REGULAR POST!!!"); // Handle regular (JSP) response here.
 		}
-		
-	    //request.setAttribute("whatevers", results);
-	    //request.getRequestDispatcher("/WEB-INF/xml/whatevers.jsp").forward(request, response);
-		
 		log.info("[doPost] END");
 	}
 }
@@ -213,7 +223,7 @@ String text = outputAmount.toString();
 List<Result> results = new ArrayList<Result>();
 results.add(new Result(textOwner, text));
 results.add(new Result("Whatever bank", "some result"));
-*/
+ */
 
 
 //		Long newUserID = null;
