@@ -241,7 +241,9 @@ body {
 	color: rgb(240,240,240);
 	background-image: -webkit-linear-gradient(top,#6496c8,#346392);
 }
-
+#errorsList{
+	list-style-type: none;
+}
 
 
 

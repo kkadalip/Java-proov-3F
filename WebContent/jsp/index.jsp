@@ -129,7 +129,7 @@
 					if(typeof responseJson[0] === 'string'){
 						//console.log("responseJson[0]: " + responseJson[0] +" is string, therefore probably error messages");
 						var $ul = $("<ul>");
-						$("<li>").appendTo($ul).text("Errors:");
+						$("<li id='errorsList'>").appendTo($ul).text("Errors:");
 						$.each(responseJson, function(index, item) { // Iterate over the JSON array.
 							console.log("2index " + index + " item " + item);
 				            $("<li>").text(item).appendTo($ul);      // Create HTML <li> element, set its text content with currently iterated item and append it to the <ul>.

@@ -1,8 +1,10 @@
 package controller;
 
 import java.io.IOException;
+//import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-//import java.util.Date;
+import java.util.Date;
 //import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -79,7 +81,17 @@ public class Default extends HttpServlet {
 				errors.add("Select a date!");
 			}else{
 				log.debug("[doPost] selectedDate: " + selectedDate);
+				SimpleDateFormat format = new SimpleDateFormat("dd.MM.yy");
+				format.setLenient(false);
+				try {
+					Date date = format.parse(selectedDate);
+				} catch (java.text.ParseException e) {
+					log.error("[doPost] Can't parse date",e);
+					errors.add("Date format wrong!");
+				}
 			}
+			// Try to parse selected date
+			
 
 			if(errors.isEmpty()){
 				log.debug("NO ERRORS, CONTINUING doPost!");
