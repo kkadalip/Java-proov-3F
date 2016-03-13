@@ -142,9 +142,6 @@
 		});
 		event.preventDefault(); // Important! Prevents submitting the form.
 	});
-	
-
-	
 
 	$(function() {
 		$("#datepicker").datepicker({
@@ -163,6 +160,20 @@
 		
 		//var date = $('#datepicker').datepicker({ dateFormat: 'dd-mm-yy' }).val();
 	});
+	
+	function selectOption(sectorID){
+		var optionElement = document.getElementById("option_"+sectorID);
+		//var optionElement = $("#option_"+sectorID); // JQUERY WAY
+		if(optionElement){
+			console.log("WOO I have option element option_"+sectorID);
+			optionElement.selected = true;
+			//optionElement.attr('selected','selected'); // JQUERY WAY
+		}else{
+			console.log("BOO I DO NOT have option_"+sectorID);
+		}
+	}
+
+	
 </script>
 
 </head>
@@ -213,7 +224,7 @@
 								Input:
 							</td>
 							<!-- <td style="width:3px"></td>  -->
-							<td><select class="hoverShadow dataSelect" name="inputCurrency">
+							<td><select id="selectInputCurrency" class="hoverShadow dataSelect" name="inputCurrency">
 									<c:forEach items="${requestScope['displayedCurrencies']}"
 										var="item">
 										<option id="input_${item._shortName}" value="${item._shortName}">${item._shortName}
@@ -222,11 +233,15 @@
 							</select></td>
 						</tr>
 						<tr>
+							<td></td>
+							<td colspan="2"><button id="swapCurrenciesBtn" type="button" onClick="swapCurrencies();">Swap</button></td>
+						</tr>
+						<tr>
 							<!-- <td> <input class="hoverShadow dataEntry" type="text" placeholder=""
 								name="outputResult" id="outResult" /> </td> -->
 							<td class="tdInfo">Output:</td>
 							<!-- <td style="width:3px"></td>  -->
-							<td><select class="hoverShadow dataSelect" name="outputCurrency">
+							<td><select id="selectOutputCurrency" class="hoverShadow dataSelect" name="outputCurrency">
 									<!--<option value="empty"></option>-->
 									<c:forEach items="${requestScope['displayedCurrencies']}"
 										var="item">
@@ -238,7 +253,7 @@
 				</table>
 				<!-- <input type="submit" value="Done">  -->
 				<br> 
-				<!-- <button class="gradientButton" type="submit" style="width: 100%;" value="">Done</button>  -->
+				<!-- <button class="gradientButton" type="submit" value="">Done</button>  -->
 				<input class="gradientButton" type="submit" value="Done">
 				<br>
 				<div id="resultsTableContainer">
