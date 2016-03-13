@@ -27,8 +27,8 @@ body {
     /* border: 3px solid #73AD21; */
 }
 
-/* .dataEntry */
-input[type="text"] {
+.dataEntry {
+/*input[type="text"] { */
 	vertical-align: middle;	
 	/*color: rgb(38,38,38) !important;*/
 	display: block;
@@ -55,10 +55,10 @@ input[type="text"] {
 
 	transition: box-shadow 0.2s, border 0.2s;
 }
-input[type="text"]:hover {
+.dataEntry:hover { /*input[type="text"]:hover {*/
 	/*background-color: yellow;*/
 }
-input[type="text"]:focus {
+.dataEntry:focus { /*input[type="text"]:focus {*/
 	background-color: yellow;
 }
 

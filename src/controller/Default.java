@@ -30,39 +30,24 @@ public class Default extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		log.info("[doGet] START");
-		//HttpSession httpSession = request.getSession(true);
-		//String userName = (String)
+		HttpSession httpSession = request.getSession(true);
 		
-		//Date sessionDate = (Date) request.getAttribute("selectedDate"); //setAttribute("SESSIONuserName", userName);
-		//Date date = new Date();
-		
-		// kontrolli, kas on olemas sessioonis või mitte
+		// DATE IN SESSION? (also try to convert + parse check, otherwise fall back to default etc.. TODO. (JS AJAX?)
+		String sessionDate = (String) httpSession.getAttribute("sessionDate");
+		if(sessionDate == null || sessionDate.isEmpty()){
+			sessionDate = "30.12.2010";
+		}
 		
 		// AT FIRST DOWNLOAD FOR DEFAULT DATE?
 		//String selectedDate = request.getParameter("selectedDate");
 		//log.debug("[doGet] selectedDate: " + selectedDate);
-		List<Currency> displayedCurrencies = Readxml.downloadAllForDate(getServletContext(), "30.12.2010");
+		List<Currency> displayedCurrencies = Readxml.downloadAllForDate(getServletContext(), sessionDate); //"30.12.2010");
 		request.setAttribute("displayedCurrencies", displayedCurrencies);
-		
-		
-		// sessiooni võiks sellegipoolest salvestada (refresh page jmt jaoks)
 		
 		//ServletContext context = getContext();
 		//URL resourceUrl = context.getResource("/WEB-INF/test/foo.txt");
 		
 		//List<Currency> displayedCurrencies = Readxml.getCurrencies(getServletContext()); // TODO add date, get by date, default will be current day (atm the latest possible, later dates need to be disabled!)
-		
-		// kontrolli, kas on sessiooni var-is olemas, kui ei, siis lisa, tglt ajaxiga javascripti abil teha??
-		//@SuppressWarnings("unchecked")
-		//List<Currency> displayedCurrencies = (List<Currency>) httpSession.getAttribute("displayedCurrencies");
-		//if(displayedCurrencies.isEmpty()){
-		//	log.debug("I DO NOT HAVE session displayedcurrencies, setting them now");
-		//	displayedCurrencies = Readxml.getCurrencies();
-		//	httpSession.setAttribute("displayedCurrencies", displayedCurrencies);
-		//}else{
-		//	log.debug("I have session displayedcurrencies.");
-		//}
-		//request.setAttribute("displayedCurrencies", displayedCurrencies);
 		
 		request.getRequestDispatcher("jsp/index.jsp").forward(request, response);
 	}
@@ -72,84 +57,42 @@ public class Default extends HttpServlet {
 		log.info("[doPost] START");
 		//HttpSession httpSession = request.getSession(true);
 		
-		/*
-		String inputMoneyAmount = request.getParameter("inputMoneyAmount");
-		log.debug("inputMoneyAmount: " + inputMoneyAmount);
-		String inputCurrency = request.getParameter("inputCurrency");
-		log.debug("inputCurrency: " + inputCurrency); // rate
-		String outputCurrency = request.getParameter("outputCurrency");
-		log.debug("outputCurrency: " + outputCurrency);
-		String selectedDate = request.getParameter("selectedDate");
-		log.debug("selectedDate: " + selectedDate);
-
-		// TODO java.lang.NumberFormatException: empty String
-		Float inputMoneyAmountFloat = Float.parseFloat(inputMoneyAmount);
-		Float inputCurrencyFloat = Float.parseFloat(inputCurrency);
-		Float outputCurrencyFloat = Float.parseFloat(outputCurrency);
-		
-		Float outputAmount = inputCurrencyFloat / outputCurrencyFloat * inputMoneyAmountFloat;
-		log.debug("output amount: " + outputAmount);
-		
-		// AJAXIFY http://stackoverflow.com/questions/4112686/how-to-use-servlets-and-ajax
-
-	    boolean ajax = "XMLHttpRequest".equals(request.getHeader("X-Requested-With"));
-	    // ...
-
-	    if (ajax) {
-	    	log.debug("AJAX POST!!!");
-	        // Handle ajax (JSON) response.
-	    } else {
-	    	log.debug("REGULAR POST!!!");
-	        // Handle regular (JSP) response.
-	    }
-		
-		//response.sendRedirect(""); // Success
-		// TEXT AS JSON: SENDING BACK OUTPUT NUMBER (CHANGE TO JSON/XML LATER!)
-		String textOwner = "Eesti Pank";
-		String text = outputAmount.toString();
-//		response.setContentType("text/plain");  // Set content type of the response so that jQuery knows what it can expect.
-//	    response.setCharacterEncoding("UTF-8");
-//	    response.getWriter().write(text);       // Write response body.
-	    
-		// Returning Map<String, String> as JSON
-		
-//		Map<String, String> options = new LinkedHashMap<String, String>();
-//	    options.put(textOwner, text);
-//	    options.put("value2", "label2");
-//	    options.put("value3", "label3");
-//	    String json = new Gson().toJson(options);
-		
-		//List<String> results = new ArrayList<String>();
-		//results.add(text);
-		//results.add("some other");
-		
-		List<Result> results = new ArrayList<Result>();
-		results.add(new Result(textOwner, text));
-		results.add(new Result("Whatever bank", "some result"));
-		*/
+		List<String> errors = new ArrayList<String>(); // if no errors... do the calculations etc...
 		
 		String inputMoneyAmount = request.getParameter("inputMoneyAmount");
-		log.debug("inputMoneyAmount: " + inputMoneyAmount);
+		if(inputMoneyAmount == null){
+			log.error("[doPost] inputMoneyAmount NULL!");
+			errors.add("Input money amount is empty!");
+		}else{
+			log.debug("[doPost] inputMoneyAmount: " + inputMoneyAmount);
+		}
+		
+		
 		String inputCurrency = request.getParameter("inputCurrency");
-		log.debug("inputCurrency: " + inputCurrency); // rate
+		log.debug("[doPost] inputCurrency: " + inputCurrency); // rate
 		String outputCurrency = request.getParameter("outputCurrency");
-		log.debug("outputCurrency: " + outputCurrency);
+		log.debug("[doPost] outputCurrency: " + outputCurrency);
 		String selectedDate = request.getParameter("selectedDate");
-		log.debug("selectedDate: " + selectedDate);
+		log.debug("[doPost] selectedDate: " + selectedDate);
 
 		// TODO java.lang.NumberFormatException: empty String
-		Float inputMoneyAmountFloat = Float.parseFloat(inputMoneyAmount);
-		//Float inputCurrencyFloat = Float.parseFloat(inputCurrency);
-		//Float outputCurrencyFloat = Float.parseFloat(outputCurrency);
+		if(!errors.isEmpty()){
+			log.debug("NO ERRORS, CONTINUING doPost!");
+			try{
+				Float inputMoneyAmountFloat = Float.parseFloat(inputMoneyAmount);
+				List<Result> results = Readxml.calculateResults(getServletContext(), inputMoneyAmountFloat, inputCurrency, outputCurrency, selectedDate); //, date);
+				String json = new Gson().toJson(results);
+				log.debug("[doPost] JSON IS: " + json);
+			    response.setContentType("application/json");
+			    response.setCharacterEncoding("UTF-8");
+			    response.getWriter().write(json);
+			}catch(NumberFormatException e){
+				log.error("[doPost] number field to float FAILED!",e);
+			}
+		}else{
+			log.debug("HAVE ERRORS, will display them SoonTM");
+		}
 		
-		List<Result> results = Readxml.calculateResults(getServletContext(), inputMoneyAmountFloat, inputCurrency, outputCurrency, selectedDate); //, date);
-		
-		String json = new Gson().toJson(results);
-		log.debug("JSON IS: " + json);
-	    response.setContentType("application/json");
-	    response.setCharacterEncoding("UTF-8");
-	    response.getWriter().write(json);
-
 	    //request.setAttribute("whatevers", results);
 	    //request.getRequestDispatcher("/WEB-INF/xml/whatevers.jsp").forward(request, response);
 		
@@ -187,9 +130,79 @@ public class Default extends HttpServlet {
 
 
 
+// FROM doGet:
+//@SuppressWarnings("unchecked")
+//List<Currency> displayedCurrencies = (List<Currency>) httpSession.getAttribute("displayedCurrencies");
+//if(displayedCurrencies.isEmpty()){
+//	log.debug("I DO NOT HAVE session displayedcurrencies, setting them now");
+//	displayedCurrencies = Readxml.getCurrencies();
+//	httpSession.setAttribute("displayedCurrencies", displayedCurrencies);
+//}else{
+//	log.debug("I have session displayedcurrencies.");
+//}
+//request.setAttribute("displayedCurrencies", displayedCurrencies);
 
 
+// FROM doPost:
+//Float inputCurrencyFloat = Float.parseFloat(inputCurrency);
+//Float outputCurrencyFloat = Float.parseFloat(outputCurrency);
 
+
+/*
+String inputMoneyAmount = request.getParameter("inputMoneyAmount");
+log.debug("inputMoneyAmount: " + inputMoneyAmount);
+String inputCurrency = request.getParameter("inputCurrency");
+log.debug("inputCurrency: " + inputCurrency); // rate
+String outputCurrency = request.getParameter("outputCurrency");
+log.debug("outputCurrency: " + outputCurrency);
+String selectedDate = request.getParameter("selectedDate");
+log.debug("selectedDate: " + selectedDate);
+
+// TODO java.lang.NumberFormatException: empty String
+Float inputMoneyAmountFloat = Float.parseFloat(inputMoneyAmount);
+Float inputCurrencyFloat = Float.parseFloat(inputCurrency);
+Float outputCurrencyFloat = Float.parseFloat(outputCurrency);
+
+Float outputAmount = inputCurrencyFloat / outputCurrencyFloat * inputMoneyAmountFloat;
+log.debug("output amount: " + outputAmount);
+
+// AJAXIFY http://stackoverflow.com/questions/4112686/how-to-use-servlets-and-ajax
+
+boolean ajax = "XMLHttpRequest".equals(request.getHeader("X-Requested-With"));
+// ...
+
+if (ajax) {
+	log.debug("AJAX POST!!!");
+    // Handle ajax (JSON) response.
+} else {
+	log.debug("REGULAR POST!!!");
+    // Handle regular (JSP) response.
+}
+
+//response.sendRedirect(""); // Success
+// TEXT AS JSON: SENDING BACK OUTPUT NUMBER (CHANGE TO JSON/XML LATER!)
+String textOwner = "Eesti Pank";
+String text = outputAmount.toString();
+//response.setContentType("text/plain");  // Set content type of the response so that jQuery knows what it can expect.
+//response.setCharacterEncoding("UTF-8");
+//response.getWriter().write(text);       // Write response body.
+
+// Returning Map<String, String> as JSON
+
+//Map<String, String> options = new LinkedHashMap<String, String>();
+//options.put(textOwner, text);
+//options.put("value2", "label2");
+//options.put("value3", "label3");
+//String json = new Gson().toJson(options);
+
+//List<String> results = new ArrayList<String>();
+//results.add(text);
+//results.add("some other");
+
+List<Result> results = new ArrayList<Result>();
+results.add(new Result(textOwner, text));
+results.add(new Result("Whatever bank", "some result"));
+*/
 
 
 //		Long newUserID = null;

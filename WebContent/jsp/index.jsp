@@ -205,7 +205,7 @@
 								Amount:
 							</td>
 							<td>
-								<input class="hoverShadow dataEntry" type="text" placeholder=""name="inputMoneyAmount" />
+								<input class="hoverShadow dataEntry" type="number" min="0" step="any" name="inputMoneyAmount" placeholder="" />
 							</td>
 						</tr>
 						<tr>
