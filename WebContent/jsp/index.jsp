@@ -257,7 +257,7 @@
 							<tr>
 								<td></td>
 								<td colspan="2"><button id="swapCurrenciesBtn"
-										type="button" onClick="swapCurrencies();">Swap</button></td>
+										type="button" style="font-size:12px; margin:0; padding:0;" onClick="swapCurrencies();">▲<br>▼</button></td>
 							</tr>
 							<tr>
 								<!-- <td> <input class="hoverShadow dataEntry" type="text" placeholder=""
