@@ -250,7 +250,7 @@
 										<c:forEach items="${requestScope['displayedCurrencies']}"
 											var="item">
 											<option id="input_${item._shortName}"
-												value="${item._shortName}">${item._shortName}-
+												value="${item._shortName}">${item._shortName} -
 												${item._fullName}</option>
 										</c:forEach>
 								</select></td>
