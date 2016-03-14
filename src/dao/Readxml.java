@@ -355,7 +355,7 @@ public class Readxml {
 					//System.out.println("I HAVE NODE!");
 
 					String name = eElement.getAttribute("name"); // shortName
-					String text = eElement.getAttribute("text"); // fullName
+					//String text = eElement.getAttribute("text"); // fullName NOT USING ANYMORE
 					Float rate;
 					NumberFormat nf = new DecimalFormat ("#,#");
 					try{
@@ -366,7 +366,7 @@ public class Readxml {
 						rate = null;
 					}
 					log.debug("name: " + eElement.getAttribute("name") + " text: " + eElement.getAttribute("text") + " rate: " + eElement.getAttribute("rate"));
-					Currency addCurrency = new Currency(name, text, rate);
+					Currency addCurrency = new Currency(name, rate); //new Currency(name, text, rate);
 					returnCurrencies.add(addCurrency);
 				}
 			}

@@ -266,7 +266,6 @@
 											<option id="input_${item._shortName}"
 												value="${item._shortName}">${item._shortName} -
 												<fmt:message key="currency.${item._shortName}" /></option>
-												<!-- ${item._fullName} +  -->
 										</c:forEach>
 								</select></td>
 							</tr>

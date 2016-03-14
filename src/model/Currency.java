@@ -5,13 +5,13 @@ package model;
 public class Currency {
 
 	String _shortName;
-	String _fullName;
+	//String _fullName;
 	Float _rate;
 	//Date _date;
 
-	public Currency(String shortName, String fullName, Float rate) { //, Date date) {
+	public Currency(String shortName, Float rate) { // String fullName,  //, Date date) {
 		_shortName = shortName;
-		_fullName = fullName;
+		//_fullName = fullName;
 		_rate = rate;
 		//_date = date;
 	}
@@ -20,8 +20,8 @@ public class Currency {
 	public String get_shortName() {return _shortName;}
 	public void set_shortName(String _shortName) {this._shortName = _shortName;}
 
-	public String get_fullName() {return _fullName;}
-	public void set_fullName(String _fullName) {this._fullName = _fullName;}
+//	public String get_fullName() {return _fullName;}
+//	public void set_fullName(String _fullName) {this._fullName = _fullName;}
 
 	public Float get_rate() {return _rate;}
 	public void set_rate(Float _rate) {this._rate = _rate;}
@@ -32,6 +32,6 @@ public class Currency {
 	@Override
 	public String toString() {
 		//return super.toString();
-		return "[Currency] shortname: " + _shortName + " fullName: " + _fullName + " rate: " + _rate; // " date: " + _date;
+		return "[Currency] shortname: " + _shortName + " rate: " + _rate; // " fullName: " + _fullName    " date: " + _date;
 	}
 }
