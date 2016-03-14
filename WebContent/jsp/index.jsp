@@ -209,7 +209,7 @@
 
 		<div class="floating-box-container">
 			<div class="floating-box" id="floating-box-top">
-				<p>Currency converter</p>
+				<p><fmt:message key="label.title" /></p>
 			</div>
 		</div>
 
@@ -265,7 +265,8 @@
 											var="item">
 											<option id="input_${item._shortName}"
 												value="${item._shortName}">${item._shortName} -
-												${item._fullName} + <fmt:message key="currency.AED" /></option>
+												<fmt:message key="currency.${item._shortName}" /></option>
+												<!-- ${item._fullName} +  -->
 										</c:forEach>
 								</select></td>
 							</tr>
@@ -295,7 +296,7 @@
 					<!-- <input type="submit" value="Done">  -->
 					<br>
 					<!-- <button class="gradientButton" type="submit" value="">Done</button>  -->
-					<input class="gradientButton" type="submit" value="Done"> <br>
+					<input class="gradientButton" type="submit" value="<fmt:message key="label.done" />"> <br>
 				</form>
 
 				<div id="errorsTableContainer">
