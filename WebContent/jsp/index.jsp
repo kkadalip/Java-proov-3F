@@ -285,9 +285,9 @@
 										<!--<option value="empty"></option>-->
 										<c:forEach items="${requestScope['displayedCurrencies']}"
 											var="item">
-											<option id="input_${item._shortName}"
-												value="${item._shortName}">${item._shortName}-
-												${item._fullName}</option>
+											<option id="output_${item._shortName}"
+												value="${item._shortName}">${item._shortName} -
+												<fmt:message key="currency.${item._shortName}" /></option>
 										</c:forEach>
 								</select></td>
 							</tr>
