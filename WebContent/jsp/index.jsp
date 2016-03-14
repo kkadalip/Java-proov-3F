@@ -23,6 +23,9 @@
     style-src 'self' 'unsafe-inline' https://ajax.googleapis.com;
     media-src 'self';">
 
+
+<link rel="shortcut icon" href="static/lazydraw.ico" />
+
 <!-- MY OWN CSS AND JS -->
 <link rel="stylesheet" type="text/css" href="static/style.css">
 <script src="static/default.js"></script>
