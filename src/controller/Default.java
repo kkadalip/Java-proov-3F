@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.Date;
 //import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -32,6 +34,16 @@ public class Default extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		log.info("[doGet] START");
 		HttpSession httpSession = request.getSession(true);
+		
+		//Locale defaultLocale = Locale.getDefault();
+		Locale englishLocale = new Locale("en"); //, "US");
+		Locale estonianLocale = new Locale("et");
+		ResourceBundle bundle1 = ResourceBundle.getBundle("currencies",englishLocale);
+		request.setAttribute("displayValues", bundle1);
+		
+		log.debug("AUD:" + bundle1.getString("currency.AUD"));
+		log.debug("NOK:" + bundle1.getString("currency.NOK"));	
+
 
 		// DATE IN SESSION? (also try to convert + parse check, otherwise fall back to default etc.. TODO. (JS AJAX?)
 		String sessionDate = (String) httpSession.getAttribute("sessionDate");
@@ -52,7 +64,7 @@ public class Default extends HttpServlet {
 
 		request.getRequestDispatcher("jsp/index.jsp").forward(request, response);
 	}
-
+	
 	// NOT USING:
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		log.info("[doPost] START");
