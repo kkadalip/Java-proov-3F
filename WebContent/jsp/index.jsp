@@ -5,6 +5,10 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
+<c:set var="language" value="${not empty param.language ? param.language : not empty language ? language : pageContext.request.locale}" scope="session" />
+<fmt:setLocale value="${language}" />
+<fmt:setBundle basename="text" />
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -212,6 +216,13 @@
 
 		<div class="floating-box-container">
 			<div class="floating-box" id="floating-box-main">
+			    <form>
+			        <select id="language" name="language" onchange="submit()">
+			            <option value="en" ${language == 'en' ? 'selected' : ''}>English</option>
+			            <option value="et" ${language == 'et' ? 'selected' : ''}>Estonian</option>
+			        </select>
+			    </form>
+			
 				<form action="" method="POST" id="someform">
 					<!-- 
 			<select>
@@ -236,17 +247,17 @@
 					<table style="table-layour: fixed; width: 100%">
 						<tbody>
 							<tr>
-								<td class="tdInfo">Date:</td>
+								<td class="tdInfo"><fmt:message key="label.date" /></td>
 								<td><input required="required" class="hoverShadow dataEntry" type="text"
 									id="datepicker" name="selectedDate"></td>
 							</tr>
 							<tr>
-								<td class="tdInfo">Amount:</td>
+								<td class="tdInfo"><fmt:message key="label.inputAmount" /></td>
 								<td><input required="required" class="hoverShadow dataEntry" type="number"
 									min="0" step="any" name="inputMoneyAmount" placeholder="" /></td>
 							</tr>
 							<tr>
-								<td class="tdInfo">Input:</td>
+								<td class="tdInfo"><fmt:message key="label.inputCurrency" /></td>
 								<!-- <td style="width:3px"></td>  -->
 								<td><select id="selectInputCurrency"
 									class="hoverShadow dataSelect" name="inputCurrency">
@@ -254,7 +265,7 @@
 											var="item">
 											<option id="input_${item._shortName}"
 												value="${item._shortName}">${item._shortName} -
-												${item._fullName}</option>
+												${item._fullName} + <fmt:message key="currency.AED" /></option>
 										</c:forEach>
 								</select></td>
 							</tr>
@@ -266,7 +277,7 @@
 							<tr>
 								<!-- <td> <input class="hoverShadow dataEntry" type="text" placeholder=""
 								name="outputResult" id="outResult" /> </td> -->
-								<td class="tdInfo">Output:</td>
+								<td class="tdInfo"><fmt:message key="label.outputCurrency" /></td>
 								<!-- <td style="width:3px"></td>  -->
 								<td><select id="selectOutputCurrency"
 									class="hoverShadow dataSelect" name="outputCurrency">

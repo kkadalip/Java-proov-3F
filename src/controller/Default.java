@@ -36,13 +36,13 @@ public class Default extends HttpServlet {
 		HttpSession httpSession = request.getSession(true);
 		
 		//Locale defaultLocale = Locale.getDefault();
-		Locale englishLocale = new Locale("en"); //, "US");
-		Locale estonianLocale = new Locale("et");
-		ResourceBundle bundle1 = ResourceBundle.getBundle("currencies",englishLocale);
-		request.setAttribute("displayValues", bundle1);
-		
-		log.debug("AUD:" + bundle1.getString("currency.AUD"));
-		log.debug("NOK:" + bundle1.getString("currency.NOK"));	
+//		Locale englishLocale = new Locale("en"); //, "US");
+//		Locale estonianLocale = new Locale("et");
+//		ResourceBundle bundle1 = ResourceBundle.getBundle("currencies",englishLocale);
+//		request.setAttribute("displayValues", bundle1);
+//		
+//		log.debug("AUD:" + bundle1.getString("currency.AUD"));
+//		log.debug("NOK:" + bundle1.getString("currency.NOK"));	
 
 
 		// DATE IN SESSION? (also try to convert + parse check, otherwise fall back to default etc.. TODO. (JS AJAX?)
