@@ -154,8 +154,8 @@ public class Default extends HttpServlet {
 			String selectedLanguage = request.getParameter("language");
 			log.debug("[doPost] POST SELECTED language is: " + selectedLanguage);
 			httpSession.setAttribute("language", selectedLanguage);
-			response.sendRedirect("");
-			
+			doGet(request, response);
+//			response.sendRedirect("");
 //			request.setAttribute("language", selectedLanguage);
 //			request.getRequestDispatcher("jsp/index.jsp").forward(request, response);
 		}
