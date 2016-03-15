@@ -208,8 +208,8 @@
 	<div id="allFloatBoxesContainer">
 
 		<div class="floating-box-container">
-			<div class="floating-box" id="floating-box-top">
-				<p><fmt:message key="label.title" /></p>
+			<div class="floating-box unselectable" id="floating-box-top">
+				<p unselectable="on"><fmt:message key="label.title" /></p>
 			</div>
 		</div>
 
@@ -247,17 +247,17 @@
 					<table style="table-layour: fixed; width: 100%">
 						<tbody>
 							<tr>
-								<td class="tdInfo"><fmt:message key="label.date" /></td>
+								<td unselectable="on" class="tdInfo unselectable"><fmt:message key="label.date" />:</td>
 								<td><input required="required" class="hoverShadow dataEntry" type="text"
 									id="datepicker" name="selectedDate"></td>
 							</tr>
 							<tr>
-								<td class="tdInfo"><fmt:message key="label.inputAmount" /></td>
+								<td unselectable="on" class="tdInfo unselectable"><fmt:message key="label.inputAmount" />:</td>
 								<td><input required="required" class="hoverShadow dataEntry" type="number"
 									min="0" step="any" name="inputMoneyAmount" placeholder="" /></td>
 							</tr>
 							<tr>
-								<td class="tdInfo"><fmt:message key="label.inputCurrency" /></td>
+								<td unselectable="on" class="tdInfo unselectable"><fmt:message key="label.inputCurrency" />:</td>
 								<!-- <td style="width:3px"></td>  -->
 								<td><select id="selectInputCurrency"
 									class="hoverShadow dataSelect" name="inputCurrency">
@@ -277,7 +277,7 @@
 							<tr>
 								<!-- <td> <input class="hoverShadow dataEntry" type="text" placeholder=""
 								name="outputResult" id="outResult" /> </td> -->
-								<td class="tdInfo"><fmt:message key="label.outputCurrency" /></td>
+								<td unselectable="on" class="tdInfo unselectable"><fmt:message key="label.outputCurrency" />:</td>
 								<!-- <td style="width:3px"></td>  -->
 								<td><select id="selectOutputCurrency"
 									class="hoverShadow dataSelect" name="outputCurrency">
