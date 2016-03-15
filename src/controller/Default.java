@@ -51,6 +51,7 @@ public class Default extends HttpServlet {
 			//Locale selectedLocale = new Locale(selectedLanguage);
 			//ResourceBundle textBundle = ResourceBundle.getBundle("text",selectedLocale);
 			///request.setAttribute("displayValues", textBundle);
+			request.setAttribute("language", selectedLanguage);
 		}else{
 			log.debug("[doGet] selectedLanguage is null, setting it to english as default");
 			request.setAttribute("language", "en");
@@ -151,7 +152,7 @@ public class Default extends HttpServlet {
 		}else{
 			log.debug("[doPost] REGULAR POST!!!"); // Handle regular (JSP) response here.
 			String selectedLanguage = request.getParameter("language");
-			log.debug("[doPost] language is: " + selectedLanguage);
+			log.debug("[doPost] POST SELECTED language is: " + selectedLanguage);
 			httpSession.setAttribute("language", selectedLanguage);
 			response.sendRedirect("");
 			

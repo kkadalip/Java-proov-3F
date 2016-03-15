@@ -215,8 +215,8 @@
 
 
 		<div class="floating-box-container">
-			<div class="floating-box" id="floating-box-main">			
-				<form action="" method="POST" id="someform">
+			<div class="floating-box" id="floating-box-main">
+
 					<!-- 
 			<select>
 				<option value="empty"></option>
@@ -236,71 +236,75 @@
 				<button id="ajaxbutton3">press here 3</button>
 				<select id="someselect3"></select> <br> <br>
 				 -->
-
-					<table style="table-layour: fixed; width: 100%">
-							<tr>
-								<td unselectable="on" class="tdInfo unselectable"><fmt:message key="label.language" />:</td>
-								<td>
-								    <form>
-								        <select class="hoverShadow dataSelect" id="language" name="language" onchange="submit()">
-								            <option value="en" ${language == 'en' ? 'selected' : ''}>English</option>
-								            <option value="et" ${language == 'et' ? 'selected' : ''}>Estonian</option>
-								        </select>
-								    </form>
-							    </td>
-							</tr>
+			 	<table style="width: 100%">
+					<tr>
+						<td unselectable="on" class="tdInfo unselectable"><fmt:message key="label.language" />:</td>
+						<td>
+						    <form method="POST">
+						        <select class="hoverShadow dataSelect" id="language" name="language" onchange="submit()">
+						            <option value="en" ${language == 'en' ? 'selected' : ''}>English</option>
+						            <option value="et" ${language == 'et' ? 'selected' : ''}>Estonian</option>
+						        </select>
+						    </form>
+					    </td>
+					</tr>
+			 	</table>
+				<form action="" method="POST" id="someform">
+					<table style="width: 100%">
+						<tbody>
+								<tr>
+									<td unselectable="on" class="tdInfo unselectable"><fmt:message key="label.date" />:</td>
+									<td><input required="required" class="hoverShadow dataEntry" type="text"
+										id="datepicker" name="selectedDate"></td>
+								</tr>
+								<tr>
+									<td unselectable="on" class="tdInfo unselectable"><fmt:message key="label.inputAmount" />:</td>
+									<td><input required="required" class="hoverShadow dataEntry" type="number"
+										min="0" step="any" name="inputMoneyAmount" placeholder="" /></td>
+								</tr>
+								<tr>
+									<td unselectable="on" class="tdInfo unselectable"><fmt:message key="label.inputCurrency" />:</td>
+									<!-- <td style="width:3px"></td>  -->
+									<td><select id="selectInputCurrency"
+										class="hoverShadow dataSelect" name="inputCurrency">
+											<c:forEach items="${requestScope['displayedCurrencies']}"
+												var="item">
+												<option id="input_${item}"
+													value="${item}">${item} -
+													<fmt:message key="currency.${item}" /></option>
+											</c:forEach>
+									</select></td>
+								</tr>
+								<tr>
+									<td></td>
+									<td colspan="2"><button id="swapCurrenciesBtn"
+											type="button" style="font-size:12px; margin:0; padding:0;" onClick="swapCurrencies();">▲<br>▼</button></td>
+								</tr>
+								<tr>
+									<!-- <td> <input class="hoverShadow dataEntry" type="text" placeholder=""
+									name="outputResult" id="outResult" /> </td> -->
+									<td unselectable="on" class="tdInfo unselectable"><fmt:message key="label.outputCurrency" />:</td>
+									<!-- <td style="width:3px"></td>  -->
+									<td><select id="selectOutputCurrency"
+										class="hoverShadow dataSelect" name="outputCurrency">
+											<!--<option value="empty"></option>-->
+											<c:forEach items="${requestScope['displayedCurrencies']}"
+												var="item">
+												<option id="output_${item}"
+													value="${item}">${item} -
+													<fmt:message key="currency.${item}" /></option>
+											</c:forEach>
+									</select></td>
+								</tr>
 							
-							<tr>
-								<td unselectable="on" class="tdInfo unselectable"><fmt:message key="label.date" />:</td>
-								<td><input required="required" class="hoverShadow dataEntry" type="text"
-									id="datepicker" name="selectedDate"></td>
-							</tr>
-							<tr>
-								<td unselectable="on" class="tdInfo unselectable"><fmt:message key="label.inputAmount" />:</td>
-								<td><input required="required" class="hoverShadow dataEntry" type="number"
-									min="0" step="any" name="inputMoneyAmount" placeholder="" /></td>
-							</tr>
-							<tr>
-								<td unselectable="on" class="tdInfo unselectable"><fmt:message key="label.inputCurrency" />:</td>
-								<!-- <td style="width:3px"></td>  -->
-								<td><select id="selectInputCurrency"
-									class="hoverShadow dataSelect" name="inputCurrency">
-										<c:forEach items="${requestScope['displayedCurrencies']}"
-											var="item">
-											<option id="input_${item}"
-												value="${item}">${item} -
-												<fmt:message key="currency.${item}" /></option>
-										</c:forEach>
-								</select></td>
-							</tr>
-							<tr>
-								<td></td>
-								<td colspan="2"><button id="swapCurrenciesBtn"
-										type="button" style="font-size:12px; margin:0; padding:0;" onClick="swapCurrencies();">▲<br>▼</button></td>
-							</tr>
-							<tr>
-								<!-- <td> <input class="hoverShadow dataEntry" type="text" placeholder=""
-								name="outputResult" id="outResult" /> </td> -->
-								<td unselectable="on" class="tdInfo unselectable"><fmt:message key="label.outputCurrency" />:</td>
-								<!-- <td style="width:3px"></td>  -->
-								<td><select id="selectOutputCurrency"
-									class="hoverShadow dataSelect" name="outputCurrency">
-										<!--<option value="empty"></option>-->
-										<c:forEach items="${requestScope['displayedCurrencies']}"
-											var="item">
-											<option id="output_${item}"
-												value="${item}">${item} -
-												<fmt:message key="currency.${item}" /></option>
-										</c:forEach>
-								</select></td>
-							</tr>
 						</tbody>
 					</table>
+					</form>
 					<!-- <input type="submit" value="Done">  -->
 					<br>
 					<!-- <button class="gradientButton" type="submit" value="">Done</button>  -->
 					<input class="gradientButton" type="submit" value="<fmt:message key="label.done" />"> <br>
-				</form>
+				
 
 				<div id="errorsTableContainer">
 				
