@@ -217,7 +217,7 @@
 		<div class="floating-box-container">
 			<div class="floating-box" id="floating-box-main">
 			    <form>
-			        <select id="language" name="language" onchange="submit()">
+			        <select class="hoverShadow dataSelect" id="language" name="language" onchange="submit()">
 			            <option value="en" ${language == 'en' ? 'selected' : ''}>English</option>
 			            <option value="et" ${language == 'et' ? 'selected' : ''}>Estonian</option>
 			        </select>
