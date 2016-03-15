@@ -111,12 +111,12 @@ public class Readxml {
 		Float fisLTinputRate = fisToRateLT(getFisForX(context, bankOfLTurl,bankOfLTfileName),inputCurrency);
 		Float fisLToutputRate = fisToRateLT(getFisForX(context, bankOfLTurl,bankOfLTfileName),outputCurreny);
 		
-		if(fisESTinputRate != null){
+		if(fisLTinputRate != null){
 			log.debug("[calculateResults] going to parse fisLTinputRate: " + fisLTinputRate.toString());
 		}else{
 			log.debug("[calculateResults] fisLTinputRate IS NULL!");
 		}
-		if(fisESToutputRate != null){
+		if(fisLToutputRate != null){
 			log.debug("[calculateResults]  ...and outputrate fisLToutputRate: " + fisLToutputRate.toString());
 		}else{
 			log.debug("[calculateResults] fisLToutputRate IS NULL!");
@@ -181,7 +181,8 @@ public class Readxml {
 		return dateInUrl;
 	}
 	// ATM USING ONLY FOR DOWNLOAD + DISPLAY:
-	public static List<Currency> downloadAllForDate(ServletContext context, String selectedDate){ //, Date date){
+//	public static List<Currency> downloadAllForDate(ServletContext context, String selectedDate){ //, Date date){
+	public static List<String> downloadAllForDate(ServletContext context, String selectedDate){ //, Date date){
 		//log.debug("[downloadAllForDate]");
 		log.debug("[downloadAllForDate] selectedDate " + selectedDate);
 		
@@ -199,10 +200,32 @@ public class Readxml {
 		FileInputStream fisEstonia = getFisForX(context, bankOfEstonia,"bankOfEstonia-"+dateInUrl+".xml");
 		//fisEstonia = getFisForX(context, bankOfEstonia,"bankOfEstonia-"+timeString+".xml");
 		FileInputStream fisLithuania = getFisForX(context, bankOfLithuania,"bankOfLithuania-"+dateInUrl+".xml");
-		
-		List<Currency> bankOfEstoniaCurrencies = fisToCurrencies(fisEstonia);
+
 		// TODO
-		List<Currency> bankOfLithuaniaCurrencies = fisToCurrencies(fisLithuania);
+//		List<Currency> bankOfEstoniaCurrencies = fisToCurrencies(fisEstonia);
+//		List<Currency> bankOfLithuaniaCurrencies = fisToCurrencies(fisLithuania);
+		
+		List<String> uniqueCurrencies = new ArrayList<String>();
+
+		List<String> bankOfEstoniaCurrencies = fisToCurrencies(fisEstonia);
+		List<String> bankOfLithuaniaCurrencies = fisToCurrencies(fisLithuania);
+		
+		List<List<String>> listsOfCurrencies = new ArrayList<List<String>>();
+		listsOfCurrencies.add(bankOfEstoniaCurrencies);
+		listsOfCurrencies.add(bankOfLithuaniaCurrencies);
+		
+		for(List<String> currencyList : listsOfCurrencies){
+			if(currencyList != null && !currencyList.isEmpty()){
+				for(String currency : currencyList){
+					if(!uniqueCurrencies.contains(currency)){
+						uniqueCurrencies.add(currency);
+					}
+				}
+			}else{
+				log.error("[downloadAllForDate] currencyList null or empty!!!");
+			}
+
+		}
 		
 		//List<List<Currency>> listOfCurrencies = null;
 		//listOfCurrencies.add(bankOfEstoniaCurrencies);
@@ -212,7 +235,8 @@ public class Readxml {
 		
 		// I should return the ones to display and then separately all of the lists in a list??
 			
-		return bankOfEstoniaCurrencies;
+//		return bankOfEstoniaCurrencies;
+		return uniqueCurrencies;
 	}
 	public static FileInputStream getFisForX (ServletContext context, String downloadURL, String fileName){
 		log.debug("[getFileForX]");
@@ -335,10 +359,12 @@ public class Readxml {
 		}
 		return resultRate;
 	}
-	public static List<Currency> fisToCurrencies(FileInputStream fis){
+//	public static List<Currency> fisToCurrencies(FileInputStream fis){
+	public static List<String> fisToCurrencies(FileInputStream fis){
 		log.debug("[fisToCurrencies]");
 		try {
-			List<Currency> returnCurrencies = new ArrayList<Currency>();
+//			List<Currency> returnCurrencies = new ArrayList<Currency>();
+			List<String> returnCurrencies = new ArrayList<String>();
 			Document doc = fisToDocument(fis);
 			log.debug("Root element: " + doc.getDocumentElement().getNodeName());
 
@@ -356,18 +382,19 @@ public class Readxml {
 
 					String name = eElement.getAttribute("name"); // shortName
 					//String text = eElement.getAttribute("text"); // fullName NOT USING ANYMORE
-					Float rate;
-					NumberFormat nf = new DecimalFormat ("#,#");
-					try{
-						rate = nf.parse(eElement.getAttribute("rate")).floatValue();
-						//rate = Float.parseFloat(eElement.getAttribute("rate"));
-					}catch(NumberFormatException e){
-						e.printStackTrace();
-						rate = null;
-					}
+					// NOT USING RATE ANYMORE
+//					Float rate;
+//					NumberFormat nf = new DecimalFormat ("#,#");
+//					try{
+//						rate = nf.parse(eElement.getAttribute("rate")).floatValue();
+//						//rate = Float.parseFloat(eElement.getAttribute("rate"));
+//					}catch(NumberFormatException e){
+//						e.printStackTrace();
+//						rate = null;
+//					}
 					log.debug("name: " + eElement.getAttribute("name") + " text: " + eElement.getAttribute("text") + " rate: " + eElement.getAttribute("rate"));
-					Currency addCurrency = new Currency(name, rate); //new Currency(name, text, rate);
-					returnCurrencies.add(addCurrency);
+//					Currency addCurrency = new Currency(name, rate); //new Currency(name, text, rate);
+					returnCurrencies.add(name);
 				}
 			}
 			return returnCurrencies;	

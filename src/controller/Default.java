@@ -54,7 +54,10 @@ public class Default extends HttpServlet {
 		// AT FIRST DOWNLOAD FOR DEFAULT DATE?
 		//String selectedDate = request.getParameter("selectedDate");
 		//log.debug("[doGet] selectedDate: " + selectedDate);
-		List<Currency> displayedCurrencies = Readxml.downloadAllForDate(getServletContext(), sessionDate); //"30.12.2010");
+		// TODO MAKE SURE THE LIST IS DYNAMIC!
+//		List<Currency> displayedCurrencies = Readxml.downloadAllForDate(getServletContext(), sessionDate); //"30.12.2010");
+//		request.setAttribute("displayedCurrencies", displayedCurrencies);
+		List<String> displayedCurrencies = Readxml.downloadAllForDate(getServletContext(), sessionDate); //"30.12.2010");
 		request.setAttribute("displayedCurrencies", displayedCurrencies);
 
 		//ServletContext context = getContext();
