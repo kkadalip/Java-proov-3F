@@ -215,14 +215,7 @@
 
 
 		<div class="floating-box-container">
-			<div class="floating-box" id="floating-box-main">
-			    <form>
-			        <select class="hoverShadow dataSelect" id="language" name="language" onchange="submit()">
-			            <option value="en" ${language == 'en' ? 'selected' : ''}>English</option>
-			            <option value="et" ${language == 'et' ? 'selected' : ''}>Estonian</option>
-			        </select>
-			    </form>
-			
+			<div class="floating-box" id="floating-box-main">			
 				<form action="" method="POST" id="someform">
 					<!-- 
 			<select>
@@ -245,7 +238,18 @@
 				 -->
 
 					<table style="table-layour: fixed; width: 100%">
-						<tbody>
+							<tr>
+								<td unselectable="on" class="tdInfo unselectable"><fmt:message key="label.language" />:</td>
+								<td>
+								    <form>
+								        <select class="hoverShadow dataSelect" id="language" name="language" onchange="submit()">
+								            <option value="en" ${language == 'en' ? 'selected' : ''}>English</option>
+								            <option value="et" ${language == 'et' ? 'selected' : ''}>Estonian</option>
+								        </select>
+								    </form>
+							    </td>
+							</tr>
+							
 							<tr>
 								<td unselectable="on" class="tdInfo unselectable"><fmt:message key="label.date" />:</td>
 								<td><input required="required" class="hoverShadow dataEntry" type="text"

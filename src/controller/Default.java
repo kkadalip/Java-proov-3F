@@ -43,6 +43,18 @@ public class Default extends HttpServlet {
 //		
 //		log.debug("AUD:" + bundle1.getString("currency.AUD"));
 //		log.debug("NOK:" + bundle1.getString("currency.NOK"));	
+		
+//		String selectedLanguage = (String) request.getAttribute("language");
+		String selectedLanguage = (String) httpSession.getAttribute("language");
+		if(selectedLanguage != null){
+			log.debug("[doGet] have selectedLanguage, it is: " + selectedLanguage);
+			//Locale selectedLocale = new Locale(selectedLanguage);
+			//ResourceBundle textBundle = ResourceBundle.getBundle("text",selectedLocale);
+			///request.setAttribute("displayValues", textBundle);
+		}else{
+			log.debug("[doGet] selectedLanguage is null, setting it to english as default");
+			request.setAttribute("language", "en");
+		}
 
 
 		// DATE IN SESSION? (also try to convert + parse check, otherwise fall back to default etc.. TODO. (JS AJAX?)
@@ -71,7 +83,7 @@ public class Default extends HttpServlet {
 	// NOT USING:
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		log.info("[doPost] START");
-		//HttpSession httpSession = request.getSession(true);
+		HttpSession httpSession = request.getSession(true);
 		boolean ajax = "XMLHttpRequest".equals(request.getHeader("X-Requested-With"));
 		if(ajax){
 			log.debug("[doPost] AJAX POST!!!");
@@ -137,7 +149,14 @@ public class Default extends HttpServlet {
 				response.getWriter().write(json);
 			}
 		}else{
-			log.error("[doPost] REGULAR POST!!!"); // Handle regular (JSP) response here.
+			log.debug("[doPost] REGULAR POST!!!"); // Handle regular (JSP) response here.
+			String selectedLanguage = request.getParameter("language");
+			log.debug("[doPost] language is: " + selectedLanguage);
+			httpSession.setAttribute("language", selectedLanguage);
+			response.sendRedirect("");
+			
+//			request.setAttribute("language", selectedLanguage);
+//			request.getRequestDispatcher("jsp/index.jsp").forward(request, response);
 		}
 		log.info("[doPost] END");
 	}
