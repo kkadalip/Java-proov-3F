@@ -122,22 +122,25 @@ public class Readxml {
 			log.debug("[calculateResults] fisLToutputRate IS NULL!");
 		}
 		
-		DecimalFormat df = new DecimalFormat(); // new DecimalFormat("#.#");
-		DecimalFormatSymbols symbols = new DecimalFormatSymbols();
-		symbols.setDecimalSeparator(',');
-		//symbols.setGroupingSeparator(' ');
-		df.setDecimalFormatSymbols(symbols);
-		//df.parse(p);
-		//float f = df.parse(str).floatValue();
-		
 		List<Result> resultsList = new ArrayList<Result>();
 		try {
 			log.debug("[calculateResults] PARSING if not null obv");
 			if(fisESTinputRate != null && fisESToutputRate != null){
+				DecimalFormat df = new DecimalFormat(); // new DecimalFormat("#.#");
+				DecimalFormatSymbols symbols = new DecimalFormatSymbols();
+				symbols.setDecimalSeparator(',');
+				symbols.setGroupingSeparator(' ');
+				//symbols.setGroupingSeparator(' ');
+				df.setDecimalFormatSymbols(symbols);
+				//df.parse(p);
+				//float f = df.parse(str).floatValue();
+				
 				Float inputCurrencyFloatEST = df.parse(fisESTinputRate).floatValue(); // Float.parseFloat(fisEstoniaInputRate);
 				Float outputCurrencyFloatEST = df.parse(fisESToutputRate).floatValue(); // Float.parseFloat(fisEstoniaOutputRate);
 				if(inputCurrencyFloatEST != null && outputCurrencyFloatEST != null && inputMoneyAmount != null){
 					Float outputAmountEstonia = inputCurrencyFloatEST / outputCurrencyFloatEST * inputMoneyAmount;
+					log.debug("[calculateResults]  input: " + inputCurrencyFloatEST + " / " + outputCurrencyFloatEST + " * " +  inputMoneyAmount);
+					log.debug("[calculateResults]  Bank of Estonia RESULT: " + outputAmountEstonia.toString());
 					resultsList.add(new Result("Bank of Estonia", outputAmountEstonia.toString()));
 				}
 			}else{
@@ -147,6 +150,7 @@ public class Readxml {
 			
 			if(fisLTinputRate != null && fisLToutputRate != null && inputMoneyAmount != null){
 				Float outputAmountLithuania = fisLTinputRate / fisLToutputRate * inputMoneyAmount;
+				log.debug("Bank of Lithuania RESULT: " + outputAmountLithuania.toString());
 				resultsList.add(new Result("Bank of Lithuania", outputAmountLithuania.toString()));
 			}else{
 				log.error("Bank of Lithuania DOES NOT HAVE RESULT!");
