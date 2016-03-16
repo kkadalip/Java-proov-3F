@@ -141,30 +141,13 @@ $(function() {
 </head>
 <body>
 	<div class="floating-box-container">
+		<!-- 
 		<div class="floating-box unselectable" id="floating-box-top">
 			<p unselectable="on"><fmt:message key="label.title" /></p>
 		</div>
-		<br>
-		<div class="floating-box" id="floating-box-main">
-				<!-- 
-		<select>
-			<option value="empty"></option>
-			<option value="AED">AED - Araabia Ühendemiraatide dirhem</option>
-			<option value="AFN">ARS - Argentina peeso</option>
-			<option value="ALL">AUD - Austraalia dollar</option>
-		</select> 
 		 -->
-
-				<!-- 
-			<button id="ajaxbutton">press here</button>
-			<div id="somediv">eh</div>
-			<br>
-			<button id="ajaxbutton2">press here 2</button>
-			<div id="somediv2">eh2</div>
-			<br>
-			<button id="ajaxbutton3">press here 3</button>
-			<select id="someselect3"></select> <br> <br>
-			 -->
+		<br>
+		<div id="floating-box-main"  class="floating-box">
 		 	<table style="width: 100%">
 				<tr>
 					<td unselectable="on" class="tdInfo unselectable"><fmt:message key="label.language" />:</td>
@@ -180,6 +163,9 @@ $(function() {
 		 	</table>
 			<form action="" method="POST" id="someForm">
 				<table style="width: 100%">
+					<tr>
+						<td colspan="2" unselectable="on" class="unselectable" id="td-title"><fmt:message key="label.title" /></td>
+					</tr>
 					<tbody>
 							<tr>
 								<td unselectable="on" class="tdInfo unselectable"><fmt:message key="label.date" />:</td>
@@ -240,6 +226,6 @@ $(function() {
 			<div id="errorsTableContainer"></div>
 				<div id="resultsTableContainer"></div>
 			</div>
-		</div>
+	</div>
 </body>
 </html>
