@@ -72,8 +72,8 @@ public class Readxml {
 		String bankOfESTurl = "http://statistika.eestipank.ee/Reports?type=curd&format=xml&date1="+dateInUrl+"&lng=est&print=off"; //String bankOfEstonia = "http://statistika.eestipank.ee/Reports?type=curd&format=xml&date1=2010-12-30&lng=est&print=off";		
 		String bankofESTfileName = "bankOfEstonia-"+dateInUrl+".xml";//String bankofEST = "bankOfEstonia-2010-12-30.xml";
 		BankOfEstonia bankEST = new BankOfEstonia();
-		Float fisESTinputRate = bankEST.fisToRate(getFisForX(context, bankOfESTurl,bankofESTfileName),inputCurrency);
-		Float fisESToutputRate = bankEST.fisToRate(getFisForX(context, bankOfESTurl,bankofESTfileName),outputCurreny);
+		Float fisESTinputRate = bankEST.fisToRate(BankUtil.getFisForX(context, bankOfESTurl,bankofESTfileName),inputCurrency);
+		Float fisESToutputRate = bankEST.fisToRate(BankUtil.getFisForX(context, bankOfESTurl,bankofESTfileName),outputCurreny);
 //		String fisESTinputRate = fisToRateEST(getFisForX(context, bankOfESTurl,bankofESTfileName),inputCurrency);
 //		String fisESToutputRate = fisToRateEST(getFisForX(context, bankOfESTurl,bankofESTfileName),outputCurreny);
 		
@@ -93,8 +93,8 @@ public class Readxml {
 		String bankOfLTurl = "http://webservices.lb.lt/ExchangeRates/ExchangeRates.asmx/getExchangeRatesByDate?Date="+dateInUrl;
 		String bankOfLTfileName = "bankOfLithuania-"+dateInUrl+".xml"; //String bankOfLT = "bankOfLithuania-2010-12-30.xml";
 		BankOfLithuania bankLT = new BankOfLithuania();
-		Float fisLTinputRate = bankLT.fisToRate(getFisForX(context, bankOfLTurl,bankOfLTfileName),inputCurrency);
-		Float fisLToutputRate = bankLT.fisToRate(getFisForX(context, bankOfLTurl,bankOfLTfileName),outputCurreny);
+		Float fisLTinputRate = bankLT.fisToRate(BankUtil.getFisForX(context, bankOfLTurl,bankOfLTfileName),inputCurrency);
+		Float fisLToutputRate = bankLT.fisToRate(BankUtil.getFisForX(context, bankOfLTurl,bankOfLTfileName),outputCurreny);
 //		Float fisLTinputRate = fisToRateLT(getFisForX(context, bankOfLTurl,bankOfLTfileName),inputCurrency);
 //		Float fisLToutputRate = fisToRateLT(getFisForX(context, bankOfLTurl,bankOfLTfileName),outputCurreny);
 		
@@ -148,15 +148,14 @@ public class Readxml {
 		// FAILINIMEDEST LIST (model Bank nt), SIIN KÄIN NAD LÄBI JA PÄRIN VÄLJA ÕIGE ASJA + ARVUTAN?
 		return resultsList;
 	}
-	// 1. get currency from different banks
-	// 2. get rate
+
 //	public static float getCurrenyRate(Currency c){
 //		
 //		return 0;
 //	}
 	// ATM USING ONLY FOR DOWNLOAD + DISPLAY:
 //	public static List<Currency> downloadAllForDate(ServletContext context, String selectedDate){ //, Date date){
-	public static List<String> downloadAllForDate(ServletContext context, String selectedDate){ //, Date date){
+	public static List<String> downloadAllForDate(ServletContext context, String selectedDate){ //, Date date){ // TODO list of classes/banks
 		//log.debug("[downloadAllForDate]");
 		log.debug("[downloadAllForDate] selectedDate " + selectedDate);
 		
@@ -172,9 +171,9 @@ public class Readxml {
 		String bankOfLithuania = "http://webservices.lb.lt/ExchangeRates/ExchangeRates.asmx/getExchangeRatesByDate?Date="+dateInUrl; //"http://webservices.lb.lt/ExchangeRates/ExchangeRates.asmx/getExchangeRatesByDate?Date=2010-12-30";
 
 		// DOWNLOAD FOR X      URL(with date) and file name (eg eesti-2010-12-30)
-		FileInputStream fisEstonia = getFisForX(context, bankOfEstonia,"bankOfEstonia-"+dateInUrl+".xml");
+		FileInputStream fisEstonia = BankUtil.getFisForX(context, bankOfEstonia,"bankOfEstonia-"+dateInUrl+".xml");
 		//fisEstonia = getFisForX(context, bankOfEstonia,"bankOfEstonia-"+timeString+".xml");
-		FileInputStream fisLithuania = getFisForX(context, bankOfLithuania,"bankOfLithuania-"+dateInUrl+".xml");
+		FileInputStream fisLithuania = BankUtil.getFisForX(context, bankOfLithuania,"bankOfLithuania-"+dateInUrl+".xml");
 
 		// TODO
 //		List<Currency> bankOfEstoniaCurrencies = fisToCurrencies(fisEstonia);
@@ -212,36 +211,6 @@ public class Readxml {
 			
 //		return bankOfEstoniaCurrencies;
 		return uniqueCurrencies;
-	}
-	public static FileInputStream getFisForX (ServletContext context, String downloadURL, String fileName){
-		log.debug("[getFileForX]");
-		try {
-			FileInputStream fis;
-			String xmlFilesPath = "/WEB-INF/xml/";
-			URL resourceUrl = context.getResource(xmlFilesPath+fileName); //context.getResource("/WEB-INF/xml/eesti.xml");
-			if(resourceUrl == null){
-				log.debug("[getFileForX] LOCAL XML NOT FOUND, DOWNLOADING");
-				URL bankURL = new URL(downloadURL);
-				String path = context.getRealPath(xmlFilesPath);
-				String newFilePath = path+fileName;
-				System.out.println("newFilePath: " + newFilePath); // C:\Users\karlk\workspace\.metadata\.plugins\org.eclipse.wst.server.core\tmp1\wtpwebapps\Java-Proov-3F\WEB-INF\/WEB-INF/xml/eesti.xml
-				File newXmlFile = new File(newFilePath); //("WEB-INF/xml/eesti.xml"); // ./WEB-INF/xml/eesti.xml is the same thing				
-				FileUtils.copyURLToFile(bankURL, newXmlFile);
-				fis = new FileInputStream(newXmlFile);
-				//fis.close();
-			}else{
-				log.debug("[getFileForX] LOCAL XML FOUND");
-				fis = new FileInputStream(new File(resourceUrl.toURI()));
-			}
-			return fis;
-		} catch (MalformedURLException e) {
-			log.error("[getFileForX] url malformed!", e);
-		} catch (IOException e) {
-			log.error("[getFileForX] copyURLToFile failed!", e);
-		} catch (URISyntaxException e) {
-			log.error("[getFileForX] resourceUrl.toURI failed!", e);
-		} 
-		return null;
 	}
 
 //	public static List<Currency> fisToCurrencies(FileInputStream fis){
