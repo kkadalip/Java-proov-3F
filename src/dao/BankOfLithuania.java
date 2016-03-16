@@ -1,6 +1,8 @@
 package dao;
 
 import java.io.FileInputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
@@ -10,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 public class BankOfLithuania implements BankInterface {
 	static Logger log = LoggerFactory.getLogger(BankOfLithuania.class);
@@ -62,5 +65,22 @@ public class BankOfLithuania implements BankInterface {
 			log.error("[fisToRateLT] failed!", e);
 		}
 		return resultRate;
+	}
+
+	@Override
+	public List<String> fisToCurrencies(FileInputStream fis) {
+		log.debug("[fisToCurrencies]");
+		List<String> returnCurrencies = new ArrayList<String>();
+		Document doc = BankUtil.fisToDocument(fis); // TODO instead of fis get doc?
+		//XPath xPath = XPathFactory.newInstance().newXPath();
+		//String expression = "//currency";
+		//NodeList nList = (NodeList) xPath.compile(expression).evaluate(doc, XPathConstants.NODESET);
+		NodeList nList = doc.getElementsByTagName("currency"); // row
+		for (int i = 0; i < nList.getLength(); i++) {
+			String nodeValue = nList.item(i).getTextContent();
+			returnCurrencies.add(nodeValue);
+			log.debug("fisToCurrencies] nodeValue: " + nodeValue);
+		}
+		return returnCurrencies;
 	}
 }

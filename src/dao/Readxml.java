@@ -178,8 +178,10 @@ public class Readxml {
 		
 		List<String> uniqueCurrencies = new ArrayList<String>();
 
-		List<String> bankOfEstoniaCurrencies = BankUtil.fisToCurrencies(fisEstonia);
-		List<String> bankOfLithuaniaCurrencies = BankUtil.fisToCurrencies(fisLithuania);
+		BankOfEstonia bankEST = new BankOfEstonia();
+		List<String> bankOfEstoniaCurrencies = bankEST.fisToCurrencies(fisEstonia);
+		BankOfLithuania bankLT = new BankOfLithuania();
+		List<String> bankOfLithuaniaCurrencies = bankLT.fisToCurrencies(fisLithuania);
 		
 		List<List<String>> listsOfCurrencies = new ArrayList<List<String>>();
 		listsOfCurrencies.add(bankOfEstoniaCurrencies);

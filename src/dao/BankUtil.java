@@ -17,6 +17,9 @@ import java.util.List;
 import javax.servlet.ServletContext;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathFactory;
 
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
@@ -107,35 +110,6 @@ public class BankUtil {
 		}
 		return resultRate;
 	}
-	
-	public static List<String> fisToCurrencies(FileInputStream fis){
-		log.debug("[fisToCurrencies]");
-		try {
-			List<String> returnCurrencies = new ArrayList<String>();
-			Document doc = fisToDocument(fis);
-			log.debug("Root element: " + doc.getDocumentElement().getNodeName());
-
-			// FOLLOWING IS SPECIFIC TO CERTAIN XML:
-			NodeList nList = doc.getElementsByTagName("Currency"); // row
-			log.debug(nList.getLength() + " nodes found");
-
-			// CURRENCY ELEMENTS: // TODO REPLACE WITH XPATH
-			for (int temp = 0; temp < nList.getLength(); temp++) {
-				Node nNode = nList.item(temp);
-				if (nNode.getNodeType() == Node.ELEMENT_NODE) {
-					Element eElement = (Element) nNode;
-					String name = eElement.getAttribute("name"); // shortName
-					log.debug("name: " + eElement.getAttribute("name") + " text: " + eElement.getAttribute("text") + " rate: " + eElement.getAttribute("rate"));
-					returnCurrencies.add(name);
-				}
-			}
-			return returnCurrencies;	
-		} catch (Exception e) {
-			log.error("[fisToCurrencies] failed!", e);
-		}
-		return null;
-	}
-
 }
 
 

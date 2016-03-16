@@ -3,6 +3,8 @@ package dao;
 import java.io.FileInputStream;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
@@ -13,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 public class BankOfEstonia implements BankInterface {
 	static Logger log = LoggerFactory.getLogger(BankOfEstonia.class);
@@ -48,8 +51,47 @@ public class BankOfEstonia implements BankInterface {
 		}
 		return resultRate;
 	}
+	
+	public List<String> fisToCurrencies(FileInputStream fis){
+		log.debug("[fisToCurrencies]");
+		try {
+			List<String> returnCurrencies = new ArrayList<String>();
+			Document doc = BankUtil.fisToDocument(fis);
+			log.debug("Root element: " + doc.getDocumentElement().getNodeName());
+
+			// FOLLOWING IS SPECIFIC TO CERTAIN XML:
+			NodeList nList = doc.getElementsByTagName("Currency"); // row
+			log.debug(nList.getLength() + " nodes found");
+
+			// TODO
+//			XPath xPath = XPathFactory.newInstance().newXPath();
+//			String expression = "//item[currency='"+inputCurrency+"']/rate[.]";
+//			NodeList currencyNodes = (Node) xPath.compile(expression).evaluate(doc, XPathConstants.NODE);
+//			
+			// CURRENCY ELEMENTS: // TODO REPLACE WITH XPATH
+			// THIS ONLY TAKES FROM ATTRIBUTE SO ONLY WORKS FOR EST
+			for (int temp = 0; temp < nList.getLength(); temp++) {
+				Node nNode = nList.item(temp);
+				if (nNode.getNodeType() == Node.ELEMENT_NODE) {
+					Element eElement = (Element) nNode;
+					String name = eElement.getAttribute("name"); // shortName
+					log.debug("name: " + eElement.getAttribute("name") + " text: " + eElement.getAttribute("text") + " rate: " + eElement.getAttribute("rate"));
+					returnCurrencies.add(name);
+				}
+			}
+			return returnCurrencies;	
+		} catch (Exception e) {
+			log.error("[fisToCurrencies] failed!", e);
+		}
+		return null;
+	}
 
 }
+
+
+
+
+
 
 
 
