@@ -1,7 +1,7 @@
 package controller;
 
 import java.io.IOException;
-import java.text.DateFormat;
+//import java.text.DateFormat;
 //import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -9,8 +9,8 @@ import java.util.Calendar;
 import java.util.Date;
 //import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Locale;
-import java.util.ResourceBundle;
+//import java.util.Locale;
+//import java.util.ResourceBundle;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -18,7 +18,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.servlet.jsp.jstl.core.Config;
+//import javax.servlet.jsp.jstl.core.Config;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,7 +26,7 @@ import org.slf4j.LoggerFactory;
 import com.google.gson.Gson;
 
 import dao.BankUtil;
-import model.Currency;
+//import model.Currency;
 import model.Result;
 
 @WebServlet("")
@@ -47,7 +47,8 @@ public class Default extends HttpServlet {
 //		log.debug("NOK:" + bundle1.getString("currency.NOK"));	
 		
 //		String selectedLanguage = (String) httpSession.getAttribute("language");
-		String selectedLanguage = (String) request.getAttribute("language");
+//		String selectedLanguage = (String) request.getAttribute("language");
+		String selectedLanguage = request.getParameter("language");
 		if(selectedLanguage != null){
 			log.debug("[doGet] have selectedLanguage, it is: " + selectedLanguage);
 			//Locale selectedLocale = new Locale(selectedLanguage);
@@ -187,7 +188,8 @@ public class Default extends HttpServlet {
 			log.debug("[doPost] REGULAR POST!!!"); // Handle regular (JSP) response here.
 //			String selectedLanguage = request.getParameter("language");
 //			log.debug("[doPost] POST SELECTED language is: " + selectedLanguage);
-//			httpSession.setAttribute("language", selectedLanguage);
+////			httpSession.setAttribute("language", selectedLanguage);
+//			request.setAttribute("language", selectedLanguage);
 //			doGet(request, response);
 ////			response.sendRedirect("");
 ////			request.setAttribute("language", selectedLanguage);

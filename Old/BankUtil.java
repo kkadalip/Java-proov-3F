@@ -17,17 +17,17 @@ import java.util.List;
 import javax.servlet.ServletContext;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-//import javax.xml.xpath.XPath;
-//import javax.xml.xpath.XPathConstants;
-//import javax.xml.xpath.XPathFactory;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathFactory;
 
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
-//import org.w3c.dom.Element;
-//import org.w3c.dom.Node;
-//import org.w3c.dom.NodeList;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 import model.Result;
 
@@ -260,3 +260,63 @@ public class BankUtil {
 		return resultRate;
 	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+////public static List<Currency> fisToCurrencies(FileInputStream fis){
+//public static List<String> fisToCurrencies(FileInputStream fis){
+//	log.debug("[fisToCurrencies]");
+//	try {
+////		List<Currency> returnCurrencies = new ArrayList<Currency>();
+//		List<String> returnCurrencies = new ArrayList<String>();
+//		Document doc = fisToDocument(fis);
+//		log.debug("Root element: " + doc.getDocumentElement().getNodeName());
+//
+//		// FOLLOWING IS SPECIFIC TO CERTAIN XML:
+//		NodeList nList = doc.getElementsByTagName("Currency"); // row
+//		log.debug(nList.getLength() + " nodes found");
+//
+//		// CURRENCY ELEMENTS: // TODO REPLACE WITH XPATH
+//		for (int temp = 0; temp < nList.getLength(); temp++) {
+//			Node nNode = nList.item(temp);
+//			//System.out.println("\nCurrent Element :" + nNode.getNodeName()); // Current Element :Currency
+//			if (nNode.getNodeType() == Node.ELEMENT_NODE) {
+//				Element eElement = (Element) nNode;
+//				//System.out.println("I HAVE NODE!");
+//
+//				String name = eElement.getAttribute("name"); // shortName
+//				//String text = eElement.getAttribute("text"); // fullName NOT USING ANYMORE
+//				// NOT USING RATE ANYMORE
+////				Float rate;
+////				NumberFormat nf = new DecimalFormat ("#,#");
+////				try{
+////					rate = nf.parse(eElement.getAttribute("rate")).floatValue();
+////					//rate = Float.parseFloat(eElement.getAttribute("rate"));
+////				}catch(NumberFormatException e){
+////					e.printStackTrace();
+////					rate = null;
+////				}
+//				log.debug("name: " + eElement.getAttribute("name") + " text: " + eElement.getAttribute("text") + " rate: " + eElement.getAttribute("rate"));
+////				Currency addCurrency = new Currency(name, rate); //new Currency(name, text, rate);
+//				returnCurrencies.add(name);
+//			}
+//		}
+//		return returnCurrencies;	
+//	} catch (Exception e) {
+//		log.error("[fisToCurrencies] failed!", e);
+//	}
+//	return null;
+//}
