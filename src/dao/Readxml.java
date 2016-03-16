@@ -57,7 +57,8 @@ public class Readxml {
 	static Logger log = LoggerFactory.getLogger(Readxml.class); // info trace debug warn error
 	//static FileInputStream fisEstonia;
 	
-	public List<Result> calculateResults(ServletContext context, Float inputMoneyAmount, String inputCurrency, String outputCurreny, String selectedDate){ //, String date){
+	public List<Result> calculateResults(ServletContext context, Float inputMoneyAmount, String inputCurrency, String outputCurreny, String selectedDate){ //, List<Class> bankClasses){ //, String date){
+		//List<Class> bankClasses = new ArrayList<Class>();
 //	public static List<Result> calculateResults(ServletContext context, Float inputMoneyAmount, String inputCurrency, String outputCurreny, String selectedDate){ //, String date){
 		log.debug("[calculateResults]");
 		
@@ -149,10 +150,6 @@ public class Readxml {
 		return resultsList;
 	}
 
-//	public static float getCurrenyRate(Currency c){
-//		
-//		return 0;
-//	}
 	// ATM USING ONLY FOR DOWNLOAD + DISPLAY:
 //	public static List<Currency> downloadAllForDate(ServletContext context, String selectedDate){ //, Date date){
 	public static List<String> downloadAllForDate(ServletContext context, String selectedDate){ //, Date date){ // TODO list of classes/banks
@@ -181,8 +178,8 @@ public class Readxml {
 		
 		List<String> uniqueCurrencies = new ArrayList<String>();
 
-		List<String> bankOfEstoniaCurrencies = fisToCurrencies(fisEstonia);
-		List<String> bankOfLithuaniaCurrencies = fisToCurrencies(fisLithuania);
+		List<String> bankOfEstoniaCurrencies = BankUtil.fisToCurrencies(fisEstonia);
+		List<String> bankOfLithuaniaCurrencies = BankUtil.fisToCurrencies(fisLithuania);
 		
 		List<List<String>> listsOfCurrencies = new ArrayList<List<String>>();
 		listsOfCurrencies.add(bankOfEstoniaCurrencies);
@@ -213,50 +210,6 @@ public class Readxml {
 		return uniqueCurrencies;
 	}
 
-//	public static List<Currency> fisToCurrencies(FileInputStream fis){
-	public static List<String> fisToCurrencies(FileInputStream fis){
-		log.debug("[fisToCurrencies]");
-		try {
-//			List<Currency> returnCurrencies = new ArrayList<Currency>();
-			List<String> returnCurrencies = new ArrayList<String>();
-			Document doc = BankUtil.fisToDocument(fis);
-			log.debug("Root element: " + doc.getDocumentElement().getNodeName());
-
-			// FOLLOWING IS SPECIFIC TO CERTAIN XML:
-			NodeList nList = doc.getElementsByTagName("Currency"); // row
-			log.debug(nList.getLength() + " nodes found");
-
-			// CURRENCY ELEMENTS: // TODO REPLACE WITH XPATH
-			for (int temp = 0; temp < nList.getLength(); temp++) {
-				Node nNode = nList.item(temp);
-				//System.out.println("\nCurrent Element :" + nNode.getNodeName()); // Current Element :Currency
-				if (nNode.getNodeType() == Node.ELEMENT_NODE) {
-					Element eElement = (Element) nNode;
-					//System.out.println("I HAVE NODE!");
-
-					String name = eElement.getAttribute("name"); // shortName
-					//String text = eElement.getAttribute("text"); // fullName NOT USING ANYMORE
-					// NOT USING RATE ANYMORE
-//					Float rate;
-//					NumberFormat nf = new DecimalFormat ("#,#");
-//					try{
-//						rate = nf.parse(eElement.getAttribute("rate")).floatValue();
-//						//rate = Float.parseFloat(eElement.getAttribute("rate"));
-//					}catch(NumberFormatException e){
-//						e.printStackTrace();
-//						rate = null;
-//					}
-					log.debug("name: " + eElement.getAttribute("name") + " text: " + eElement.getAttribute("text") + " rate: " + eElement.getAttribute("rate"));
-//					Currency addCurrency = new Currency(name, rate); //new Currency(name, text, rate);
-					returnCurrencies.add(name);
-				}
-			}
-			return returnCurrencies;	
-		} catch (Exception e) {
-			log.error("[fisToCurrencies] failed!", e);
-		}
-		return null;
-	}
 }
 
 
