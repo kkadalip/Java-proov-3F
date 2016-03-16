@@ -49,6 +49,8 @@ import model.Result;
 //import java.io.*;
 import javax.xml.xpath.*;
 
+import dao.BankUtil;
+
 public class Readxml {
 	static Logger log = LoggerFactory.getLogger(Readxml.class); // info trace debug warn error
 	//static FileInputStream fisEstonia;
@@ -56,7 +58,8 @@ public class Readxml {
 	public static List<Result> calculateResults(ServletContext context, Float inputMoneyAmount, String inputCurrency, String outputCurreny, String selectedDate){ //, String date){
 		log.debug("[calculateResults]");
 		
-		String dateInUrl = datepickerToUrlFormat(selectedDate);
+		String dateInUrl = 	BankUtil.datepickerToUrlFormat(selectedDate, "dd.MM.yy","yyyy-MM-dd");
+//		String dateInUrl = datepickerToUrlFormat(selectedDate);
 
 //		FileInputStream fisEST = getFisForX(context, bankOfEstonia,"bankOfEstonia-2010-12-30.xml");
 //		String fisESTinputRate = fisToRateEST(fisEST,inputCurrency);
@@ -145,20 +148,6 @@ public class Readxml {
 //		
 //		return 0;
 //	}
-	public static String datepickerToUrlFormat(String selectedDate){
-		SimpleDateFormat format = new SimpleDateFormat("dd.MM.yy");
-		Date date = null;
-		try {
-			date = format.parse(selectedDate);
-		} catch (java.text.ParseException e) {
-			e.printStackTrace();
-		}
-		log.debug("[datepickerToUrlFormat] DATE IS: " + date);
-		SimpleDateFormat format2 = new SimpleDateFormat("yyyy-MM-dd"); //("dd-MM-yy");
-		String dateInUrl = format2.format(date);
-		log.debug("[datepickerToUrlFormat] RESULT dateInUrl: " + dateInUrl);
-		return dateInUrl;
-	}
 	// ATM USING ONLY FOR DOWNLOAD + DISPLAY:
 //	public static List<Currency> downloadAllForDate(ServletContext context, String selectedDate){ //, Date date){
 	public static List<String> downloadAllForDate(ServletContext context, String selectedDate){ //, Date date){
@@ -170,7 +159,8 @@ public class Readxml {
 //		String year = "2010";
 //		String timeString = year+"-"+month+"-"+day;
 		
-		String dateInUrl = datepickerToUrlFormat(selectedDate);
+//		String dateInUrl = datepickerToUrlFormat(selectedDate);
+		String dateInUrl = 	BankUtil.datepickerToUrlFormat(selectedDate, "dd.MM.yy","yyyy-MM-dd");
 
 		String bankOfEstonia = "http://statistika.eestipank.ee/Reports?type=curd&format=xml&date1="+dateInUrl+"&lng=est&print=off"; //"http://statistika.eestipank.ee/Reports?type=curd&format=xml&date1=2010-12-30&lng=est&print=off";
 		String bankOfLithuania = "http://webservices.lb.lt/ExchangeRates/ExchangeRates.asmx/getExchangeRatesByDate?Date="+dateInUrl; //"http://webservices.lb.lt/ExchangeRates/ExchangeRates.asmx/getExchangeRatesByDate?Date=2010-12-30";
@@ -247,25 +237,14 @@ public class Readxml {
 		} 
 		return null;
 	}
-	public static Document fisToDocument(FileInputStream fis){
-		try{
-			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-			DocumentBuilder db = dbf.newDocumentBuilder();
-			Document doc = db.parse(fis);
-			doc.getDocumentElement().normalize();
-			return doc;
-		}catch(Exception e){
-			log.error("[fisToDocument] failed!", e);
-		}
-		return null;
-	}
+
 	public static String fisToRateEST(FileInputStream fis, String inputCurrency){
 		String resultRate = null;
 		try {
 			log.debug("[fisToRateEST]");
 			//Float returnValue;
 			
-			Document doc = fisToDocument(fis);
+			Document doc = BankUtil.fisToDocument(fis);
 			XPath xPath =  XPathFactory.newInstance().newXPath();
 			
 			String expression = "//Currency[@name='"+inputCurrency+"']"; //"/currencies/currency";	    // EG Currency name="AED" rate="3,12312321"     
@@ -298,7 +277,7 @@ public class Readxml {
 			// node Currency attribute rate
 			// Lithuania
 			// node item, in which node currency and node rate
-			Document doc = fisToDocument(fis);
+			Document doc = BankUtil.fisToDocument(fis);
 			XPath xPath =  XPathFactory.newInstance().newXPath();
 			
 			//String expression = "//item/currency[.='"+inputCurrency+"']"+"/../rate[.]"; //"/currencies/currency";	    // EG Currency name="AED" rate="3,12312321"     
@@ -344,7 +323,7 @@ public class Readxml {
 		try {
 //			List<Currency> returnCurrencies = new ArrayList<Currency>();
 			List<String> returnCurrencies = new ArrayList<String>();
-			Document doc = fisToDocument(fis);
+			Document doc = BankUtil.fisToDocument(fis);
 			log.debug("Root element: " + doc.getDocumentElement().getNodeName());
 
 			// FOLLOWING IS SPECIFIC TO CERTAIN XML:
