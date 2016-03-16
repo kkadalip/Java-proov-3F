@@ -25,7 +25,7 @@ import org.slf4j.LoggerFactory;
 
 import com.google.gson.Gson;
 
-import dao.Readxml;
+import dao.BankUtil;
 import model.Currency;
 import model.Result;
 
@@ -81,7 +81,7 @@ public class Default extends HttpServlet {
 		// TODO MAKE SURE THE LIST IS DYNAMIC!
 //		List<Currency> displayedCurrencies = Readxml.downloadAllForDate(getServletContext(), sessionDate); //"30.12.2010");
 //		request.setAttribute("displayedCurrencies", displayedCurrencies);
-		List<String> displayedCurrencies = Readxml.downloadAllForDate(getServletContext(), sessionDate); //"30.12.2010");
+		List<String> displayedCurrencies = BankUtil.downloadAllForDate(getServletContext(), sessionDate); //"30.12.2010");
 		request.setAttribute("displayedCurrencies", displayedCurrencies);
 
 		//ServletContext context = getContext();
@@ -159,8 +159,8 @@ public class Default extends HttpServlet {
 				try{
 					Float inputMoneyAmountFloat = Float.parseFloat(inputMoneyAmount);
 					// TODO make sure Date has been validated before!!!
-					Readxml r = new Readxml();
-					List<Result> results = r.calculateResults(getServletContext(), inputMoneyAmountFloat, inputCurrency, outputCurrency, selectedDate); //, date);
+					BankUtil bu = new BankUtil();
+					List<Result> results = bu.calculateResults(getServletContext(), inputMoneyAmountFloat, inputCurrency, outputCurrency, selectedDate); //, date);
 					String json = new Gson().toJson(results);
 					log.debug("[doPost] results json: " + json);
 					response.setContentType("application/json");
