@@ -44,8 +44,6 @@ public class Default extends HttpServlet {
 //		log.debug("AUD:" + bundle1.getString("currency.AUD"));
 //		log.debug("NOK:" + bundle1.getString("currency.NOK"));	
 		
-//		String selectedLanguage = (String) request.getAttribute("language");
-		
 		String selectedLanguage = (String) httpSession.getAttribute("language");
 		if(selectedLanguage != null){
 			log.debug("[doGet] have selectedLanguage, it is: " + selectedLanguage);

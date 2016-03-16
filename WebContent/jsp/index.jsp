@@ -262,11 +262,10 @@
 					<tr>
 						<td unselectable="on" class="tdInfo unselectable"><fmt:message key="label.language" />:</td>
 						<td>
-						<!-- <select class="hoverShadow dataSelect" id="language" name="language" onchange="submit()"></select> -->
 						    <form action="" method="GET" id="languageForm">
-						        <select class="hoverShadow dataSelect" id="languageSelect" name="language">
+						        <select class="hoverShadow dataSelect" id="languageSelect" name="language" onchange="submit()">
 						            <option value="en" ${language == 'en' ? 'selected' : ''}>English</option>
-						            <option value="et" ${language == 'et' ? 'selected' : ''}>Estonian</option>
+						            <option value="et" ${language == 'et' ? 'selected' : ''}>Eesti keel</option>
 						        </select>
 						    </form>
 					    </td>
