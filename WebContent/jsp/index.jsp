@@ -45,6 +45,9 @@
 
 <script>
 //Ajaxifying an existing form
+$(document).on("click","#swapCurrenciesBtn",function(event){
+	$("#someForm").submit();
+});
 $(document).on("submit","#someForm",function(event) {
 	console.log("submitting the ajax post form");
 	var $form = $(this);
