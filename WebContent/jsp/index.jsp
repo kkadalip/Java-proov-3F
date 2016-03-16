@@ -101,76 +101,98 @@
 	 */
 
 	// Ajaxifying an existing form
-	$(document).on("submit","#someform",function(event) {
-				console.log("submitting the ajax post form");
-				var $form = $(this);
-				/*
-				$.get("Something", function(responseXml) {                // Execute Ajax GET request on URL of "someservlet" and execute the following function with Ajax response XML...
-				    $("#somediv").html($(responseXml).find("data").html()); // Parse XML, find <data> element and append its HTML to HTML DOM element with ID "somediv".
+	$(document).on("submit","#someForm",function(event) {
+		console.log("submitting the ajax post form");
+		var $form = $(this);
+		/*
+		$.get("Something", function(responseXml) {                // Execute Ajax GET request on URL of "someservlet" and execute the following function with Ajax response XML...
+		    $("#somediv").html($(responseXml).find("data").html()); // Parse XML, find <data> element and append its HTML to HTML DOM element with ID "somediv".
+		});
+		 */
+
+		$.post($form.attr("action"), $form.serialize(), function(responseJson) { // responseText responseJson responseXml
+			console.log("responseJson is: " + responseJson);
+		
+			//$("#somediv").html($(responseXml).find("data").html());
+
+			/*
+			console.log("responseText is: " + responseText);
+			$("#outResult").val(responseText); // text
+			 */
+
+			// POPULATE SELECT WITH RESULTS
+			//var $select = $("#someselect"); // Locate HTML DOM element with ID "someselect".
+			//$select.find("option").remove(); // Find all child elements with tag name "option" and remove them (just to prevent duplicate options when button is pressed again).
+			//$.each(responseJson, function(key, value) { // Iterate over the JSON object.
+			//	$("<option>").val(key).text(value).appendTo($select); // Create HTML <option> element, set its value with currently iterated key and its text content with currently iterated item and finally append it to the <select>.
+			//});
+			//var $table = $("<table>").appendTo($("#somediv")); // Create HTML <table> element and append it to HTML DOM element with ID "somediv".
+			
+			// EMPTY BOTH RESULTS AND ERRORS HOLDERS:
+			$("#errorsTableContainer").html("");
+			$('#resultsTableContainer').html("");
+			
+			// I GOT ERRORS:
+			if(typeof responseJson[0] === 'string'){
+				//console.log("responseJson[0]: " + responseJson[0] +" is string, therefore probably error messages");
+				var $ul = $("<ul>");
+				$("<li id='errorsList'>").appendTo($ul).text("Errors:");
+				$.each(responseJson, function(index, item) { // Iterate over the JSON array.
+					console.log("2index " + index + " item " + item);
+		            $("<li>").text(item).appendTo($ul);      // Create HTML <li> element, set its text content with currently iterated item and append it to the <ul>.
+		        });
+				$("#errorsTableContainer").html($ul);
+			}else{
+				// I GOT RESULTS:
+				var $table = $("<table>"); //.appendTo($("#somediv"));
+				$("<tr>").appendTo($table).append($("<th>").text("Bank:")).append($("<th>").text("Result:"));
+
+				$.each(responseJson, function(index, result) { // Iterate over the JSON array.
+					//console.log("1index " + index + " item " + result);
+					$("<tr>").appendTo($table).append(
+							$("<td>").text(result._bankName)).append(
+							$("<td>").text(result._resultValue));
+					//$("<tr>").($table)                     
+
+					//$("<tr>").appendTo($table) // Create HTML <tr> element, set its text content with currently iterated item and append it to the <table>.
+					//	.append($("<td>").text("Bank: " + result._bankName))        // Create HTML <td> element, set its text content with id of currently iterated product and append it to the <tr>.
+					//    .append($("<td>").text("Result: " + result._resultValue))
 				});
-				 */
-
-				$.post($form.attr("action"), $form.serialize(), function(responseJson) { // responseText responseJson responseXml
-					console.log("responseJson is: " + responseJson);
-				
-					//$("#somediv").html($(responseXml).find("data").html());
-
-					/*
-					console.log("responseText is: " + responseText);
-					$("#outResult").val(responseText); // text
-					 */
-
-					// POPULATE SELECT WITH RESULTS
-					//var $select = $("#someselect"); // Locate HTML DOM element with ID "someselect".
-					//$select.find("option").remove(); // Find all child elements with tag name "option" and remove them (just to prevent duplicate options when button is pressed again).
-					//$.each(responseJson, function(key, value) { // Iterate over the JSON object.
-					//	$("<option>").val(key).text(value).appendTo($select); // Create HTML <option> element, set its value with currently iterated key and its text content with currently iterated item and finally append it to the <select>.
-					//});
-					//var $table = $("<table>").appendTo($("#somediv")); // Create HTML <table> element and append it to HTML DOM element with ID "somediv".
-					
-					// EMPTY BOTH RESULTS AND ERRORS HOLDERS:
-					$("#errorsTableContainer").html("");
-					$('#resultsTableContainer').html("");
-					
-					// I GOT ERRORS:
-					if(typeof responseJson[0] === 'string'){
-						//console.log("responseJson[0]: " + responseJson[0] +" is string, therefore probably error messages");
-						var $ul = $("<ul>");
-						$("<li id='errorsList'>").appendTo($ul).text("Errors:");
-						$.each(responseJson, function(index, item) { // Iterate over the JSON array.
-							console.log("2index " + index + " item " + item);
-				            $("<li>").text(item).appendTo($ul);      // Create HTML <li> element, set its text content with currently iterated item and append it to the <ul>.
-				        });
-						$("#errorsTableContainer").html($ul);
-					}else{
-						// I GOT RESULTS:
-						var $table = $("<table>"); //.appendTo($("#somediv"));
-						$("<tr>").appendTo($table).append($("<th>").text("Bank:")).append($("<th>").text("Result:"));
-
-						$.each(responseJson, function(index, result) { // Iterate over the JSON array.
-							//console.log("1index " + index + " item " + result);
-							$("<tr>").appendTo($table).append(
-									$("<td>").text(result._bankName)).append(
-									$("<td>").text(result._resultValue));
-							//$("<tr>").($table)                     
-
-							//$("<tr>").appendTo($table) // Create HTML <tr> element, set its text content with currently iterated item and append it to the <table>.
-							//	.append($("<td>").text("Bank: " + result._bankName))        // Create HTML <td> element, set its text content with id of currently iterated product and append it to the <tr>.
-							//    .append($("<td>").text("Result: " + result._resultValue))
-						});
-						$('#resultsTableContainer').html($table);
-					}
-					
+				$('#resultsTableContainer').html($table);
+			}
+			
 
 
-					//$.get("Something", function(responseXml) {                // Execute Ajax GET request on URL of "someservlet" and execute the following function with Ajax response XML...
-					//    $("#somediv").html($(responseXml).find("data").html()); // Parse XML, find <data> element and append its HTML to HTML DOM element with ID "somediv".
-					//});
-					//$("#somediv").html($(responseXml).find("data").html());
+			//$.get("Something", function(responseXml) {                // Execute Ajax GET request on URL of "someservlet" and execute the following function with Ajax response XML...
+			//    $("#somediv").html($(responseXml).find("data").html()); // Parse XML, find <data> element and append its HTML to HTML DOM element with ID "somediv".
+			//});
+			//$("#somediv").html($(responseXml).find("data").html());
 
-				});
-				event.preventDefault(); // Important! Prevents submitting the form.
+		});
+		event.preventDefault(); // Important! Prevents submitting the form.
+	});
+	 
+	 // LANGUAGE AJAX:
+	 /*
+	 $("#languageSelect").on('change', function(){
+		 console.log("languageSelect on change");
+		 $("#languageForm").submit();
+	 });
+	 */
+	 /*
+	 $(document).on("change","#languageSelect",function(event) {
+		 console.log("languageSelect on change");
+		 $("#languageForm").submit();
+	 });
+	 $(document).on("submit","#languageForm",function(event) {
+		 console.log("language form ajax submit");
+		 var $form = $(this);
+			$.post($form.attr("action"), $form.serialize(), function(responseJson) { // responseText responseJson responseXml
+				console.log("responseJson is: " + responseJson);
 			});
+		 event.preventDefault();
+	 });
+	 */
 
 	$(function() {
 		$("#datepicker").datepicker({
@@ -240,8 +262,9 @@
 					<tr>
 						<td unselectable="on" class="tdInfo unselectable"><fmt:message key="label.language" />:</td>
 						<td>
-						    <form method="GET">
-						        <select class="hoverShadow dataSelect" id="language" name="language" onchange="submit()">
+						<!-- <select class="hoverShadow dataSelect" id="language" name="language" onchange="submit()"></select> -->
+						    <form action="" method="GET" id="languageForm">
+						        <select class="hoverShadow dataSelect" id="languageSelect" name="language">
 						            <option value="en" ${language == 'en' ? 'selected' : ''}>English</option>
 						            <option value="et" ${language == 'et' ? 'selected' : ''}>Estonian</option>
 						        </select>
@@ -249,7 +272,7 @@
 					    </td>
 					</tr>
 			 	</table>
-				<form action="" method="POST" id="someform">
+				<form action="" method="POST" id="someForm">
 					<table style="width: 100%">
 						<tbody>
 								<tr>

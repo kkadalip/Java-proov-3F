@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.servlet.jsp.jstl.core.Config;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,7 +35,6 @@ public class Default extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		log.info("[doGet] START");
 		HttpSession httpSession = request.getSession(true);
-		
 		//Locale defaultLocale = Locale.getDefault();
 //		Locale englishLocale = new Locale("en"); //, "US");
 //		Locale estonianLocale = new Locale("et");
@@ -90,6 +90,15 @@ public class Default extends HttpServlet {
 		boolean ajax = "XMLHttpRequest".equals(request.getHeader("X-Requested-With"));
 		if(ajax){
 			log.debug("[doPost] AJAX POST!!!");
+// DELETE LATER
+//			if(httpSession.getAttribute("language")=="en"){
+				//httpSession.setAttribute("language","et");
+				//Config.set( httpSession, Config.FMT_LOCALE, new java.util.Locale("et") );// en_US
+//			}else{
+				//httpSession.setAttribute("language","en");
+				//Config.set( httpSession, Config.FMT_LOCALE, new java.util.Locale("en") );// en_US
+//			}
+			
 			// Handle ajax (JSON) response.
 			List<String> errors = new ArrayList<String>(); // if no errors... do the calculations etc...
 
@@ -158,13 +167,13 @@ public class Default extends HttpServlet {
 			}
 		}else{
 			log.debug("[doPost] REGULAR POST!!!"); // Handle regular (JSP) response here.
-			String selectedLanguage = request.getParameter("language");
-			log.debug("[doPost] POST SELECTED language is: " + selectedLanguage);
-			httpSession.setAttribute("language", selectedLanguage);
-			doGet(request, response);
-//			response.sendRedirect("");
-//			request.setAttribute("language", selectedLanguage);
-//			request.getRequestDispatcher("jsp/index.jsp").forward(request, response);
+//			String selectedLanguage = request.getParameter("language");
+//			log.debug("[doPost] POST SELECTED language is: " + selectedLanguage);
+//			httpSession.setAttribute("language", selectedLanguage);
+//			doGet(request, response);
+////			response.sendRedirect("");
+////			request.setAttribute("language", selectedLanguage);
+////			request.getRequestDispatcher("jsp/index.jsp").forward(request, response);
 		}
 		log.info("[doPost] END");
 	}
