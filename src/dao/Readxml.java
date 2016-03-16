@@ -50,12 +50,15 @@ import model.Result;
 import javax.xml.xpath.*;
 
 import dao.BankUtil;
+import dao.BankOfEstonia;
+import dao.BankOfLithuania;
 
 public class Readxml {
 	static Logger log = LoggerFactory.getLogger(Readxml.class); // info trace debug warn error
 	//static FileInputStream fisEstonia;
 	
-	public static List<Result> calculateResults(ServletContext context, Float inputMoneyAmount, String inputCurrency, String outputCurreny, String selectedDate){ //, String date){
+	public List<Result> calculateResults(ServletContext context, Float inputMoneyAmount, String inputCurrency, String outputCurreny, String selectedDate){ //, String date){
+//	public static List<Result> calculateResults(ServletContext context, Float inputMoneyAmount, String inputCurrency, String outputCurreny, String selectedDate){ //, String date){
 		log.debug("[calculateResults]");
 		
 		String dateInUrl = 	BankUtil.datepickerToUrlFormat(selectedDate, "dd.MM.yy","yyyy-MM-dd");
@@ -86,8 +89,11 @@ public class Readxml {
 		//FileInputStream fisLT = getFisForX(context, bankOfEstonia,"bankOfEstonia-2010-12-30.xml");
 		String bankOfLTurl = "http://webservices.lb.lt/ExchangeRates/ExchangeRates.asmx/getExchangeRatesByDate?Date="+dateInUrl;
 		String bankOfLTfileName = "bankOfLithuania-"+dateInUrl+".xml"; //String bankOfLT = "bankOfLithuania-2010-12-30.xml";
-		Float fisLTinputRate = fisToRateLT(getFisForX(context, bankOfLTurl,bankOfLTfileName),inputCurrency);
-		Float fisLToutputRate = fisToRateLT(getFisForX(context, bankOfLTurl,bankOfLTfileName),outputCurreny);
+		BankOfLithuania bankLT = new BankOfLithuania();
+		Float fisLTinputRate = bankLT.fisToRate(getFisForX(context, bankOfLTurl,bankOfLTfileName),inputCurrency);
+		Float fisLToutputRate = bankLT.fisToRate(getFisForX(context, bankOfLTurl,bankOfLTfileName),outputCurreny);
+//		Float fisLTinputRate = fisToRateLT(getFisForX(context, bankOfLTurl,bankOfLTfileName),inputCurrency);
+//		Float fisLToutputRate = fisToRateLT(getFisForX(context, bankOfLTurl,bankOfLTfileName),outputCurreny);
 		
 		if(fisLTinputRate != null){
 			log.debug("[calculateResults] going to parse fisLTinputRate: " + fisLTinputRate.toString());
@@ -263,57 +269,6 @@ public class Readxml {
 			}
 		} catch (Exception e) {
 			log.error("[fisToRateEST] failed!", e);
-		}
-		return resultRate;
-	}
-	public static Float fisToRateLT(FileInputStream fis, String inputCurrency){
-		//String currencyRate = null;
-		Float resultRate = null;
-		try {
-			log.debug("[fisToRateLT]");
-			//Float returnValue;
-			
-			// Estonia
-			// node Currency attribute rate
-			// Lithuania
-			// node item, in which node currency and node rate
-			Document doc = BankUtil.fisToDocument(fis);
-			XPath xPath =  XPathFactory.newInstance().newXPath();
-			
-			//String expression = "//item/currency[.='"+inputCurrency+"']"+"/../rate[.]"; //"/currencies/currency";	    // EG Currency name="AED" rate="3,12312321"     
-			String expression = "//item[currency='"+inputCurrency+"']/rate[.]";
-			log.debug("[fisToRateLT] expression: " + expression);
-			//NodeList nodeList = (NodeList) xPath.compile(expression).evaluate(doc, XPathConstants.NODESET);
-			Node node = (Node) xPath.compile(expression).evaluate(doc, XPathConstants.NODE);
-			if(node != null){
-				//log.debug("node is " + node); // [rate: null]
-				String currencyRate = node.getTextContent(); // node.getNodeValue();
-				//log.debug("currencyrate is " + currencyRate); // currencyrate is 1.0891
-				Float currencyRateFloat = Float.parseFloat(currencyRate);
-				log.debug("[fisToRateLT] HAVE NODE AND currencyRateFloat is: " + currencyRateFloat);
-				// For Quantity, result rate is rate / quantity for LT!!!
-				String expressionQuantity = "//item[currency='"+inputCurrency+"']/quantity[.]";
-				Node nodeQuantity = (Node) xPath.compile(expressionQuantity).evaluate(doc, XPathConstants.NODE);
-				String quantity = nodeQuantity.getTextContent();
-				Float quantityFloat = Float.parseFloat(quantity);
-				log.debug("[fisToRateLT] quantityFloat is: " + quantityFloat);
-				
-				resultRate = currencyRateFloat / quantityFloat;
-				log.debug("[fisToRateLT] rate is: " + resultRate);
-			}else{
-				log.error("[fisToRateLT] I DO NOT HAVE NODE!!!!!!!!!!");
-				return null;
-			}
-			
-//			if (node.getNodeType() == Node.ELEMENT_NODE) {
-//				Element eElement = (Element) node;
-//				resultRate = eElement.getAttribute("rate");
-//				log.debug("[fisToRateLT] I HAVE RATE, RATE IS: " + resultRate);
-//			}else{
-//				log.debug("[fisToRateLT] NO RATE?");
-//			}
-		} catch (Exception e) {
-			log.error("[fisToRateLT] failed!", e);
 		}
 		return resultRate;
 	}

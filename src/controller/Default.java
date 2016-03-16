@@ -159,7 +159,8 @@ public class Default extends HttpServlet {
 				try{
 					Float inputMoneyAmountFloat = Float.parseFloat(inputMoneyAmount);
 					// TODO make sure Date has been validated before!!!
-					List<Result> results = Readxml.calculateResults(getServletContext(), inputMoneyAmountFloat, inputCurrency, outputCurrency, selectedDate); //, date);
+					Readxml r = new Readxml();
+					List<Result> results = r.calculateResults(getServletContext(), inputMoneyAmountFloat, inputCurrency, outputCurrency, selectedDate); //, date);
 					String json = new Gson().toJson(results);
 					log.debug("[doPost] results json: " + json);
 					response.setContentType("application/json");

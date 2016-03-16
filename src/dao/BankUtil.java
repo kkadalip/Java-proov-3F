@@ -12,7 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 
 public class BankUtil {
-	static Logger log = LoggerFactory.getLogger(Readxml.class);
+	static Logger log = LoggerFactory.getLogger(BankUtil.class);
 	
 	// Convert date picker date to correct format that suits the needs.
 	// INPUT: 16.03.2016 (if dateFormat is "dd.MM.yy")
