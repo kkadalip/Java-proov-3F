@@ -158,9 +158,10 @@ public class BankUtil {
 //				Float outputAmountEstonia = inputCurrencyFloatEST / outputCurrencyFloatEST * inputMoneyAmount;
 			if(fisESTinputRate != null && fisESToutputRate != null && inputMoneyAmount != null){
 				Float outputAmountEstonia = fisESTinputRate / fisESToutputRate * inputMoneyAmount;
+				String output = displayedFloat(outputAmountEstonia);
 				log.debug("[calculateResults]  input: " + fisESTinputRate + " / " + fisESToutputRate + " * " +  inputMoneyAmount);
-				log.debug("[calculateResults]  Bank of Estonia RESULT: " + outputAmountEstonia.toString());
-				resultsList.add(new Result("Bank of Estonia", outputAmountEstonia.toString()));
+				log.debug("[calculateResults]  Bank of Estonia RESULT: " + output); //outputAmountEstonia.toString());
+				resultsList.add(new Result("Bank of Estonia", output)); // outputAmountEstonia.toString()
 			}
 		}else{
 			log.error("Bank of Estonia DOES NOT HAVE RESULT!");
@@ -170,13 +171,22 @@ public class BankUtil {
 		if(fisLTinputRate != null && fisLToutputRate != null && inputMoneyAmount != null){
 			Float outputAmountLithuania = fisLTinputRate / fisLToutputRate * inputMoneyAmount;
 			log.debug("Bank of Lithuania RESULT: " + outputAmountLithuania.toString());
-			resultsList.add(new Result("Bank of Lithuania", outputAmountLithuania.toString()));
+			resultsList.add(new Result("Bank of Lithuania", displayedFloat(outputAmountLithuania))); //outputAmountLithuania.toString()));
 		}else{
 			log.error("Bank of Lithuania DOES NOT HAVE RESULT!");
 			resultsList.add(new Result("Bank of Lithuania","-"));
 		}
 		// FAILINIMEDEST LIST (model Bank nt), SIIN KÄIN NAD LÄBI JA PÄRIN VÄLJA ÕIGE ASJA + ARVUTAN?
 		return resultsList;
+	}
+	
+	public static String displayedFloat(Float regularFloat){
+		DecimalFormat df = new DecimalFormat("0.00");
+		DecimalFormatSymbols symbols = new DecimalFormatSymbols();
+		symbols.setDecimalSeparator('.');
+		df.setDecimalFormatSymbols(symbols);
+		String output = df.format(regularFloat);
+		return output;
 	}
 	
 	// INPUT: servlet context (for dynamic file paths), URL for downloading XML, file name for saved file (main part of it)
@@ -246,7 +256,7 @@ public class BankUtil {
 	
 	// CONVERT rate value to Float. Eg Bank of Estonia PARSE FLOAT 16 123,123123123 would use " " as thousands separator and "," as decimal separator
 	public static Float parseStringNumber(String number, char thousandsSeparator, char decimalSeparator){
-		DecimalFormat df = new DecimalFormat(); // new DecimalFormat("#.#");
+		DecimalFormat df = new DecimalFormat(); // "#.00" new DecimalFormat("#.#");
 		DecimalFormatSymbols symbols = new DecimalFormatSymbols();
 		symbols.setDecimalSeparator(',');
 		symbols.setGroupingSeparator(' ');
@@ -254,6 +264,7 @@ public class BankUtil {
 		Float resultRate = null;
 		try {
 			resultRate = df.parse(number).floatValue();
+			log.debug("[parseStringNumber] resultRate: " + resultRate);
 		} catch (ParseException e) {
 			log.error("[parseStringNumber] could not parse!",e);
 		}
