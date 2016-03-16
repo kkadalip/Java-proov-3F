@@ -1,6 +1,7 @@
 package controller;
 
 import java.io.IOException;
+import java.text.DateFormat;
 //import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -45,7 +46,8 @@ public class Default extends HttpServlet {
 //		log.debug("AUD:" + bundle1.getString("currency.AUD"));
 //		log.debug("NOK:" + bundle1.getString("currency.NOK"));	
 		
-		String selectedLanguage = (String) httpSession.getAttribute("language");
+//		String selectedLanguage = (String) httpSession.getAttribute("language");
+		String selectedLanguage = (String) request.getAttribute("language");
 		if(selectedLanguage != null){
 			log.debug("[doGet] have selectedLanguage, it is: " + selectedLanguage);
 			//Locale selectedLocale = new Locale(selectedLanguage);
@@ -54,15 +56,21 @@ public class Default extends HttpServlet {
 			//request.setAttribute("language", selectedLanguage);
 		}else{
 			log.debug("[doGet] selectedLanguage is null, setting it to english as default");
-			//request.setAttribute("language", "en");
-			httpSession.setAttribute("language", "en");
+			request.setAttribute("language", "en");
+			//httpSession.setAttribute("language", "en");
 		}
 
 
 		// DATE IN SESSION? (also try to convert + parse check, otherwise fall back to default etc.. TODO. (JS AJAX?)
 		String sessionDate = (String) httpSession.getAttribute("sessionDate");
 		if(sessionDate == null || sessionDate.isEmpty()){
-			sessionDate = "30.12.2010";
+			//sessionDate = "30.12.2010";
+			log.debug("[doGet] NO SESSION DATE IN SESSION ATTRIBUTES!, setting it as yesterday");
+			DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy"); //("yyyy/MM/dd HH:mm:ss");
+	        Calendar cal = Calendar.getInstance();
+	        cal.add(Calendar.DATE, -1); // YESTERDAY
+	        sessionDate = dateFormat.format(cal.getTime());
+	        log.debug("[doGet] session date is now " + sessionDate);
 		}
 
 		// AT FIRST DOWNLOAD FOR DEFAULT DATE?
