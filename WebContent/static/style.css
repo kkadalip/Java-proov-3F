@@ -47,8 +47,8 @@ body {
 	margin: 10px;
 }
 #floating-box-main{
-    padding-top: 30px;
-    padding-bottom: 30px;
+    padding-top: 25px;
+    padding-bottom: 25px;
 	margin: 5px 10px;
 }
 /* table-layout: fixed; */
@@ -266,7 +266,23 @@ body {
 #td-title{
 	font-size: 22px;
 	font-weight: bold;
+	padding-bottom: 20px;
 }
+
+#languageSelectContainer{
+	float:right;
+}
+
+
+
+
+
+
+
+
+
+
+
 
 /*
 .customButton {

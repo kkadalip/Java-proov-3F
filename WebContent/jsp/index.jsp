@@ -140,27 +140,23 @@ $(function() {
 
 </head>
 <body>
+	<div id="languageSelectContainer">
+	    <form action="" method="GET" id="languageForm">
+	    	<!-- <label for="languageSelect" unselectable="on" class="tdInfo unselectable"><fmt:message key="label.language" />:</label>  -->
+	        <select class="hoverShadow dataSelect" id="languageSelect" name="language" onchange="submit()">
+	            <option value="en" ${language == 'en' ? 'selected' : ''}>English</option>
+	            <option value="et" ${language == 'et' ? 'selected' : ''}>Eesti keel</option>
+	        </select>
+	    </form>
+	</div>
+
 	<div class="floating-box-container">
 		<!-- 
 		<div class="floating-box unselectable" id="floating-box-top">
 			<p unselectable="on"><fmt:message key="label.title" /></p>
 		</div>
 		 -->
-		<br>
 		<div id="floating-box-main"  class="floating-box">
-		 	<table style="width: 100%">
-				<tr>
-					<td unselectable="on" class="tdInfo unselectable"><fmt:message key="label.language" />:</td>
-					<td>
-					    <form action="" method="GET" id="languageForm">
-					        <select class="hoverShadow dataSelect" id="languageSelect" name="language" onchange="submit()">
-					            <option value="en" ${language == 'en' ? 'selected' : ''}>English</option>
-					            <option value="et" ${language == 'et' ? 'selected' : ''}>Eesti keel</option>
-					        </select>
-					    </form>
-				    </td>
-				</tr>
-		 	</table>
 			<form action="" method="POST" id="someForm">
 				<table style="width: 100%">
 					<tr>
@@ -219,7 +215,6 @@ $(function() {
 
 					</tbody>
 				</table>
-				<br>
 					<!-- <input type="submit" value="Done">  -->
 					<!-- <button class="gradientButton" type="submit" value="">Done</button>  -->
 				</form>
