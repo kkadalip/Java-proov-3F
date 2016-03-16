@@ -45,16 +45,18 @@ public class Default extends HttpServlet {
 //		log.debug("NOK:" + bundle1.getString("currency.NOK"));	
 		
 //		String selectedLanguage = (String) request.getAttribute("language");
+		
 		String selectedLanguage = (String) httpSession.getAttribute("language");
 		if(selectedLanguage != null){
 			log.debug("[doGet] have selectedLanguage, it is: " + selectedLanguage);
 			//Locale selectedLocale = new Locale(selectedLanguage);
 			//ResourceBundle textBundle = ResourceBundle.getBundle("text",selectedLocale);
 			///request.setAttribute("displayValues", textBundle);
-			request.setAttribute("language", selectedLanguage);
+			//request.setAttribute("language", selectedLanguage);
 		}else{
 			log.debug("[doGet] selectedLanguage is null, setting it to english as default");
-			request.setAttribute("language", "en");
+			//request.setAttribute("language", "en");
+			httpSession.setAttribute("language", "en");
 		}
 
 

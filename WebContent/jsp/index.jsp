@@ -240,7 +240,7 @@
 					<tr>
 						<td unselectable="on" class="tdInfo unselectable"><fmt:message key="label.language" />:</td>
 						<td>
-						    <form method="POST">
+						    <form method="GET">
 						        <select class="hoverShadow dataSelect" id="language" name="language" onchange="submit()">
 						            <option value="en" ${language == 'en' ? 'selected' : ''}>English</option>
 						            <option value="et" ${language == 'et' ? 'selected' : ''}>Estonian</option>
