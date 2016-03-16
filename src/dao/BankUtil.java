@@ -1,6 +1,9 @@
 package dao;
 
 import java.io.FileInputStream;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -30,6 +33,22 @@ public class BankUtil {
 		String dateInUrl = format2.format(date);
 		log.debug("[datepickerToUrlFormat] RESULT dateInUrl: " + dateInUrl);
 		return dateInUrl;
+	}
+	
+	// eg Bank of Estonia PARSE FLOAT 16 123,123123123 would use " " as thousands separator and "," as decimal separator
+	public static Float parseStringNumber(String number, char thousandsSeparator, char decimalSeparator){
+		DecimalFormat df = new DecimalFormat(); // new DecimalFormat("#.#");
+		DecimalFormatSymbols symbols = new DecimalFormatSymbols();
+		symbols.setDecimalSeparator(',');
+		symbols.setGroupingSeparator(' ');
+		df.setDecimalFormatSymbols(symbols);
+		Float resultRate = null;
+		try {
+			resultRate = df.parse(number).floatValue();
+		} catch (ParseException e) {
+			log.error("[parseStringNumber] could not parse!",e);
+		}
+		return resultRate;
 	}
 	
 	// Convert fileInputStream to Document

@@ -71,8 +71,11 @@ public class Readxml {
 		log.debug("[calculateResults] GETTING INPUT CURRENCY RATE FOR: " + inputCurrency);
 		String bankOfESTurl = "http://statistika.eestipank.ee/Reports?type=curd&format=xml&date1="+dateInUrl+"&lng=est&print=off"; //String bankOfEstonia = "http://statistika.eestipank.ee/Reports?type=curd&format=xml&date1=2010-12-30&lng=est&print=off";		
 		String bankofESTfileName = "bankOfEstonia-"+dateInUrl+".xml";//String bankofEST = "bankOfEstonia-2010-12-30.xml";
-		String fisESTinputRate = fisToRateEST(getFisForX(context, bankOfESTurl,bankofESTfileName),inputCurrency);
-		String fisESToutputRate = fisToRateEST(getFisForX(context, bankOfESTurl,bankofESTfileName),outputCurreny);
+		BankOfEstonia bankEST = new BankOfEstonia();
+		Float fisESTinputRate = bankEST.fisToRate(getFisForX(context, bankOfESTurl,bankofESTfileName),inputCurrency);
+		Float fisESToutputRate = bankEST.fisToRate(getFisForX(context, bankOfESTurl,bankofESTfileName),outputCurreny);
+//		String fisESTinputRate = fisToRateEST(getFisForX(context, bankOfESTurl,bankofESTfileName),inputCurrency);
+//		String fisESToutputRate = fisToRateEST(getFisForX(context, bankOfESTurl,bankofESTfileName),outputCurreny);
 		
 		if(fisESTinputRate != null){
 			log.debug("[calculateResults] going to parse fisEstoniaInputRate: " + fisESTinputRate.toString());
@@ -107,44 +110,41 @@ public class Readxml {
 		}
 		
 		List<Result> resultsList = new ArrayList<Result>();
-		try {
-			log.debug("[calculateResults] PARSING if not null obv");
-			if(fisESTinputRate != null && fisESToutputRate != null){
-				DecimalFormat df = new DecimalFormat(); // new DecimalFormat("#.#");
-				DecimalFormatSymbols symbols = new DecimalFormatSymbols();
-				symbols.setDecimalSeparator(',');
-				symbols.setGroupingSeparator(' ');
-				//symbols.setGroupingSeparator(' ');
-				df.setDecimalFormatSymbols(symbols);
-				//df.parse(p);
-				//float f = df.parse(str).floatValue();
-				
-				Float inputCurrencyFloatEST = df.parse(fisESTinputRate).floatValue(); // Float.parseFloat(fisEstoniaInputRate);
-				Float outputCurrencyFloatEST = df.parse(fisESToutputRate).floatValue(); // Float.parseFloat(fisEstoniaOutputRate);
-				if(inputCurrencyFloatEST != null && outputCurrencyFloatEST != null && inputMoneyAmount != null){
-					Float outputAmountEstonia = inputCurrencyFloatEST / outputCurrencyFloatEST * inputMoneyAmount;
-					log.debug("[calculateResults]  input: " + inputCurrencyFloatEST + " / " + outputCurrencyFloatEST + " * " +  inputMoneyAmount);
-					log.debug("[calculateResults]  Bank of Estonia RESULT: " + outputAmountEstonia.toString());
-					resultsList.add(new Result("Bank of Estonia", outputAmountEstonia.toString()));
-				}
-			}else{
-				log.error("Bank of Estonia DOES NOT HAVE RESULT!");
-				resultsList.add(new Result("Bank of Estonia","-"));
-			}
+		
+		log.debug("[calculateResults] PARSING if not null obv");
+		if(fisESTinputRate != null && fisESToutputRate != null){
+//			DecimalFormat df = new DecimalFormat(); // new DecimalFormat("#.#");
+//			DecimalFormatSymbols symbols = new DecimalFormatSymbols();
+//			symbols.setDecimalSeparator(',');
+//			symbols.setGroupingSeparator(' ');
+//			//symbols.setGroupingSeparator(' ');
+//			df.setDecimalFormatSymbols(symbols);
+//			//df.parse(p);
+//			//float f = df.parse(str).floatValue();
 			
-			if(fisLTinputRate != null && fisLToutputRate != null && inputMoneyAmount != null){
-				Float outputAmountLithuania = fisLTinputRate / fisLToutputRate * inputMoneyAmount;
-				log.debug("Bank of Lithuania RESULT: " + outputAmountLithuania.toString());
-				resultsList.add(new Result("Bank of Lithuania", outputAmountLithuania.toString()));
-			}else{
-				log.error("Bank of Lithuania DOES NOT HAVE RESULT!");
-				resultsList.add(new Result("Bank of Lithuania","-"));
+			//Float inputCurrencyFloatEST = df.parse(fisESTinputRate).floatValue(); // Float.parseFloat(fisEstoniaInputRate);
+			//Float outputCurrencyFloatEST = df.parse(fisESToutputRate).floatValue(); // Float.parseFloat(fisEstoniaOutputRate);
+//				if(inputCurrencyFloatEST != null && outputCurrencyFloatEST != null && inputMoneyAmount != null){
+//				Float outputAmountEstonia = inputCurrencyFloatEST / outputCurrencyFloatEST * inputMoneyAmount;
+			if(fisESTinputRate != null && fisESToutputRate != null && inputMoneyAmount != null){
+				Float outputAmountEstonia = fisESTinputRate / fisESToutputRate * inputMoneyAmount;
+				log.debug("[calculateResults]  input: " + fisESTinputRate + " / " + fisESToutputRate + " * " +  inputMoneyAmount);
+				log.debug("[calculateResults]  Bank of Estonia RESULT: " + outputAmountEstonia.toString());
+				resultsList.add(new Result("Bank of Estonia", outputAmountEstonia.toString()));
 			}
-
-		} catch (java.text.ParseException e) {
-			e.printStackTrace();
+		}else{
+			log.error("Bank of Estonia DOES NOT HAVE RESULT!");
+			resultsList.add(new Result("Bank of Estonia","-"));
 		}
-
+		
+		if(fisLTinputRate != null && fisLToutputRate != null && inputMoneyAmount != null){
+			Float outputAmountLithuania = fisLTinputRate / fisLToutputRate * inputMoneyAmount;
+			log.debug("Bank of Lithuania RESULT: " + outputAmountLithuania.toString());
+			resultsList.add(new Result("Bank of Lithuania", outputAmountLithuania.toString()));
+		}else{
+			log.error("Bank of Lithuania DOES NOT HAVE RESULT!");
+			resultsList.add(new Result("Bank of Lithuania","-"));
+		}
 		// FAILINIMEDEST LIST (model Bank nt), SIIN KÄIN NAD LÄBI JA PÄRIN VÄLJA ÕIGE ASJA + ARVUTAN?
 		return resultsList;
 	}
@@ -244,34 +244,6 @@ public class Readxml {
 		return null;
 	}
 
-	public static String fisToRateEST(FileInputStream fis, String inputCurrency){
-		String resultRate = null;
-		try {
-			log.debug("[fisToRateEST]");
-			//Float returnValue;
-			
-			Document doc = BankUtil.fisToDocument(fis);
-			XPath xPath =  XPathFactory.newInstance().newXPath();
-			
-			String expression = "//Currency[@name='"+inputCurrency+"']"; //"/currencies/currency";	    // EG Currency name="AED" rate="3,12312321"     
-			//NodeList nodeList = (NodeList) xPath.compile(expression).evaluate(doc, XPathConstants.NODESET);
-			Node node = (Node) xPath.compile(expression).evaluate(doc, XPathConstants.NODE);
-			if(node != null){
-				if (node.getNodeType() == Node.ELEMENT_NODE) {
-					Element eElement = (Element) node;
-					resultRate = eElement.getAttribute("rate");
-					log.debug("[fisToRateEST] HAVE NODE! I HAVE RATE, RATE IS: " + resultRate);
-				}else{
-					log.debug("[fisToRateEST] NO RATE?");
-				}
-			}else{
-				log.error("[fisToRateEST] NO NODE!!!");
-			}
-		} catch (Exception e) {
-			log.error("[fisToRateEST] failed!", e);
-		}
-		return resultRate;
-	}
 //	public static List<Currency> fisToCurrencies(FileInputStream fis){
 	public static List<String> fisToCurrencies(FileInputStream fis){
 		log.debug("[fisToCurrencies]");
