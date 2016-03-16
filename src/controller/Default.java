@@ -64,13 +64,15 @@ public class Default extends HttpServlet {
 		// DATE IN SESSION? (also try to convert + parse check, otherwise fall back to default etc.. TODO. (JS AJAX?)
 		String sessionDate = (String) httpSession.getAttribute("sessionDate");
 		if(sessionDate == null || sessionDate.isEmpty()){
-			//sessionDate = "30.12.2010";
-			log.debug("[doGet] NO SESSION DATE IN SESSION ATTRIBUTES!, setting it as yesterday");
-			DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy"); //("yyyy/MM/dd HH:mm:ss");
-	        Calendar cal = Calendar.getInstance();
-	        cal.add(Calendar.DATE, -1); // YESTERDAY
-	        sessionDate = dateFormat.format(cal.getTime());
-	        log.debug("[doGet] session date is now " + sessionDate);
+			sessionDate = "30.12.2010"; // TEMPORARY!
+			
+			// WORKS: (TODO Date on change, get new list!)
+//			log.debug("[doGet] NO SESSION DATE IN SESSION ATTRIBUTES!, setting it as yesterday");
+//			DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy"); //("yyyy/MM/dd HH:mm:ss");
+//	        Calendar cal = Calendar.getInstance();
+//	        cal.add(Calendar.DATE, -1); // YESTERDAY
+//	        sessionDate = dateFormat.format(cal.getTime());
+//	        log.debug("[doGet] session date is now " + sessionDate);
 		}
 
 		// AT FIRST DOWNLOAD FOR DEFAULT DATE?
