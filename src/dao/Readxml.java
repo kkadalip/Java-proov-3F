@@ -51,23 +51,7 @@ import javax.xml.xpath.*;
 
 public class Readxml {
 	static Logger log = LoggerFactory.getLogger(Readxml.class); // info trace debug warn error
-
 	//static FileInputStream fisEstonia;
-
-	// 0) Download all XMLs (DATE!!, don't let user select newer dates!)
-	// 1) Get all possible currencies from XMLs
-	// 2) Generate a List of Currency SHORTNAME - FULLNAME
-	// 3) Display said list
-	// 4) User selects input, output
-	// 5) Calculate the results from different bank XML-s, create a list of Result-s and display them.
-
-	// genereeri uus fail??
-	// eraldi fail, kus on põhivaluutad ja tõlked??
-
-	// uus objekt iga uue XML jaoks, sinna vajaminev info sisse, LIST nendest ja käia läbi, tagasi resultid
-	
-	// 1. vaata kas fail eksisteerib
-	// 2. vaata, kas link eksisteerib
 	
 	public static List<Result> calculateResults(ServletContext context, Float inputMoneyAmount, String inputCurrency, String outputCurreny, String selectedDate){ //, String date){
 		log.debug("[calculateResults]");

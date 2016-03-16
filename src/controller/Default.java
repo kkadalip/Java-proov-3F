@@ -113,6 +113,11 @@ public class Default extends HttpServlet {
 				format.setLenient(false);
 				try {
 					Date date = format.parse(selectedDate);
+					// Check that date isn't in the future:
+					if(date.after(new Date())){
+						errors.add("Date cannot be in the future!");
+					}
+					
 				} catch (java.text.ParseException e) {
 					log.error("[doPost] Can't parse date",e);
 					errors.add("Date format wrong!");

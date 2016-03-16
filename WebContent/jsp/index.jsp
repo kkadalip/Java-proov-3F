@@ -299,12 +299,11 @@
 							
 						</tbody>
 					</table>
+						<!-- <input type="submit" value="Done">  -->
+						<br>
+						<!-- <button class="gradientButton" type="submit" value="">Done</button>  -->
+						<input class="gradientButton" type="submit" value="<fmt:message key="label.done" />"> <br>
 					</form>
-					<!-- <input type="submit" value="Done">  -->
-					<br>
-					<!-- <button class="gradientButton" type="submit" value="">Done</button>  -->
-					<input class="gradientButton" type="submit" value="<fmt:message key="label.done" />"> <br>
-				
 
 				<div id="errorsTableContainer">
 				
