@@ -198,11 +198,14 @@
 		$("#datepicker").datepicker({
 			dateFormat : "dd.mm.yy",
 			//minDate: 
-			maxDate : new Date(2010, 11, 30),
+			//maxDate : new Date(2010, 11, 30),
+			maxDate : -1, // YESTERDAY
 			changeMonth : true,
 			changeYear : true
 		});
-		$("#datepicker").datepicker('setDate', new Date(2010, 11, 30));
+		var dateYesterday = new Date();
+		dateYesterday.setDate(dateYesterday.getDate() - 1); // YESTERDAY
+		$("#datepicker").datepicker('setDate', dateYesterday);//new Date(2010, 11, 30));
 
 		//$("#datepicker").datepicker();
 		//$("#datepicker").datepicker("option", "dateFormat", "dd.mm.yy");

@@ -55,21 +55,12 @@ public class Readxml {
 	
 	public static List<Result> calculateResults(ServletContext context, Float inputMoneyAmount, String inputCurrency, String outputCurreny, String selectedDate){ //, String date){
 		log.debug("[calculateResults]");
-		// calculate using all the banks and their different currencies
-
-		// PÄRI XML FAILIDEST VÄLJA (list neist mällu) ÕIGE ASI AED vmt
-		
-		// GET XML FILE
-		// GET CORRECT THING
-		
-		// SELECTED DATE FROM STRING TO DATE
 		
 		String dateInUrl = datepickerToUrlFormat(selectedDate);
 
 //		FileInputStream fisEST = getFisForX(context, bankOfEstonia,"bankOfEstonia-2010-12-30.xml");
 //		String fisESTinputRate = fisToRateEST(fisEST,inputCurrency);
 		//String fisEstoniaOutputRate = fisToRate(fisEstonia,outputCurreny); // java.io.IOException: Stream Closed
-		
 		
 		log.debug("[calculateResults] GETTING INPUT CURRENCY RATE FOR: " + inputCurrency);
 		String bankOfESTurl = "http://statistika.eestipank.ee/Reports?type=curd&format=xml&date1="+dateInUrl+"&lng=est&print=off"; //String bankOfEstonia = "http://statistika.eestipank.ee/Reports?type=curd&format=xml&date1=2010-12-30&lng=est&print=off";		

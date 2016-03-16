@@ -4,6 +4,7 @@ import java.io.IOException;
 //import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 //import java.util.LinkedHashMap;
 import java.util.List;
@@ -122,10 +123,18 @@ public class Default extends HttpServlet {
 				format.setLenient(false);
 				try {
 					Date date = format.parse(selectedDate);
-					// Check that date isn't in the future:
-					if(date.after(new Date())){
-						errors.add("Date cannot be in the future!");
+					// Check that date isn't in the future NOR today:
+//					if(date.after(new Date())){
+//						errors.add("Date cannot be in the future!");
+//					}
+					Calendar cal = Calendar.getInstance();
+					cal.add(Calendar.DATE, -1);
+					System.out.println("Yesterday's date = "+ cal.getTime());
+					// IF SELECTED DATE IS AFTER YESTERDAY
+					if(date.after(cal.getTime())){
+						errors.add("Date cannot be today or in the future!");
 					}
+					
 					
 				} catch (java.text.ParseException e) {
 					log.error("[doPost] Can't parse date",e);
