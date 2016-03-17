@@ -96,7 +96,7 @@ public class Default extends HttpServlet {
 	// NOT USING:
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		log.info("[doPost] START");
-		HttpSession httpSession = request.getSession(true);
+//		HttpSession httpSession = request.getSession(true);
 		boolean ajax = "XMLHttpRequest".equals(request.getHeader("X-Requested-With"));
 		if(ajax){
 			log.debug("[doPost] AJAX POST!!!");

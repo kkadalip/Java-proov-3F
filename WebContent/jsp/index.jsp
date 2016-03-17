@@ -163,21 +163,21 @@ $(function() {
 			<form action="" method="POST" id="someForm">
 				<table style="width: 100%">
 					<tr>
-						<td colspan="2" unselectable="on" class="unselectable" id="td-title"><fmt:message key="label.title" /></td>
+						<td colspan="2" class="unselectable" id="td-title"><fmt:message key="label.title" /></td>
 					</tr>
 					<tbody>
 							<tr>
-								<td unselectable="on" class="tdInfo unselectable"><fmt:message key="label.date" />:</td>
+								<td class="tdInfo unselectable"><fmt:message key="label.date" />:</td>
 								<td><input required="required" class="hoverShadow dataEntry" type="text"
 									id="datepicker" name="selectedDate"></td>
 							</tr>
 							<tr>
-								<td unselectable="on" class="tdInfo unselectable"><fmt:message key="label.inputAmount" />:</td>
+								<td class="tdInfo unselectable"><fmt:message key="label.inputAmount" />:</td>
 								<td><input required="required" class="hoverShadow dataEntry" type="number"
 									min="0" step="any" name="inputMoneyAmount" placeholder="" /></td>
 							</tr>
 							<tr>
-								<td unselectable="on" class="tdInfo unselectable"><fmt:message key="label.inputCurrency" />:</td>
+								<td class="tdInfo unselectable"><fmt:message key="label.inputCurrency" />:</td>
 								<!-- <td style="width:3px"></td>  -->
 								<td><select id="selectInputCurrency"
 									class="hoverShadow dataSelect" name="inputCurrency">
@@ -197,7 +197,7 @@ $(function() {
 							<tr>
 								<!-- <td> <input class="hoverShadow dataEntry" type="text" placeholder=""
 								name="outputResult" id="outResult" /> </td> -->
-								<td unselectable="on" class="tdInfo unselectable"><fmt:message key="label.outputCurrency" />:</td>
+								<td class="tdInfo unselectable"><fmt:message key="label.outputCurrency" />:</td>
 								<!-- <td style="width:3px"></td>  -->
 								<td><select id="selectOutputCurrency"
 									class="hoverShadow dataSelect" name="outputCurrency">
