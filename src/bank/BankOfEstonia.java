@@ -74,7 +74,7 @@ public class BankOfEstonia implements BankInterface {
 	
 	public List<String> fisToCurrencies(FileInputStream fis){
 		log.debug("[fisToCurrencies]");
-		try {
+		if(fis != null){
 			List<String> returnCurrencies = new ArrayList<String>();
 			Document doc = BankUtil.fisToDocument(fis);
 			log.debug("Root element: " + doc.getDocumentElement().getNodeName());
@@ -83,7 +83,6 @@ public class BankOfEstonia implements BankInterface {
 			NodeList nList = doc.getElementsByTagName("Currency"); // row
 			log.debug(nList.getLength() + " nodes found");
 
-			// TODO
 //			XPath xPath = XPathFactory.newInstance().newXPath();
 //			String expression = "//item[currency='"+inputCurrency+"']/rate[.]";
 //			NodeList currencyNodes = (Node) xPath.compile(expression).evaluate(doc, XPathConstants.NODE);
@@ -100,10 +99,10 @@ public class BankOfEstonia implements BankInterface {
 				}
 			}
 			return returnCurrencies;	
-		} catch (Exception e) {
-			log.error("[fisToCurrencies] failed!", e);
+		}else{
+			log.error("[fisToCurrencies] fis null!");
+			return null;
 		}
-		return null;
 	}
 }
 
