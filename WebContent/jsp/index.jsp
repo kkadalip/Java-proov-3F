@@ -173,15 +173,14 @@ $(function() {
 		</div>
 		 -->
 		<div id="floating-box-main"  class="floating-box">
+			<p class="unselectable" id="td-title"><fmt:message key="label.title" /></p>
+		
 			<form action="" method=GET id="datePickerForm">
 				<fmt:message key="label.date" />: <input required="required" class="hoverShadow dataEntry" type="text" id="datepicker" name="selectedDate" value="${sessionD}">
 			</form>
 		
 			<form action="" method="POST" id="someForm">
 				<table style="width: 100%">
-					<tr>
-						<td colspan="2" class="unselectable" id="td-title"><fmt:message key="label.title" /></td>
-					</tr>
 					<tbody>
 							<!--
 							<tr>
