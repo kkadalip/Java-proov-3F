@@ -42,7 +42,7 @@
 <script>
 //Ajaxifying an existing form
 $(document).on("click","#swapCurrenciesBtn",function(event){
-	if($("#inputMoneyAmount").val()){
+	if($("#inputMoneyAmount").val() && $("#selectOutputCurrency").val() != $("#selectInputCurrency").val()){
 		$("#someForm").submit();
 	}
 });
@@ -230,7 +230,7 @@ $(function() {
 							</tr>
 							<tr>
 								<td colspan="2">
-									<button id="swapCurrenciesBtn" type="button" style="font-size:12px; margin:0; padding:0;" onClick="swapCurrencies();">▲ ▼</button>
+									<button class="unselectable" id="swapCurrenciesBtn" type="button" style="font-size:12px; margin:0; padding:0;" onClick="swapCurrencies();">▲ ▼</button>
 								</td>
 							</tr>
 							<tr>
