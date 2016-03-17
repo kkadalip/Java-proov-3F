@@ -88,21 +88,25 @@ public class BankUtil {
 		return uniqueCurrencies;
 	}
 
-	public List<Result> calculateResults(ServletContext context, Float inputMoneyAmount, String inputCurrency, String outputCurreny, String selectedDate){ //, List<Class> bankClasses){ //, String date){
+	public List<Result> calculateResults(ServletContext context, Float inputMoneyAmount, String inputCurrency, String outputCurreny, LocalDate selectedDate){ //, List<Class> bankClasses){ //, String date){
 		//List<Class> bankClasses = new ArrayList<Class>();
 		//public static List<Result> calculateResults(ServletContext context, Float inputMoneyAmount, String inputCurrency, String outputCurreny, String selectedDate){ //, String date){
 		log.debug("[calculateResults]");
 		
-		String dateInUrl = 	BankUtil.datepickerToUrlFormat(selectedDate, "dd.MM.yy","yyyy-MM-dd");
+//		String dateInUrl = 	BankUtil.datepickerToUrlFormat(selectedDate, "dd.MM.yy","yyyy-MM-dd");
 //		String dateInUrlIsrael = BankUtil.datepickerToUrlFormat(selectedDate, "dd.MM.yy","yyyyMMdd");
 
 		List<Result> resultsList = new ArrayList<Result>();
 		
+		// TODO add to BankUtil getFileFromDate bank_name date
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		String dateInFile = selectedDate.format(formatter);
+		
 		// ESTONIA START
 		log.debug("[calculateResults] GETTING INPUT CURRENCY RATE FOR: " + inputCurrency);
-		String bankOfESTurl = "http://statistika.eestipank.ee/Reports?type=curd&format=xml&date1="+dateInUrl+"&lng=est&print=off"; //String bankOfEstonia = "http://statistika.eestipank.ee/Reports?type=curd&format=xml&date1=2010-12-30&lng=est&print=off";		
-		String bankofESTfileName = "bankOfEstonia-"+dateInUrl+".xml";//String bankofEST = "bankOfEstonia-2010-12-30.xml";
-		BankOfEstonia bankEST = new BankOfEstonia();
+		BankOfEstonia bankEST = new BankOfEstonia(); // NEW
+		String bankOfESTurl = bankEST.getDownloadUrlByDate(selectedDate); // NEW
+		String bankofESTfileName = "bankOfEstonia-"+dateInFile+".xml";//String bankofEST = "bankOfEstonia-2010-12-30.xml";
 		Float fisESTinputRate = bankEST.fisToRate(BankUtil.getFisForX(context, bankOfESTurl,bankofESTfileName),inputCurrency);
 		Float fisESToutputRate = bankEST.fisToRate(BankUtil.getFisForX(context, bankOfESTurl,bankofESTfileName),outputCurreny);
 		if(fisESTinputRate != null){log.debug("[calculateResults] fisESTinputRate: " + fisESTinputRate.toString());
@@ -125,10 +129,9 @@ public class BankUtil {
 		// ESTONIA END
 		
 		// LITHUANIA START
-		//FileInputStream fisLT = getFisForX(context, bankOfEstonia,"bankOfEstonia-2010-12-30.xml");
-		String bankOfLTurl = "http://webservices.lb.lt/ExchangeRates/ExchangeRates.asmx/getExchangeRatesByDate?Date="+dateInUrl;
-		String bankOfLTfileName = "bankOfLithuania-"+dateInUrl+".xml"; //String bankOfLT = "bankOfLithuania-2010-12-30.xml";
 		BankOfLithuania bankLT = new BankOfLithuania();
+		String bankOfLTurl = bankLT.getDownloadUrlByDate(selectedDate); // NEW
+		String bankOfLTfileName = "bankOfLithuania-"+dateInFile+".xml"; //String bankOfLT = "bankOfLithuania-2010-12-30.xml";
 		Float fisLTinputRate = bankLT.fisToRate(BankUtil.getFisForX(context, bankOfLTurl,bankOfLTfileName),inputCurrency);
 		Float fisLToutputRate = bankLT.fisToRate(BankUtil.getFisForX(context, bankOfLTurl,bankOfLTfileName),outputCurreny);
 		if(fisLTinputRate != null){log.debug("[calculateResults] fisLTinputRate: " + fisLTinputRate.toString());
@@ -147,11 +150,9 @@ public class BankUtil {
 		// LITHUANIA END
 		
 		// ISRAEL START
-//		String bankOfISRurl = "http://www.boi.org.il/currency.xml?rdate="+dateInUrlIsrael;
-		BankOfIsrael bankOfIsrael = new BankOfIsrael(); // NEW
-		String bankOfISRurl = bankOfIsrael.getDownloadUrlByDate(selectedDate); // NEW
-		String bankOfISRfileName = "bankOfIsrael-"+dateInUrl+".xml"; //String bankOfISR = "bankOfIsrael-2010-12-30.xml";
 		BankOfIsrael bankISR = new BankOfIsrael();
+		String bankOfISRurl = bankISR.getDownloadUrlByDate(selectedDate);
+		String bankOfISRfileName = "bankOfIsrael-"+dateInFile+".xml";
 		Float fisISRinputRate = bankISR.fisToRate(BankUtil.getFisForX(context, bankOfISRurl,bankOfISRfileName),inputCurrency);
 		Float fisISRoutputRate = bankISR.fisToRate(BankUtil.getFisForX(context, bankOfISRurl,bankOfISRfileName),outputCurreny);
 		if(fisISRinputRate != null){log.debug("[calculateResults] fisISRinputRate: " + fisISRinputRate.toString());
@@ -254,11 +255,12 @@ public class BankUtil {
 
 
 
+//String bankOfISRurl = "http://www.boi.org.il/currency.xml?rdate="+dateInUrlIsrael;
 
+//FileInputStream fisLT = getFisForX(context, bankOfEstonia,"bankOfEstonia-2010-12-30.xml");
 
-
-
-
+// String bankOfLTurl = "http://webservices.lb.lt/ExchangeRates/ExchangeRates.asmx/getExchangeRatesByDate?Date="+dateInUrl;
+//String bankOfESTurl = "http://statistika.eestipank.ee/Reports?type=curd&format=xml&date1="+dateInUrl+"&lng=est&print=off"; //String bankOfEstonia = "http://statistika.eestipank.ee/Reports?type=curd&format=xml&date1=2010-12-30&lng=est&print=off";		
 
 //String dateInUrl = 	BankUtil.datepickerToUrlFormat(selectedDate, "dd.MM.yy","yyyy-MM-dd");
 //String dateInUrlIsrael = BankUtil.datepickerToUrlFormat(selectedDate, "dd.MM.yy","yyyyMMdd");

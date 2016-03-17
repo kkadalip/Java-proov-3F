@@ -87,8 +87,9 @@ public class Default extends HttpServlet {
 //		List<Currency> displayedCurrencies = Readxml.downloadAllForDate(getServletContext(), sessionDate); //"30.12.2010");
 //		request.setAttribute("displayedCurrencies", displayedCurrencies);
 		
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yy"); //DateFormat format = new SimpleDateFormat("dd.MM.yy");
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy"); //DateFormat format = new SimpleDateFormat("dd.MM.yy");
 		LocalDate sessionDateAsLocalDate = LocalDate.parse(sessionDate, formatter);
+		
 //		Date sessionDateAsDate = null;
 //		try {
 //			sessionDateAsDate = format.parse(sessionDate);
@@ -140,6 +141,11 @@ public class Default extends HttpServlet {
 			log.debug("[doPost] outputCurrency: " + outputCurrency);
 			
 			String selectedDate = request.getParameter("selectedDate");
+			
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy"); //DateFormat format = new SimpleDateFormat("dd.MM.yy");
+			LocalDate selectedDateAsLocalDate = LocalDate.parse(selectedDate, formatter);
+			
+			// CHECK IF SELECTED DATE IS GOOD (ADD TO SEPARATE METHOD LATER)
 			if(selectedDate == null || selectedDate.isEmpty()){
 				errors.add("Select a date!");
 			}else{
@@ -175,7 +181,7 @@ public class Default extends HttpServlet {
 					Float inputMoneyAmountFloat = Float.parseFloat(inputMoneyAmount);
 					// TODO make sure Date has been validated before!!!
 					BankUtil bu = new BankUtil();
-					List<Result> results = bu.calculateResults(getServletContext(), inputMoneyAmountFloat, inputCurrency, outputCurrency, selectedDate); //, date);
+					List<Result> results = bu.calculateResults(getServletContext(), inputMoneyAmountFloat, inputCurrency, outputCurrency, selectedDateAsLocalDate); //, selectedDate); //, date);
 					String json = new Gson().toJson(results);
 					log.debug("[doPost] results json: " + json);
 					response.setContentType("application/json");
