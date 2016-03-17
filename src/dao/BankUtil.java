@@ -43,17 +43,19 @@ public class BankUtil {
 		log.debug("[downloadAllForDate] selectedDate " + selectedDate);
 		
 		String dateInUrl = 	BankUtil.datepickerToUrlFormat(selectedDate, "dd.MM.yy","yyyy-MM-dd");
-		String dateInUrlIsrael = BankUtil.datepickerToUrlFormat(selectedDate, "dd.MM.yy","yyyyMMdd");
+//		String dateInUrlIsrael = BankUtil.datepickerToUrlFormat(selectedDate, "dd.MM.yy","yyyyMMdd");
 		
 		String bankOfEstonia = "http://statistika.eestipank.ee/Reports?type=curd&format=xml&date1="+dateInUrl+"&lng=est&print=off"; //"http://statistika.eestipank.ee/Reports?type=curd&format=xml&date1=2010-12-30&lng=est&print=off";
 		String bankOfLithuania = "http://webservices.lb.lt/ExchangeRates/ExchangeRates.asmx/getExchangeRatesByDate?Date="+dateInUrl; //"http://webservices.lb.lt/ExchangeRates/ExchangeRates.asmx/getExchangeRatesByDate?Date=2010-12-30";
-		String bankOfIsrael = "http://www.boi.org.il/currency.xml?rdate="+dateInUrlIsrael;
+//		String bankOfIsrael = "http://www.boi.org.il/currency.xml?rdate="+dateInUrlIsrael;
+		BankOfIsrael bankOfIsrael = new BankOfIsrael(); // NEW
+		String bankOfIsraelUrl = bankOfIsrael.getDownloadUrlByDate(selectedDate); // NEW
 		
 		// DOWNLOAD FOR X      URL(with date) and file name (eg eesti-2010-12-30)
 		//fisEstonia = getFisForX(context, bankOfEstonia,"bankOfEstonia-"+timeString+".xml");
 		FileInputStream fisEstonia = BankUtil.getFisForX(context, bankOfEstonia,"bankOfEstonia-"+dateInUrl+".xml");
 		FileInputStream fisLithuania = BankUtil.getFisForX(context, bankOfLithuania,"bankOfLithuania-"+dateInUrl+".xml");
-		FileInputStream fisIsrael = BankUtil.getFisForX(context, bankOfIsrael,"bankOfIsrael-"+dateInUrl+".xml");
+		FileInputStream fisIsrael = BankUtil.getFisForX(context, bankOfIsraelUrl,"bankOfIsrael-"+dateInUrl+".xml");
 		
 		List<String> uniqueCurrencies = new ArrayList<String>();
 
@@ -89,7 +91,7 @@ public class BankUtil {
 		log.debug("[calculateResults]");
 		
 		String dateInUrl = 	BankUtil.datepickerToUrlFormat(selectedDate, "dd.MM.yy","yyyy-MM-dd");
-		String dateInUrlIsrael = BankUtil.datepickerToUrlFormat(selectedDate, "dd.MM.yy","yyyyMMdd");
+//		String dateInUrlIsrael = BankUtil.datepickerToUrlFormat(selectedDate, "dd.MM.yy","yyyyMMdd");
 
 		List<Result> resultsList = new ArrayList<Result>();
 		
@@ -142,7 +144,9 @@ public class BankUtil {
 		// LITHUANIA END
 		
 		// ISRAEL START
-		String bankOfISRurl = "http://www.boi.org.il/currency.xml?rdate="+dateInUrlIsrael;
+//		String bankOfISRurl = "http://www.boi.org.il/currency.xml?rdate="+dateInUrlIsrael;
+		BankOfIsrael bankOfIsrael = new BankOfIsrael(); // NEW
+		String bankOfISRurl = bankOfIsrael.getDownloadUrlByDate(selectedDate); // NEW
 		String bankOfISRfileName = "bankOfIsrael-"+dateInUrl+".xml"; //String bankOfISR = "bankOfIsrael-2010-12-30.xml";
 		BankOfIsrael bankISR = new BankOfIsrael();
 		Float fisISRinputRate = bankISR.fisToRate(BankUtil.getFisForX(context, bankOfISRurl,bankOfISRfileName),inputCurrency);
