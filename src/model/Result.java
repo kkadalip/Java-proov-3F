@@ -1,12 +1,9 @@
 package model;
 
-//import java.util.Date;
-
 public class Result {
 
 	String _bankName;
 	String _resultValue;
-	//Date _date;
 	
 	public Result(String bankName, String resultValue) { // Float?
 		_bankName = bankName;
@@ -22,7 +19,6 @@ public class Result {
 	
 	@Override
 	public String toString() {
-		//return super.toString();
 		return "[Result] bankName: " + _bankName + " resultValue: " + _resultValue;
 	}
 }
