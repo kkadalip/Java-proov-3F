@@ -34,13 +34,10 @@
 <script src="static/default.js"></script>
 
 <!-- jQuery (Uncompressed: //code.jquery.com/jquery-1.12.1.js)-->
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
 <!-- jQuery UI (Uncompressed: //code.jquery.com/ui/1.11.4/jquery-ui.js) -->
-<link rel="stylesheet"
-	href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
 
 <script>
 //Ajaxifying an existing form
@@ -136,6 +133,7 @@ $(function() {
 	        if( $(this).data('previous') != newDateText ){
 	            // do whatever has to be done, e.g. log it to console
 	            console.log( 'datePicker changed to: ' + newDateText );
+	            $('#datePickerForm').submit();
 	        }
 			//console.log("Selected date: " + newDateText + "; input's current value: " + this.value); // both same eg 05.03.2016
 			// TODO upon change GET ALL DISPLAYED CURRENCIES!, GET?
@@ -175,17 +173,23 @@ $(function() {
 		</div>
 		 -->
 		<div id="floating-box-main"  class="floating-box">
+			<form action="" method=GET id="datePickerForm">
+				<fmt:message key="label.date" />: <input required="required" class="hoverShadow dataEntry" type="text" id="datepicker" name="selectedDate">
+			</form>
+		
 			<form action="" method="POST" id="someForm">
 				<table style="width: 100%">
 					<tr>
 						<td colspan="2" class="unselectable" id="td-title"><fmt:message key="label.title" /></td>
 					</tr>
 					<tbody>
+							<!--
 							<tr>
 								<td class="tdInfo unselectable"><fmt:message key="label.date" />:</td>
 								<td><input required="required" class="hoverShadow dataEntry" type="text"
 									id="datepicker" name="selectedDate"></td>
 							</tr>
+							-->
 							<tr>
 								<td class="tdInfo unselectable"><fmt:message key="label.inputAmount" />:</td>
 								<td><input required="required" class="hoverShadow dataEntry" type="number"

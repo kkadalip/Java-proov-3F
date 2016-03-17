@@ -50,10 +50,11 @@ public class Default extends HttpServlet {
 		}
 
 		// DATE IN SESSION? (also try to convert + parse check, otherwise fall back to default etc.. TODO. (JS AJAX?)
-		String sessionDate = (String) httpSession.getAttribute("sessionDate");
+//		String sessionDate = (String) httpSession.getAttribute("sessionDate");
+		String sessionDate = (String) request.getParameter("selectedDate");
 		if(sessionDate == null || sessionDate.isEmpty()){
+			log.debug("sessionDate is null");
 			sessionDate = "30.12.2010"; // TODO TEMPORARY!
-			
 			// WORKS: (TODO Date on change, get new list!)
 //			log.debug("[doGet] NO SESSION DATE IN SESSION ATTRIBUTES!, setting it as yesterday");
 //			DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy"); //("yyyy/MM/dd HH:mm:ss");
