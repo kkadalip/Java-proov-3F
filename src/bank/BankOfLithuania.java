@@ -23,6 +23,14 @@ public class BankOfLithuania implements BankInterface {
 	static Logger log = LoggerFactory.getLogger(BankOfLithuania.class);
 	
 	@Override
+	public String getFileNameByDate(LocalDate selectedDate) {
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern(fileNameDatePattern); // "yyyy-MM-dd"
+		String dateInFile = selectedDate.format(formatter);
+		String result = "bankOfLithuania-"+dateInFile+".xml";
+		return result;
+	}
+	
+	@Override
 	public String getDownloadUrlByDate(LocalDate selectedDate) {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd"); //("yyyy-MM-dd HH:mm");
 		String formattedDateTime = selectedDate.format(formatter); //dateTime.format(formatter); // "1986-04-08 12:30"

@@ -27,6 +27,14 @@ public class BankOfIsrael implements BankInterface {
 	static Logger log = LoggerFactory.getLogger(BankOfIsrael.class);
 	
 	@Override
+	public String getFileNameByDate(LocalDate selectedDate) {
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern(fileNameDatePattern); // "yyyy-MM-dd"
+		String dateInFile = selectedDate.format(formatter);
+		String result = "bankOfIsrael-"+dateInFile+".xml";
+		return result;
+	}
+	
+	@Override
 	public String getDownloadUrlByDate (LocalDate selectedDate){ // TODO Date selectedDate
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd"); //("yyyy-MM-dd HH:mm");
 		String formattedDateTime = selectedDate.format(formatter); //dateTime.format(formatter); // "1986-04-08 12:30"
@@ -71,7 +79,6 @@ public class BankOfIsrael implements BankInterface {
 		}
 		return returnCurrencies;
 	}
-
 }
 
 	

@@ -46,20 +46,25 @@ public class BankUtil {
 		
 		BankOfEstonia bankOfEstonia = new BankOfEstonia(); // NEW
 		String bankOfEstoniaUrl = bankOfEstonia.getDownloadUrlByDate(selectedDate); // NEW
+		String bankOfEstoniaFileName = bankOfEstonia.getFileNameByDate(selectedDate);
+		
 		BankOfLithuania bankOfLithuania = new BankOfLithuania();
 		String bankOfLithuaniaUrl = bankOfLithuania.getDownloadUrlByDate(selectedDate);
+		String bankOfLithuaniaFileName = bankOfLithuania.getFileNameByDate(selectedDate);
+		
 		BankOfIsrael bankOfIsrael = new BankOfIsrael(); // NEW
 		String bankOfIsraelUrl = bankOfIsrael.getDownloadUrlByDate(selectedDate); // NEW
+		String bankOfIsraelFileName = bankOfIsrael.getFileNameByDate(selectedDate);
 
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-		String dateInFile = selectedDate.format(formatter);
+//		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+//		String dateInFile = selectedDate.format(formatter);
 		
 		// DOWNLOAD FOR X      URL(with date) and file name (eg eesti-2010-12-30)
 		//fisEstonia = getFisForX(context, bankOfEstonia,"bankOfEstonia-"+timeString+".xml");
-		FileInputStream fisEstonia = BankUtil.getFisForX(context, bankOfEstoniaUrl,"bankOfEstonia-"+dateInFile+".xml");
-		FileInputStream fisLithuania = BankUtil.getFisForX(context, bankOfLithuaniaUrl,"bankOfLithuania-"+dateInFile+".xml");
-		FileInputStream fisIsrael = BankUtil.getFisForX(context, bankOfIsraelUrl,"bankOfIsrael-"+dateInFile+".xml");
-		
+		FileInputStream fisEstonia = BankUtil.getFisForX(context, bankOfEstoniaUrl,bankOfEstoniaFileName);
+		FileInputStream fisLithuania = BankUtil.getFisForX(context, bankOfLithuaniaUrl,bankOfLithuaniaFileName);
+		FileInputStream fisIsrael = BankUtil.getFisForX(context, bankOfIsraelUrl,bankOfIsraelFileName);
+
 		List<String> uniqueCurrencies = new ArrayList<String>();
 
 		BankOfEstonia bankEST = new BankOfEstonia();
@@ -254,6 +259,22 @@ public class BankUtil {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+//FileInputStream fisEstonia = BankUtil.getFisForX(context, bankOfEstoniaUrl,"bankOfEstonia-"+dateInFile+".xml");
+//FileInputStream fisLithuania = BankUtil.getFisForX(context, bankOfLithuaniaUrl,"bankOfLithuania-"+dateInFile+".xml");
+//FileInputStream fisIsrael = BankUtil.getFisForX(context, bankOfIsraelUrl,"bankOfIsrael-"+dateInFile+".xml");
 
 //String bankOfISRurl = "http://www.boi.org.il/currency.xml?rdate="+dateInUrlIsrael;
 
