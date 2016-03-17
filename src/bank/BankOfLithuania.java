@@ -1,6 +1,8 @@
 package bank;
 
 import java.io.FileInputStream;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,9 +23,11 @@ public class BankOfLithuania implements BankInterface {
 	static Logger log = LoggerFactory.getLogger(BankOfLithuania.class);
 	
 	@Override
-	public String getDownloadUrlByDate(String selectedDate) {
-		// TODO Auto-generated method stub
-		return null;
+	public String getDownloadUrlByDate(LocalDate selectedDate) {
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd"); //("yyyy-MM-dd HH:mm");
+		String formattedDateTime = selectedDate.format(formatter); //dateTime.format(formatter); // "1986-04-08 12:30"
+		String result = "http://webservices.lb.lt/ExchangeRates/ExchangeRates.asmx/getExchangeRatesByDate?Date="+formattedDateTime; //"yyyy-MM-dd" //"http://webservices.lb.lt/ExchangeRates/ExchangeRates.asmx/getExchangeRatesByDate?Date=2010-12-30";
+		return result;
 	}
 	
 	// Lithuania: node item, in which node currency and node rate

@@ -1,6 +1,8 @@
 package bank;
 
 import java.io.FileInputStream;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -25,12 +27,13 @@ public class BankOfIsrael implements BankInterface {
 	static Logger log = LoggerFactory.getLogger(BankOfIsrael.class);
 	
 	@Override
-	public String getDownloadUrlByDate (String selectedDate){ // TODO Date selectedDate
-		String dateInUrl = BankUtil.datepickerToUrlFormat(selectedDate, "dd.MM.yy","yyyyMMdd");
-		String result = "http://www.boi.org.il/currency.xml?rdate="+dateInUrl;
+	public String getDownloadUrlByDate (LocalDate selectedDate){ // TODO Date selectedDate
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd"); //("yyyy-MM-dd HH:mm");
+		String formattedDateTime = selectedDate.format(formatter); //dateTime.format(formatter); // "1986-04-08 12:30"
+		String result = "http://www.boi.org.il/currency.xml?rdate="+formattedDateTime; //"yyyy-MM-dd"
 		return result;
 	}
-	
+		
 	@Override
 	public Float fisToRate(FileInputStream fis, String inputCurrency) {
 		Float resultRate = null;
@@ -70,3 +73,6 @@ public class BankOfIsrael implements BankInterface {
 	}
 
 }
+
+	
+//	String dateInUrl = BankUtil.datepickerToUrlFormat(selectedDate, "dd.MM.yy","yyyyMMdd");		

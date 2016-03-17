@@ -1,6 +1,9 @@
 package bank;
 
 import java.io.FileInputStream;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 //import java.text.DecimalFormat;
 //import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
@@ -24,9 +27,11 @@ public class BankOfEstonia implements BankInterface {
 	static Logger log = LoggerFactory.getLogger(BankOfEstonia.class);
 	
 	@Override
-	public String getDownloadUrlByDate(String selectedDate) {
-		// TODO Auto-generated method stub
-		return null;
+	public String getDownloadUrlByDate(LocalDate selectedDate) {
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd"); //("yyyy-MM-dd HH:mm");
+		String formattedDateTime = selectedDate.format(formatter); //dateTime.format(formatter); // "1986-04-08 12:30"
+		String result = "http://statistika.eestipank.ee/Reports?type=curd&format=xml&date1="+formattedDateTime+"&lng=est&print=off"; //"yyyy-MM-dd"
+		return result;
 	}
 	
 	// Estonia: node Currency attribute rate
@@ -121,7 +126,14 @@ public class BankOfEstonia implements BankInterface {
 
 
 
-
+//getDownloadUrlByDate		
+//int year = selectedDate.getYear();
+//int month = selectedDate.getMonth().getValue();
+//int day = selectedDate.getDayOfMonth();
+//LocalDateTime dateTime = //LocalDateTime.of(1986, Month.APRIL, 8, 12, 30);
+//String dateInUrl = BankUtil.datepickerToUrlFormat(selectedDate, "dd.MM.yy","yyyy-MM-dd");
+//String result = "http://statistika.eestipank.ee/Reports?type=curd&format=xml&date1="+dateInUrl+"&lng=est&print=off"; //"http://statistika.eestipank.ee/Reports?type=curd&format=xml&date1=2010-12-30&lng=est&print=off";
+//return result;
 
 
 //// PARSE EST FLOAT 16 123,123123123

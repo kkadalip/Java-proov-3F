@@ -10,6 +10,8 @@ import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -39,23 +41,24 @@ public class BankUtil {
 	
 	// ATM USING ONLY FOR DISPLAY!!!
 //	public static List<Currency> downloadAllForDate(ServletContext context, String selectedDate){ //, Date date){
-	public static List<String> downloadAllForDate(ServletContext context, String selectedDate){ //, Date date){ // TODO list of classes/banks
+	public static List<String> downloadAllForDate(ServletContext context, LocalDate selectedDate){ //, Date date){ // TODO list of classes/banks
 		log.debug("[downloadAllForDate] selectedDate " + selectedDate);
 		
-		String dateInUrl = 	BankUtil.datepickerToUrlFormat(selectedDate, "dd.MM.yy","yyyy-MM-dd");
-//		String dateInUrlIsrael = BankUtil.datepickerToUrlFormat(selectedDate, "dd.MM.yy","yyyyMMdd");
-		
-		String bankOfEstonia = "http://statistika.eestipank.ee/Reports?type=curd&format=xml&date1="+dateInUrl+"&lng=est&print=off"; //"http://statistika.eestipank.ee/Reports?type=curd&format=xml&date1=2010-12-30&lng=est&print=off";
-		String bankOfLithuania = "http://webservices.lb.lt/ExchangeRates/ExchangeRates.asmx/getExchangeRatesByDate?Date="+dateInUrl; //"http://webservices.lb.lt/ExchangeRates/ExchangeRates.asmx/getExchangeRatesByDate?Date=2010-12-30";
-//		String bankOfIsrael = "http://www.boi.org.il/currency.xml?rdate="+dateInUrlIsrael;
+		BankOfEstonia bankOfEstonia = new BankOfEstonia(); // NEW
+		String bankOfEstoniaUrl = bankOfEstonia.getDownloadUrlByDate(selectedDate); // NEW
+		BankOfLithuania bankOfLithuania = new BankOfLithuania();
+		String bankOfLithuaniaUrl = bankOfLithuania.getDownloadUrlByDate(selectedDate);
 		BankOfIsrael bankOfIsrael = new BankOfIsrael(); // NEW
 		String bankOfIsraelUrl = bankOfIsrael.getDownloadUrlByDate(selectedDate); // NEW
+
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		String dateInFile = selectedDate.format(formatter);
 		
 		// DOWNLOAD FOR X      URL(with date) and file name (eg eesti-2010-12-30)
 		//fisEstonia = getFisForX(context, bankOfEstonia,"bankOfEstonia-"+timeString+".xml");
-		FileInputStream fisEstonia = BankUtil.getFisForX(context, bankOfEstonia,"bankOfEstonia-"+dateInUrl+".xml");
-		FileInputStream fisLithuania = BankUtil.getFisForX(context, bankOfLithuania,"bankOfLithuania-"+dateInUrl+".xml");
-		FileInputStream fisIsrael = BankUtil.getFisForX(context, bankOfIsraelUrl,"bankOfIsrael-"+dateInUrl+".xml");
+		FileInputStream fisEstonia = BankUtil.getFisForX(context, bankOfEstoniaUrl,"bankOfEstonia-"+dateInFile+".xml");
+		FileInputStream fisLithuania = BankUtil.getFisForX(context, bankOfLithuaniaUrl,"bankOfLithuania-"+dateInFile+".xml");
+		FileInputStream fisIsrael = BankUtil.getFisForX(context, bankOfIsraelUrl,"bankOfIsrael-"+dateInFile+".xml");
 		
 		List<String> uniqueCurrencies = new ArrayList<String>();
 
@@ -224,24 +227,7 @@ public class BankUtil {
 		}
 		return null;
 	}
-	
-	// CONVERT date picker date to correct format that suits the needs.
-	// INPUT: 16.03.2016 (if dateFormat is "dd.MM.yy")
-	// OUTPUT: 2016-03-16 (if outputFormat is "yyyy-MM-dd")
-	public static String datepickerToUrlFormat(String selectedDate, String inputDateFormat, String outputDateFormat){
-		SimpleDateFormat format = new SimpleDateFormat(inputDateFormat); // eg "dd.MM.yy"
-		Date date = null;
-		try {
-			date = format.parse(selectedDate);
-		} catch (java.text.ParseException e) {
-			log.error("[datepickerToUrlFormat] could not parse date picker url!", e);
-		}
-		log.debug("[datepickerToUrlFormat] DATE IS: " + date);
-		SimpleDateFormat format2 = new SimpleDateFormat(outputDateFormat); // eg "yyyy-MM-dd" or "dd-MM-yy"
-		String dateInUrl = format2.format(date);
-		log.debug("[datepickerToUrlFormat] RESULT dateInUrl: " + dateInUrl);
-		return dateInUrl;
-	}
+
 	
 	// CONVERT rate value to Float. Eg Bank of Estonia PARSE FLOAT 16 123,123123123 would use " " as thousands separator and "," as decimal separator
 	public static Float parseStringNumber(String number, char thousandsSeparator, char decimalSeparator){
@@ -274,7 +260,28 @@ public class BankUtil {
 
 
 
+//String dateInUrl = 	BankUtil.datepickerToUrlFormat(selectedDate, "dd.MM.yy","yyyy-MM-dd");
+//String dateInUrlIsrael = BankUtil.datepickerToUrlFormat(selectedDate, "dd.MM.yy","yyyyMMdd");
+//String bankOfEstonia = "http://statistika.eestipank.ee/Reports?type=curd&format=xml&date1="+dateInUrl+"&lng=est&print=off"; //"http://statistika.eestipank.ee/Reports?type=curd&format=xml&date1=2010-12-30&lng=est&print=off";
+//String bankOfIsrael = "http://www.boi.org.il/currency.xml?rdate="+dateInUrlIsrael;
 
+// CONVERT date picker date to correct format that suits the needs.
+// INPUT: 16.03.2016 (if dateFormat is "dd.MM.yy")
+// OUTPUT: 2016-03-16 (if outputFormat is "yyyy-MM-dd")
+//public static String datepickerToUrlFormat(String selectedDate, String inputDateFormat, String outputDateFormat){
+//	SimpleDateFormat format = new SimpleDateFormat(inputDateFormat); // eg "dd.MM.yy"
+//	Date date = null;
+//	try {
+//		date = format.parse(selectedDate);
+//	} catch (java.text.ParseException e) {
+//		log.error("[datepickerToUrlFormat] could not parse date picker url!", e);
+//	}
+//	log.debug("[datepickerToUrlFormat] DATE IS: " + date);
+//	SimpleDateFormat format2 = new SimpleDateFormat(outputDateFormat); // eg "yyyy-MM-dd" or "dd-MM-yy"
+//	String dateInUrl = format2.format(date);
+//	log.debug("[datepickerToUrlFormat] RESULT dateInUrl: " + dateInUrl);
+//	return dateInUrl;
+//}
 
 
 

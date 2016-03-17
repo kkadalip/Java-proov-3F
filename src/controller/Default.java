@@ -1,9 +1,13 @@
 package controller;
 
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.ParseException;
 //import java.text.DateFormat;
 //import java.sql.Date;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -82,7 +86,17 @@ public class Default extends HttpServlet {
 		// TODO MAKE SURE THE LIST IS DYNAMIC!
 //		List<Currency> displayedCurrencies = Readxml.downloadAllForDate(getServletContext(), sessionDate); //"30.12.2010");
 //		request.setAttribute("displayedCurrencies", displayedCurrencies);
-		List<String> displayedCurrencies = BankUtil.downloadAllForDate(getServletContext(), sessionDate); //"30.12.2010");
+		
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yy"); //DateFormat format = new SimpleDateFormat("dd.MM.yy");
+		LocalDate sessionDateAsLocalDate = LocalDate.parse(sessionDate, formatter);
+//		Date sessionDateAsDate = null;
+//		try {
+//			sessionDateAsDate = format.parse(sessionDate);
+//		} catch (ParseException e) {
+//			log.error("Could not parse sessionDate string!", e);
+//		}
+		// TODO check session date null?
+		List<String> displayedCurrencies = BankUtil.downloadAllForDate(getServletContext(), sessionDateAsLocalDate); //"30.12.2010");
 		request.setAttribute("displayedCurrencies", displayedCurrencies);
 
 		//ServletContext context = getContext();
