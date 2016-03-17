@@ -75,7 +75,7 @@ public class BankOfIsrael implements BankInterface {
 			for (int i = 0; i < nList.getLength(); i++) {
 				String nodeValue = nList.item(i).getTextContent();
 				returnCurrencies.add(nodeValue);
-				log.debug("fisToCurrencies] nodeValue: " + nodeValue);
+				//log.debug("[fisToCurrencies] nodeValue: " + nodeValue);
 			}
 			return returnCurrencies;
 		}else{

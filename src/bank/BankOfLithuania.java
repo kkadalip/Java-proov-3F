@@ -93,15 +93,12 @@ public class BankOfLithuania implements BankInterface {
 		log.debug("[fisToCurrencies]");
 		if(fis != null){
 			List<String> returnCurrencies = new ArrayList<String>();
-			Document doc = BankUtil.fisToDocument(fis); // TODO instead of fis get doc?
-			//XPath xPath = XPathFactory.newInstance().newXPath();
-			//String expression = "//currency";
-			//NodeList nList = (NodeList) xPath.compile(expression).evaluate(doc, XPathConstants.NODESET);
+			Document doc = BankUtil.fisToDocument(fis);
 			NodeList nList = doc.getElementsByTagName("currency"); // row
 			for (int i = 0; i < nList.getLength(); i++) {
 				String nodeValue = nList.item(i).getTextContent();
 				returnCurrencies.add(nodeValue);
-				log.debug("fisToCurrencies] nodeValue: " + nodeValue);
+				//log.debug("fisToCurrencies] nodeValue: " + nodeValue);
 			}
 			return returnCurrencies;
 		}else{
@@ -110,3 +107,16 @@ public class BankOfLithuania implements BankInterface {
 		}
 	}
 }
+
+
+
+
+
+
+
+
+
+
+//XPath xPath = XPathFactory.newInstance().newXPath();
+//String expression = "//currency";
+//NodeList nList = (NodeList) xPath.compile(expression).evaluate(doc, XPathConstants.NODESET);
