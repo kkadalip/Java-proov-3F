@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE xml>
 <Report xmlns="http://producers.eestipank.info/types">
     <Header>
         <Type>Päevakursid</Type>
