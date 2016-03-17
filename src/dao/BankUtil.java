@@ -43,21 +43,18 @@ public class BankUtil {
 //	public static List<Currency> downloadAllForDate(ServletContext context, String selectedDate){ //, Date date){
 	public static List<String> downloadAllForDate(ServletContext context, LocalDate selectedDate){ //, Date date){ // TODO list of classes/banks
 		log.debug("[downloadAllForDate] selectedDate " + selectedDate);
-		
-		BankOfEstonia bankOfEstonia = new BankOfEstonia(); // NEW
-		String bankOfEstoniaUrl = bankOfEstonia.getDownloadUrlByDate(selectedDate); // NEW
+		// ESTONIA:
+		BankOfEstonia bankOfEstonia = new BankOfEstonia();
+		String bankOfEstoniaUrl = bankOfEstonia.getDownloadUrlByDate(selectedDate);
 		String bankOfEstoniaFileName = bankOfEstonia.getFileNameByDate(selectedDate);
-		
+		// LITHUANIA:
 		BankOfLithuania bankOfLithuania = new BankOfLithuania();
 		String bankOfLithuaniaUrl = bankOfLithuania.getDownloadUrlByDate(selectedDate);
 		String bankOfLithuaniaFileName = bankOfLithuania.getFileNameByDate(selectedDate);
-		
-		BankOfIsrael bankOfIsrael = new BankOfIsrael(); // NEW
-		String bankOfIsraelUrl = bankOfIsrael.getDownloadUrlByDate(selectedDate); // NEW
+		// ISRAEL:
+		BankOfIsrael bankOfIsrael = new BankOfIsrael();
+		String bankOfIsraelUrl = bankOfIsrael.getDownloadUrlByDate(selectedDate);
 		String bankOfIsraelFileName = bankOfIsrael.getFileNameByDate(selectedDate);
-
-//		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-//		String dateInFile = selectedDate.format(formatter);
 		
 		// DOWNLOAD FOR X      URL(with date) and file name (eg eesti-2010-12-30)
 		//fisEstonia = getFisForX(context, bankOfEstonia,"bankOfEstonia-"+timeString+".xml");
@@ -98,22 +95,15 @@ public class BankUtil {
 		//public static List<Result> calculateResults(ServletContext context, Float inputMoneyAmount, String inputCurrency, String outputCurreny, String selectedDate){ //, String date){
 		log.debug("[calculateResults]");
 		
-//		String dateInUrl = 	BankUtil.datepickerToUrlFormat(selectedDate, "dd.MM.yy","yyyy-MM-dd");
-//		String dateInUrlIsrael = BankUtil.datepickerToUrlFormat(selectedDate, "dd.MM.yy","yyyyMMdd");
-
 		List<Result> resultsList = new ArrayList<Result>();
-		
-		// TODO add to BankUtil getFileFromDate bank_name date
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-		String dateInFile = selectedDate.format(formatter);
 		
 		// ESTONIA START
 		log.debug("[calculateResults] GETTING INPUT CURRENCY RATE FOR: " + inputCurrency);
 		BankOfEstonia bankEST = new BankOfEstonia(); // NEW
 		String bankOfESTurl = bankEST.getDownloadUrlByDate(selectedDate); // NEW
-		String bankofESTfileName = "bankOfEstonia-"+dateInFile+".xml";//String bankofEST = "bankOfEstonia-2010-12-30.xml";
-		Float fisESTinputRate = bankEST.fisToRate(BankUtil.getFisForX(context, bankOfESTurl,bankofESTfileName),inputCurrency);
-		Float fisESToutputRate = bankEST.fisToRate(BankUtil.getFisForX(context, bankOfESTurl,bankofESTfileName),outputCurreny);
+		String bankOfESTfileName = bankEST.getFileNameByDate(selectedDate);
+		Float fisESTinputRate = bankEST.fisToRate(BankUtil.getFisForX(context, bankOfESTurl,bankOfESTfileName),inputCurrency);
+		Float fisESToutputRate = bankEST.fisToRate(BankUtil.getFisForX(context, bankOfESTurl,bankOfESTfileName),outputCurreny);
 		if(fisESTinputRate != null){log.debug("[calculateResults] fisESTinputRate: " + fisESTinputRate.toString());
 		}else{log.debug("[calculateResults] fisEstoniaInputRate IS NULL!");}
 		if(fisESToutputRate != null){ log.debug("[calculateResults] fisESToutputRate: " + fisESToutputRate.toString()); 
@@ -135,8 +125,8 @@ public class BankUtil {
 		
 		// LITHUANIA START
 		BankOfLithuania bankLT = new BankOfLithuania();
-		String bankOfLTurl = bankLT.getDownloadUrlByDate(selectedDate); // NEW
-		String bankOfLTfileName = "bankOfLithuania-"+dateInFile+".xml"; //String bankOfLT = "bankOfLithuania-2010-12-30.xml";
+		String bankOfLTurl = bankLT.getDownloadUrlByDate(selectedDate);
+		String bankOfLTfileName = bankLT.getFileNameByDate(selectedDate);
 		Float fisLTinputRate = bankLT.fisToRate(BankUtil.getFisForX(context, bankOfLTurl,bankOfLTfileName),inputCurrency);
 		Float fisLToutputRate = bankLT.fisToRate(BankUtil.getFisForX(context, bankOfLTurl,bankOfLTfileName),outputCurreny);
 		if(fisLTinputRate != null){log.debug("[calculateResults] fisLTinputRate: " + fisLTinputRate.toString());
@@ -157,7 +147,7 @@ public class BankUtil {
 		// ISRAEL START
 		BankOfIsrael bankISR = new BankOfIsrael();
 		String bankOfISRurl = bankISR.getDownloadUrlByDate(selectedDate);
-		String bankOfISRfileName = "bankOfIsrael-"+dateInFile+".xml";
+		String bankOfISRfileName = bankISR.getFileNameByDate(selectedDate);
 		Float fisISRinputRate = bankISR.fisToRate(BankUtil.getFisForX(context, bankOfISRurl,bankOfISRfileName),inputCurrency);
 		Float fisISRoutputRate = bankISR.fisToRate(BankUtil.getFisForX(context, bankOfISRurl,bankOfISRfileName),outputCurreny);
 		if(fisISRinputRate != null){log.debug("[calculateResults] fisISRinputRate: " + fisISRinputRate.toString());
@@ -267,10 +257,20 @@ public class BankUtil {
 
 
 
+//String bankOfISRfileName = "bankOfIsrael-"+dateInFile+".xml";
+//String bankOfLTfileName = "bankOfLithuania-"+dateInFile+".xml"; //String bankOfLT = "bankOfLithuania-2010-12-30.xml";
 
+//String dateInUrl = 	BankUtil.datepickerToUrlFormat(selectedDate, "dd.MM.yy","yyyy-MM-dd");
+//String dateInUrlIsrael = BankUtil.datepickerToUrlFormat(selectedDate, "dd.MM.yy","yyyyMMdd");
 
+// calc results todo: add to BankUtil getFileFromDate bank_name date
+//DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+//String dateInFile = selectedDate.format(formatter);
 
+//String bankofESTfileName = "bankOfEstonia-"+dateInFile+".xml";//String bankofEST = "bankOfEstonia-2010-12-30.xml";
 
+//DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+//String dateInFile = selectedDate.format(formatter);
 
 //FileInputStream fisEstonia = BankUtil.getFisForX(context, bankOfEstoniaUrl,"bankOfEstonia-"+dateInFile+".xml");
 //FileInputStream fisLithuania = BankUtil.getFisForX(context, bankOfLithuaniaUrl,"bankOfLithuania-"+dateInFile+".xml");
