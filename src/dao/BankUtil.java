@@ -86,7 +86,6 @@ public class BankUtil {
 			}else{
 				log.error("[downloadAllForDate] currencyList null or empty!!!");
 			}
-
 		}
 		return uniqueCurrencies;
 	}
@@ -97,52 +96,37 @@ public class BankUtil {
 		log.debug("[calculateResults]");
 		
 		String dateInUrl = 	BankUtil.datepickerToUrlFormat(selectedDate, "dd.MM.yy","yyyy-MM-dd");
-//		String dateInUrl = datepickerToUrlFormat(selectedDate);
+		String dateInUrlIsrael = BankUtil.datepickerToUrlFormat(selectedDate, "dd.MM.yy","yyyyMMdd");
 
 //		FileInputStream fisEST = getFisForX(context, bankOfEstonia,"bankOfEstonia-2010-12-30.xml");
 //		String fisESTinputRate = fisToRateEST(fisEST,inputCurrency);
 		//String fisEstoniaOutputRate = fisToRate(fisEstonia,outputCurreny); // java.io.IOException: Stream Closed
 		
+		// ESTONIA START
 		log.debug("[calculateResults] GETTING INPUT CURRENCY RATE FOR: " + inputCurrency);
 		String bankOfESTurl = "http://statistika.eestipank.ee/Reports?type=curd&format=xml&date1="+dateInUrl+"&lng=est&print=off"; //String bankOfEstonia = "http://statistika.eestipank.ee/Reports?type=curd&format=xml&date1=2010-12-30&lng=est&print=off";		
 		String bankofESTfileName = "bankOfEstonia-"+dateInUrl+".xml";//String bankofEST = "bankOfEstonia-2010-12-30.xml";
 		BankOfEstonia bankEST = new BankOfEstonia();
 		Float fisESTinputRate = bankEST.fisToRate(BankUtil.getFisForX(context, bankOfESTurl,bankofESTfileName),inputCurrency);
 		Float fisESToutputRate = bankEST.fisToRate(BankUtil.getFisForX(context, bankOfESTurl,bankofESTfileName),outputCurreny);
-//		String fisESTinputRate = fisToRateEST(getFisForX(context, bankOfESTurl,bankofESTfileName),inputCurrency);
-//		String fisESToutputRate = fisToRateEST(getFisForX(context, bankOfESTurl,bankofESTfileName),outputCurreny);
+		if(fisESTinputRate != null){log.debug("[calculateResults] going to parse fisEstoniaInputRate: " + fisESTinputRate.toString());
+		}else{log.debug("[calculateResults] fisEstoniaInputRate IS NULL!");}
+		if(fisESToutputRate != null){ log.debug("[calculateResults]  ...and outputrate fisESToutputRate: " + fisESToutputRate.toString()); 
+		}else{log.debug("[calculateResults] fisESToutputRate IS NULL!");}
+		// ESTONIA END
 		
-		if(fisESTinputRate != null){
-			log.debug("[calculateResults] going to parse fisEstoniaInputRate: " + fisESTinputRate.toString());
-		}else{
-			log.debug("[calculateResults] fisEstoniaInputRate IS NULL!");
-		}
-		if(fisESToutputRate != null){
-			log.debug("[calculateResults]  ...and outputrate fisESToutputRate: " + fisESToutputRate.toString());
-		}else{
-			log.debug("[calculateResults] fisESToutputRate IS NULL!");
-		}
-		
-		
+		// LITHUANIA START
 		//FileInputStream fisLT = getFisForX(context, bankOfEstonia,"bankOfEstonia-2010-12-30.xml");
 		String bankOfLTurl = "http://webservices.lb.lt/ExchangeRates/ExchangeRates.asmx/getExchangeRatesByDate?Date="+dateInUrl;
 		String bankOfLTfileName = "bankOfLithuania-"+dateInUrl+".xml"; //String bankOfLT = "bankOfLithuania-2010-12-30.xml";
 		BankOfLithuania bankLT = new BankOfLithuania();
 		Float fisLTinputRate = bankLT.fisToRate(BankUtil.getFisForX(context, bankOfLTurl,bankOfLTfileName),inputCurrency);
 		Float fisLToutputRate = bankLT.fisToRate(BankUtil.getFisForX(context, bankOfLTurl,bankOfLTfileName),outputCurreny);
-//		Float fisLTinputRate = fisToRateLT(getFisForX(context, bankOfLTurl,bankOfLTfileName),inputCurrency);
-//		Float fisLToutputRate = fisToRateLT(getFisForX(context, bankOfLTurl,bankOfLTfileName),outputCurreny);
-		
-		if(fisLTinputRate != null){
-			log.debug("[calculateResults] going to parse fisLTinputRate: " + fisLTinputRate.toString());
-		}else{
-			log.debug("[calculateResults] fisLTinputRate IS NULL!");
-		}
-		if(fisLToutputRate != null){
-			log.debug("[calculateResults]  ...and outputrate fisLToutputRate: " + fisLToutputRate.toString());
-		}else{
-			log.debug("[calculateResults] fisLToutputRate IS NULL!");
-		}
+		if(fisLTinputRate != null){log.debug("[calculateResults] going to parse fisLTinputRate: " + fisLTinputRate.toString());
+		}else{log.debug("[calculateResults] fisLTinputRate IS NULL!");}
+		if(fisLToutputRate != null){log.debug("[calculateResults]  ...and outputrate fisLToutputRate: " + fisLToutputRate.toString());
+		}else{log.debug("[calculateResults] fisLToutputRate IS NULL!");}
+		// LITHUANIA END
 		
 		List<Result> resultsList = new ArrayList<Result>();
 		
@@ -288,6 +272,13 @@ public class BankUtil {
 
 
 
+//String dateInUrl = datepickerToUrlFormat(selectedDate);
 
 //List<Currency> bankOfEstoniaCurrencies = fisToCurrencies(fisEstonia);
 //List<Currency> bankOfLithuaniaCurrencies = fisToCurrencies(fisLithuania);
+
+//String fisESTinputRate = fisToRateEST(getFisForX(context, bankOfESTurl,bankofESTfileName),inputCurrency);
+//String fisESToutputRate = fisToRateEST(getFisForX(context, bankOfESTurl,bankofESTfileName),outputCurreny);
+
+//Float fisLTinputRate = fisToRateLT(getFisForX(context, bankOfLTurl,bankOfLTfileName),inputCurrency);
+//Float fisLToutputRate = fisToRateLT(getFisForX(context, bankOfLTurl,bankOfLTfileName),outputCurreny);
