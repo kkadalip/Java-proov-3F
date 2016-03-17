@@ -115,7 +115,7 @@ public class Default extends HttpServlet {
 			String inputMoneyAmount = request.getParameter("inputMoneyAmount");
 			if(inputMoneyAmount == null || inputMoneyAmount.isEmpty()){
 				log.error("[doPost] inputMoneyAmount NULL!");
-				errors.add("[doPost] Input money amount is empty!");
+				errors.add("Input money amount is empty!");
 			}else{
 				log.debug("[doPost] inputMoneyAmount: " + inputMoneyAmount);
 			}

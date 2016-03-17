@@ -1,4 +1,4 @@
-package dao;
+package bank;
 
 import java.io.FileInputStream;
 import java.util.ArrayList;
@@ -13,6 +13,9 @@ import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+
+import dao.BankInterface;
+import dao.BankUtil;
 
 public class BankOfLithuania implements BankInterface {
 	static Logger log = LoggerFactory.getLogger(BankOfLithuania.class);

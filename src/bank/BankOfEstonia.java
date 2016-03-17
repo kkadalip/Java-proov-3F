@@ -1,4 +1,4 @@
-package dao;
+package bank;
 
 import java.io.FileInputStream;
 //import java.text.DecimalFormat;
@@ -16,6 +16,9 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+
+import dao.BankInterface;
+import dao.BankUtil;
 
 public class BankOfEstonia implements BankInterface {
 	static Logger log = LoggerFactory.getLogger(BankOfEstonia.class);

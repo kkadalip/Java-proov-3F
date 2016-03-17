@@ -29,6 +29,8 @@ import org.w3c.dom.Document;
 //import org.w3c.dom.Node;
 //import org.w3c.dom.NodeList;
 
+import bank.BankOfEstonia;
+import bank.BankOfLithuania;
 import model.Result;
 
 public class BankUtil {
