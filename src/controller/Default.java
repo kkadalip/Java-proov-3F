@@ -132,10 +132,16 @@ public class Default extends HttpServlet {
 			}
 			// Try to parse selected date
 			
+			log.debug("NO ERRORS, CONTINUING doPost!");
+			Float inputMoneyAmountFloat = null;
+			try{
+				inputMoneyAmountFloat = Float.parseFloat(inputMoneyAmount);
+			}catch(NumberFormatException e){ // java.lang.NumberFormatException
+				log.error("[doPost] number field to float FAILED!",e);
+				errors.add("Input amount doesn't have correct format!");
+			}
 			if(errors.isEmpty()){
-				log.debug("NO ERRORS, CONTINUING doPost!");
-				try{
-					Float inputMoneyAmountFloat = Float.parseFloat(inputMoneyAmount);
+				if(inputMoneyAmountFloat != null){
 					// TODO make sure Date has been validated before!!!
 					BankUtil bu = new BankUtil();
 					List<Result> results = bu.calculateResults(getServletContext(), inputMoneyAmountFloat, inputCurrency, outputCurrency, selectedDateAsLocalDate); //, selectedDate); //, date);
@@ -144,8 +150,6 @@ public class Default extends HttpServlet {
 					response.setContentType("application/json");
 					response.setCharacterEncoding("UTF-8");
 					response.getWriter().write(json);
-				}catch(NumberFormatException e){
-					log.error("[doPost] number field to float FAILED!",e);
 				}
 			}else{
 				log.debug("HAVE ERRORS, will display them SoonTM");
