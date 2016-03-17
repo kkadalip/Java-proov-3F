@@ -23,6 +23,12 @@ import dao.BankUtil;
 public class BankOfEstonia implements BankInterface {
 	static Logger log = LoggerFactory.getLogger(BankOfEstonia.class);
 	
+	@Override
+	public String getDownloadUrlByDate(String selectedDate) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
 	// Estonia: node Currency attribute rate
 	@Override
 	//public static String fisToRateEST(FileInputStream fis, String inputCurrency){

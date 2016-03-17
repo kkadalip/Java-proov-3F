@@ -20,6 +20,12 @@ import dao.BankUtil;
 public class BankOfLithuania implements BankInterface {
 	static Logger log = LoggerFactory.getLogger(BankOfLithuania.class);
 	
+	@Override
+	public String getDownloadUrlByDate(String selectedDate) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
 	// Lithuania: node item, in which node currency and node rate
 	@Override
 	public Float fisToRate(FileInputStream fis, String inputCurrency) { // public static Float fisToRateLT(FileInputStream fis, String inputCurrency){

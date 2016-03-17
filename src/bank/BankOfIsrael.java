@@ -2,6 +2,7 @@ package bank;
 
 import java.io.FileInputStream;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.xml.xpath.XPath;
@@ -22,6 +23,13 @@ import dao.BankUtil;
 // 01.03.2012 http://www.boi.org.il/currency.xml?rdate=20120301
 public class BankOfIsrael implements BankInterface {
 	static Logger log = LoggerFactory.getLogger(BankOfIsrael.class);
+	
+	@Override
+	public String getDownloadUrlByDate (String selectedDate){ // TODO Date selectedDate
+		String dateInUrl = BankUtil.datepickerToUrlFormat(selectedDate, "dd.MM.yy","yyyyMMdd");
+		String result = "http://www.boi.org.il/currency.xml?rdate="+dateInUrl;
+		return result;
+	}
 	
 	@Override
 	public Float fisToRate(FileInputStream fis, String inputCurrency) {
