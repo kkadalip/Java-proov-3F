@@ -164,6 +164,9 @@ body {
 	color: rgb(240,240,240);
 	background-image: -webkit-linear-gradient(top,rgb(100,150,200),rgb(52,99,146));
 }
+#errorsTableContainer{
+	text-align: left;
+}
 #errorsList{
 	list-style-type: none;
 }

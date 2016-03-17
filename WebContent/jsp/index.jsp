@@ -60,7 +60,7 @@ $(document).on("submit","#someForm",function(event) {
 	 */
 
 	 //  + "&par1=1&par2=2&par3=232"
-	$.post($form.attr("action"), $form.serialize() +"&selectedD="+$("#datepicker").datepicker().val(), function(responseJson) { // responseText responseJson responseXml
+	$.post($form.attr("action"), $form.serialize() +"&selectedD="+$("#datepicker").datepicker().val()+"&lang="+$("#languageSelect").val(), function(responseJson) { // responseText responseJson responseXml
 		console.log("responseJson is: " + responseJson);
 
 		//$("#somediv").html($(responseXml).find("data").html());
@@ -86,10 +86,11 @@ $(document).on("submit","#someForm",function(event) {
 		if(typeof responseJson[0] === 'string'){
 			//console.log("responseJson[0]: " + responseJson[0] +" is string, therefore probably error messages");
 			var $ul = $("<ul>");
-			$("<li id='errorsList'>").appendTo($ul).text("Errors:");
+			$("<li id='errorsList'>").appendTo($ul).text("<fmt:message key='label.error' />:"); // Errors:
 			$.each(responseJson, function(index, item) { // Iterate over the JSON array.
 				console.log("2index " + index + " item " + item);
-				$("<li>").text(item).appendTo($ul);      // Create HTML <li> element, set its text content with currently iterated item and append it to the <ul>.
+				$("<li>").text(item).appendTo($ul); // error.inputMoneyEmpty // "<fmt:message key='currency.AED' />"
+				//$("<li>").text(item).appendTo($ul); // Create HTML <li> element, set its text content with currently iterated item and append it to the <ul>.
 			});
 			$("#errorsTableContainer").html($ul);
 		}else{

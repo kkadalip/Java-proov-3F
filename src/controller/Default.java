@@ -15,6 +15,9 @@ import java.util.Date;
 import java.util.List;
 //import java.util.Locale;
 //import java.util.ResourceBundle;
+import java.util.Locale;
+import java.util.MissingResourceException;
+import java.util.ResourceBundle;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -102,7 +105,7 @@ public class Default extends HttpServlet {
 			String inputMoneyAmount = request.getParameter("inputMoneyAmount");
 			if(inputMoneyAmount == null || inputMoneyAmount.isEmpty()){
 				log.error("[doPost] inputMoneyAmount NULL!");
-				errors.add("Input money amount is empty!");
+				errors.add("error.inputMoneyEmpty");//errors.add("Input money amount is empty!");
 			}else{
 				log.debug("[doPost] inputMoneyAmount: " + inputMoneyAmount);
 			}
@@ -126,7 +129,7 @@ public class Default extends HttpServlet {
 				LocalDate selectedDateAsLocalDate = LocalDate.parse(selectedDate, formatter);
 				// CHECK IF SELECTED DATE IS GOOD (ADD TO SEPARATE METHOD LATER)
 				if(selectedDate == null || selectedDate.isEmpty()){
-					errors.add("Select a date!");
+					errors.add("error.selectDate"); //errors.add("Select a date!");
 				}else{
 					log.debug("[doPost] selectedDate: " + selectedDate);
 					SimpleDateFormat format = new SimpleDateFormat("dd.MM.yy");
@@ -138,13 +141,11 @@ public class Default extends HttpServlet {
 						System.out.println("Yesterday's date = "+ cal.getTime());
 						// IF SELECTED DATE IS AFTER YESTERDAY
 						if(date.after(cal.getTime())){
-							errors.add("Date cannot be today or in the future!");
+							errors.add("error.notTodayOrFuture"); //("Date cannot be today or in the future!");
 						}
-						
-						
 					} catch (java.text.ParseException e) {
 						log.error("[doPost] Can't parse date",e);
-						errors.add("Date format wrong!");
+						errors.add("error.dateFormatWrong"); //("Date format wrong!");
 					}
 				}
 				// Try to parse selected date
@@ -155,11 +156,10 @@ public class Default extends HttpServlet {
 					inputMoneyAmountFloat = Float.parseFloat(inputMoneyAmount);
 				}catch(NumberFormatException e){ // java.lang.NumberFormatException
 					log.error("[doPost] number field to float FAILED!",e);
-					errors.add("Input amount doesn't have correct format!");
+					errors.add("error.inputAmountFormatWrong"); //("Input amount doesn't have correct format!");
 				}
 				if(errors.isEmpty()){
 					if(inputMoneyAmountFloat != null){
-						// TODO make sure Date has been validated before!!!
 						BankUtil bu = new BankUtil();
 						List<Result> results = bu.calculateResults(getServletContext(), inputMoneyAmountFloat, inputCurrency, outputCurrency, selectedDateAsLocalDate); //, selectedDate); //, date);
 						String json = new Gson().toJson(results);
@@ -172,9 +172,27 @@ public class Default extends HttpServlet {
 					log.debug("HAVE ERRORS, will display them SoonTM");
 					List<String> list = new ArrayList<String>();
 					//list.add("some example error");
+					
+					String currentLang = request.getParameter("lang");
+					log.debug("currentLang is " + currentLang);
+					Locale selectedLocale = new Locale(currentLang); //(selectedLanguage);
+					ResourceBundle textBundle = ResourceBundle.getBundle("text",selectedLocale);
+					
+					///request.setAttribute("displayValues", textBundle);
+					//request.setAttribute("language", selectedLanguage);
 					for(String error : errors){
 						log.debug("[doPost] Errorslist error: " + error);
-						list.add(error);
+						//list.add(error);
+						
+						// TRANSLATE FOR LOCALE:
+						String value;
+						try{
+							value = textBundle.getString(error);
+						}catch(MissingResourceException e){
+							log.error("No error translation for " + error, e);
+							value = error;
+						}
+						list.add(value);
 					}
 					String json = new Gson().toJson(list);
 					log.debug("[doPost]  Errors json: " + json);
@@ -306,7 +324,7 @@ log.debug("outputCurrency: " + outputCurrency);
 String selectedDate = request.getParameter("selectedDate");
 log.debug("selectedDate: " + selectedDate);
 
-// TODO java.lang.NumberFormatException: empty String
+// java.lang.NumberFormatException: empty String
 Float inputMoneyAmountFloat = Float.parseFloat(inputMoneyAmount);
 Float inputCurrencyFloat = Float.parseFloat(inputCurrency);
 Float outputCurrencyFloat = Float.parseFloat(outputCurrency);
