@@ -6,6 +6,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.ServletContext;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathFactory;
@@ -82,6 +83,15 @@ public class BankOfIsrael implements BankInterface {
 			log.error("[fisToCurrencies] fis null!");
 			return null;
 		}
+	}
+	
+	
+	public List<String> getCurrencies(ServletContext context, LocalDate selectedDate){
+		String bankOfIsraelUrl = getDownloadUrlByDate(selectedDate);
+		String bankOfIsraelFileName = getFileNameByDate(selectedDate);
+		FileInputStream fisIsrael = BankUtil.getFisForX(context, bankOfIsraelUrl,bankOfIsraelFileName);
+		List<String> currencies = fisToCurrencies(fisIsrael);
+		return currencies;
 	}
 }
 

@@ -45,24 +45,9 @@ public class BankUtil {
 		
 		List<List<String>> listsOfCurrencies = new ArrayList<List<String>>();
 		
-		// ESTONIA:
-		BankOfEstonia bankEST = new BankOfEstonia();
-		String bankOfEstoniaUrl = bankEST.getDownloadUrlByDate(selectedDate);
-		String bankOfEstoniaFileName = bankEST.getFileNameByDate(selectedDate);
-		FileInputStream fisEstonia = BankUtil.getFisForX(context, bankOfEstoniaUrl,bankOfEstoniaFileName);
-		listsOfCurrencies.add(bankEST.fisToCurrencies(fisEstonia));
-		// LITHUANIA:
-		BankOfLithuania bankLT = new BankOfLithuania();
-		String bankOfLithuaniaUrl = bankLT.getDownloadUrlByDate(selectedDate);
-		String bankOfLithuaniaFileName = bankLT.getFileNameByDate(selectedDate);
-		FileInputStream fisLithuania = BankUtil.getFisForX(context, bankOfLithuaniaUrl,bankOfLithuaniaFileName);
-		listsOfCurrencies.add(bankLT.fisToCurrencies(fisLithuania));
-		// ISRAEL:
-		BankOfIsrael bankISR = new BankOfIsrael();
-		String bankOfIsraelUrl = bankISR.getDownloadUrlByDate(selectedDate);
-		String bankOfIsraelFileName = bankISR.getFileNameByDate(selectedDate);
-		FileInputStream fisIsrael = BankUtil.getFisForX(context, bankOfIsraelUrl,bankOfIsraelFileName);		
-		listsOfCurrencies.add(bankISR.fisToCurrencies(fisIsrael));
+		listsOfCurrencies.add(new BankOfEstonia().getCurrencies(context, selectedDate)); // ESTONIA
+		listsOfCurrencies.add(new BankOfLithuania().getCurrencies(context, selectedDate)); // LITHUANIA
+		listsOfCurrencies.add(new BankOfIsrael().getCurrencies(context, selectedDate)); // ISRAEL
 
 		List<String> uniqueCurrencies = new ArrayList<String>();
 		for(List<String> currencyList : listsOfCurrencies){
@@ -250,6 +235,37 @@ public class BankUtil {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+// DOWNLOAD ALL FOR DATE STUFF:
+// ESTONIA:
+//BankOfEstonia bankEST = new BankOfEstonia();
+//String bankOfEstoniaUrl = bankEST.getDownloadUrlByDate(selectedDate);
+//String bankOfEstoniaFileName = bankEST.getFileNameByDate(selectedDate);
+//FileInputStream fisEstonia = BankUtil.getFisForX(context, bankOfEstoniaUrl,bankOfEstoniaFileName);
+//listsOfCurrencies.add(bankEST.fisToCurrencies(fisEstonia));
+// LITHUANIA:
+//BankOfLithuania bankLT = new BankOfLithuania();
+//String bankOfLithuaniaUrl = bankLT.getDownloadUrlByDate(selectedDate);
+//String bankOfLithuaniaFileName = bankLT.getFileNameByDate(selectedDate);
+//FileInputStream fisLithuania = BankUtil.getFisForX(context, bankOfLithuaniaUrl,bankOfLithuaniaFileName);
+//listsOfCurrencies.add(bankLT.fisToCurrencies(fisLithuania));
+// ISRAEL:
+//BankOfIsrael bankISR = new BankOfIsrael();
+//String bankOfIsraelUrl = bankISR.getDownloadUrlByDate(selectedDate);
+//String bankOfIsraelFileName = bankISR.getFileNameByDate(selectedDate);
+//FileInputStream fisIsrael = BankUtil.getFisForX(context, bankOfIsraelUrl,bankOfIsraelFileName);		
+//listsOfCurrencies.add(bankISR.fisToCurrencies(fisIsrael));
 
 //List<String> bankOfEstoniaCurrencies = bankEST.fisToCurrencies(fisEstonia);
 

@@ -4,6 +4,8 @@ import java.io.FileInputStream;
 import java.time.LocalDate;
 import java.util.List;
 
+import javax.servlet.ServletContext;
+
 public interface BankInterface {
 	String fileNameDatePattern = "-yyyy-MM-dd";
 	
@@ -12,4 +14,6 @@ public interface BankInterface {
 	
 	public Float fisToRate(FileInputStream fis, String inputCurrency);
 	public List<String> fisToCurrencies(FileInputStream fis);
+	
+	public List<String> getCurrencies(ServletContext context, LocalDate selectedDate);
 }
