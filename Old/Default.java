@@ -41,18 +41,35 @@ public class Default extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		log.info("[doGet] START");
 		HttpSession httpSession = request.getSession(true);
+		//Locale defaultLocale = Locale.getDefault();
+//		Locale englishLocale = new Locale("en"); //, "US");
+//		Locale estonianLocale = new Locale("et");
+//		ResourceBundle bundle1 = ResourceBundle.getBundle("currencies",englishLocale);
+//		request.setAttribute("displayValues", bundle1);
+//		
+//		log.debug("AUD:" + bundle1.getString("currency.AUD"));
+//		log.debug("NOK:" + bundle1.getString("currency.NOK"));	
+		
+//		String selectedLanguage = (String) httpSession.getAttribute("language");
+//		String selectedLanguage = (String) request.getAttribute("language");
 		String selectedLanguage = request.getParameter("language");
 		if(selectedLanguage != null){
 			log.debug("[doGet] have selectedLanguage, it is: " + selectedLanguage);
+			//Locale selectedLocale = new Locale(selectedLanguage);
+			//ResourceBundle textBundle = ResourceBundle.getBundle("text",selectedLocale);
+			///request.setAttribute("displayValues", textBundle);
+			//request.setAttribute("language", selectedLanguage);
 		}else{
 			log.debug("[doGet] selectedLanguage is null, setting it to english as default");
 			request.setAttribute("language", "en");
+			//httpSession.setAttribute("language", "en");
 		}
+
 
 		// DATE IN SESSION? (also try to convert + parse check, otherwise fall back to default etc.. TODO. (JS AJAX?)
 		String sessionDate = (String) httpSession.getAttribute("sessionDate");
 		if(sessionDate == null || sessionDate.isEmpty()){
-			sessionDate = "30.12.2010"; // TODO TEMPORARY!
+			sessionDate = "30.12.2010"; // TEMPORARY!
 			
 			// WORKS: (TODO Date on change, get new list!)
 //			log.debug("[doGet] NO SESSION DATE IN SESSION ATTRIBUTES!, setting it as yesterday");
@@ -63,9 +80,22 @@ public class Default extends HttpServlet {
 //	        log.debug("[doGet] session date is now " + sessionDate);
 		}
 
+		// AT FIRST DOWNLOAD FOR DEFAULT DATE?
+		//String selectedDate = request.getParameter("selectedDate");
+		//log.debug("[doGet] selectedDate: " + selectedDate);
+		// TODO MAKE SURE THE LIST IS DYNAMIC!
+//		List<Currency> displayedCurrencies = Readxml.downloadAllForDate(getServletContext(), sessionDate); //"30.12.2010");
+//		request.setAttribute("displayedCurrencies", displayedCurrencies);
+		
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy"); //DateFormat format = new SimpleDateFormat("dd.MM.yy");
 		LocalDate sessionDateAsLocalDate = LocalDate.parse(sessionDate, formatter);
 		
+//		Date sessionDateAsDate = null;
+//		try {
+//			sessionDateAsDate = format.parse(sessionDate);
+//		} catch (ParseException e) {
+//			log.error("Could not parse sessionDate string!", e);
+//		}
 		// TODO check session date null?
 		List<String> displayedCurrencies = BankUtil.downloadAllForDate(getServletContext(), sessionDateAsLocalDate); //"30.12.2010");
 		request.setAttribute("displayedCurrencies", displayedCurrencies);
@@ -85,6 +115,14 @@ public class Default extends HttpServlet {
 		boolean ajax = "XMLHttpRequest".equals(request.getHeader("X-Requested-With"));
 		if(ajax){
 			log.debug("[doPost] AJAX POST!!!");
+// DELETE LATER
+//			if(httpSession.getAttribute("language")=="en"){
+				//httpSession.setAttribute("language","et");
+				//Config.set( httpSession, Config.FMT_LOCALE, new java.util.Locale("et") );// en_US
+//			}else{
+				//httpSession.setAttribute("language","en");
+				//Config.set( httpSession, Config.FMT_LOCALE, new java.util.Locale("en") );// en_US
+//			}
 			
 			// Handle ajax (JSON) response.
 			List<String> errors = new ArrayList<String>(); // if no errors... do the calculations etc...
@@ -116,6 +154,10 @@ public class Default extends HttpServlet {
 				format.setLenient(false);
 				try {
 					Date date = format.parse(selectedDate);
+					// Check that date isn't in the future NOR today:
+//					if(date.after(new Date())){
+//						errors.add("Date cannot be in the future!");
+//					}
 					Calendar cal = Calendar.getInstance();
 					cal.add(Calendar.DATE, -1);
 					System.out.println("Yesterday's date = "+ cal.getTime());
@@ -132,6 +174,7 @@ public class Default extends HttpServlet {
 			}
 			// Try to parse selected date
 			
+
 			if(errors.isEmpty()){
 				log.debug("NO ERRORS, CONTINUING doPost!");
 				try{
@@ -163,6 +206,14 @@ public class Default extends HttpServlet {
 			}
 		}else{
 			log.debug("[doPost] REGULAR POST!!!"); // Handle regular (JSP) response here.
+//			String selectedLanguage = request.getParameter("language");
+//			log.debug("[doPost] POST SELECTED language is: " + selectedLanguage);
+////			httpSession.setAttribute("language", selectedLanguage);
+//			request.setAttribute("language", selectedLanguage);
+//			doGet(request, response);
+////			response.sendRedirect("");
+////			request.setAttribute("language", selectedLanguage);
+////			request.getRequestDispatcher("jsp/index.jsp").forward(request, response);
 		}
 		log.info("[doPost] END");
 	}
@@ -190,63 +241,13 @@ public class Default extends HttpServlet {
 
 
 
-//Date sessionDateAsDate = null;
-//try {
-//	sessionDateAsDate = format.parse(sessionDate);
-//} catch (ParseException e) {
-//	log.error("Could not parse sessionDate string!", e);
-//}
-
-// AT FIRST DOWNLOAD FOR DEFAULT DATE?
-//String selectedDate = request.getParameter("selectedDate");
-//log.debug("[doGet] selectedDate: " + selectedDate);
-//List<Currency> displayedCurrencies = Readxml.downloadAllForDate(getServletContext(), sessionDate); //"30.12.2010");
-//request.setAttribute("displayedCurrencies", displayedCurrencies);
 
 
-//DELETE LATER
-//if(httpSession.getAttribute("language")=="en"){
-	//httpSession.setAttribute("language","et");
-	//Config.set( httpSession, Config.FMT_LOCALE, new java.util.Locale("et") );// en_US
-//}else{
-	//httpSession.setAttribute("language","en");
-	//Config.set( httpSession, Config.FMT_LOCALE, new java.util.Locale("en") );// en_US
-//}
-
-//Locale defaultLocale = Locale.getDefault();
-//Locale englishLocale = new Locale("en"); //, "US");
-//Locale estonianLocale = new Locale("et");
-//ResourceBundle bundle1 = ResourceBundle.getBundle("currencies",englishLocale);
-//request.setAttribute("displayValues", bundle1);
-
-//Locale selectedLocale = new Locale(selectedLanguage);
-//ResourceBundle textBundle = ResourceBundle.getBundle("text",selectedLocale);
-///request.setAttribute("displayValues", textBundle);
-//request.setAttribute("language", selectedLanguage);
-
-//httpSession.setAttribute("language", "en");
-
-// Check that date isn't in the future NOR today:
-//if(date.after(new Date())){
-//	errors.add("Date cannot be in the future!");
-//}
-
-// doPost REGULAR POST:
-//String selectedLanguage = request.getParameter("language");
-//log.debug("[doPost] POST SELECTED language is: " + selectedLanguage);
-////httpSession.setAttribute("language", selectedLanguage);
-//request.setAttribute("language", selectedLanguage);
-//doGet(request, response);
-////response.sendRedirect("");
-////request.setAttribute("language", selectedLanguage);
-////request.getRequestDispatcher("jsp/index.jsp").forward(request, response);
 
 
-//log.debug("AUD:" + bundle1.getString("currency.AUD"));
-//log.debug("NOK:" + bundle1.getString("currency.NOK"));	
 
-//String selectedLanguage = (String) httpSession.getAttribute("language");
-//String selectedLanguage = (String) request.getAttribute("language");
+
+
 
 // FROM doGet:
 //@SuppressWarnings("unchecked")
