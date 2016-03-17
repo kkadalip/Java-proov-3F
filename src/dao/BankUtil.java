@@ -30,6 +30,7 @@ import org.w3c.dom.Document;
 //import org.w3c.dom.NodeList;
 
 import bank.BankOfEstonia;
+import bank.BankOfIsrael;
 import bank.BankOfLithuania;
 import model.Result;
 
@@ -49,18 +50,17 @@ public class BankUtil {
 		
 //		String dateInUrl = datepickerToUrlFormat(selectedDate);
 		String dateInUrl = 	BankUtil.datepickerToUrlFormat(selectedDate, "dd.MM.yy","yyyy-MM-dd");
-
+		String dateInUrlIsrael = BankUtil.datepickerToUrlFormat(selectedDate, "dd.MM.yy","yyyyMMdd");
+		
 		String bankOfEstonia = "http://statistika.eestipank.ee/Reports?type=curd&format=xml&date1="+dateInUrl+"&lng=est&print=off"; //"http://statistika.eestipank.ee/Reports?type=curd&format=xml&date1=2010-12-30&lng=est&print=off";
 		String bankOfLithuania = "http://webservices.lb.lt/ExchangeRates/ExchangeRates.asmx/getExchangeRatesByDate?Date="+dateInUrl; //"http://webservices.lb.lt/ExchangeRates/ExchangeRates.asmx/getExchangeRatesByDate?Date=2010-12-30";
-
+		String bankOfIsrael = "http://www.boi.org.il/currency.xml?rdate="+dateInUrlIsrael;
+		
 		// DOWNLOAD FOR X      URL(with date) and file name (eg eesti-2010-12-30)
-		FileInputStream fisEstonia = BankUtil.getFisForX(context, bankOfEstonia,"bankOfEstonia-"+dateInUrl+".xml");
 		//fisEstonia = getFisForX(context, bankOfEstonia,"bankOfEstonia-"+timeString+".xml");
+		FileInputStream fisEstonia = BankUtil.getFisForX(context, bankOfEstonia,"bankOfEstonia-"+dateInUrl+".xml");
 		FileInputStream fisLithuania = BankUtil.getFisForX(context, bankOfLithuania,"bankOfLithuania-"+dateInUrl+".xml");
-
-		// TODO
-//		List<Currency> bankOfEstoniaCurrencies = fisToCurrencies(fisEstonia);
-//		List<Currency> bankOfLithuaniaCurrencies = fisToCurrencies(fisLithuania);
+		FileInputStream fisIsrael = BankUtil.getFisForX(context, bankOfIsrael,"bankOfIsrael-"+dateInUrl+".xml");
 		
 		List<String> uniqueCurrencies = new ArrayList<String>();
 
@@ -68,10 +68,13 @@ public class BankUtil {
 		List<String> bankOfEstoniaCurrencies = bankEST.fisToCurrencies(fisEstonia);
 		BankOfLithuania bankLT = new BankOfLithuania();
 		List<String> bankOfLithuaniaCurrencies = bankLT.fisToCurrencies(fisLithuania);
+		BankOfIsrael bankISR = new BankOfIsrael();
+		List<String> bankOfIsraelCurrencies = bankISR.fisToCurrencies(fisIsrael);
 		
 		List<List<String>> listsOfCurrencies = new ArrayList<List<String>>();
 		listsOfCurrencies.add(bankOfEstoniaCurrencies);
 		listsOfCurrencies.add(bankOfLithuaniaCurrencies);
+		listsOfCurrencies.add(bankOfIsraelCurrencies);
 		
 		for(List<String> currencyList : listsOfCurrencies){
 			if(currencyList != null && !currencyList.isEmpty()){
@@ -273,3 +276,18 @@ public class BankUtil {
 		return resultRate;
 	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+//List<Currency> bankOfEstoniaCurrencies = fisToCurrencies(fisEstonia);
+//List<Currency> bankOfLithuaniaCurrencies = fisToCurrencies(fisLithuania);
