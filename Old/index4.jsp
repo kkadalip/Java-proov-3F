@@ -162,6 +162,16 @@ $(function() {
 
 </head>
 <body>
+	<div id="languageSelectContainer">
+	    <form action="" method="GET" id="languageForm">
+	    	<!-- <label for="languageSelect" unselectable="on" class="tdInfo unselectable"><fmt:message key="label.language" />:</label>  -->
+	        <select class="hoverShadow dataSelect" id="languageSelect" name="language" onchange="submit()">
+	            <option value="en" ${language == 'en' ? 'selected' : ''}>English</option>
+	            <option value="et" ${language == 'et' ? 'selected' : ''}>Eesti keel</option>
+	        </select>
+	    </form>
+	</div>
+
 	<div class="floating-box-container">
 		<!-- 
 		<div class="floating-box unselectable" id="floating-box-top">
@@ -174,19 +184,8 @@ $(function() {
 			<form action="" method=GET id="datePickerForm">
 				<table style="width:100%">
 					<tr>
-						<td class="tdInfo unselectable">
-							<fmt:message key="label.language" />:
-						</td>
-						<td>
-							<select class="hoverShadow dataSelect" id="languageSelect" name="language" onchange="submit()">
-				            	<option value="en" ${language == 'en' ? 'selected' : ''}>English</option>
-				            	<option value="et" ${language == 'et' ? 'selected' : ''}>Eesti keel</option>
-				        	</select>
-						</td>
-					</tr>
-					<tr>
 						<td class="tdInfo unselectable"><fmt:message key="label.date" />:</td>
-						<td><input required="required" class="hoverShadow dataEntry" type="text" id="datepicker" name="date" value="${selectedD}"></td>
+						<td><input required="required" class="hoverShadow dataEntry" type="text" id="datepicker" name="selectedDate" value="${selectedD}"></td>
 					</tr>
 				</table>
 			</form>
@@ -199,7 +198,7 @@ $(function() {
 							<tr>
 								<td class="tdInfo unselectable"><fmt:message key="label.date" />:</td>
 								<td><input required="required" class="hoverShadow dataEntry" type="text"
-									id="datepicker" name="date"></td>
+									id="datepicker" name="selectedDate"></td>
 							</tr>
 							-->
 							<tr>

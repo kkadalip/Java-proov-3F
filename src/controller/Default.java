@@ -52,7 +52,7 @@ public class Default extends HttpServlet {
 		// DATE IN SESSION? (also try to convert + parse check, otherwise fall back to default etc.. TODO. (JS AJAX?)
 //		String sessionDate = (String) httpSession.getAttribute("sessionDate");
 		String sessionDateFormat = "dd.MM.yyyy";
-		String sessionDate = (String) request.getParameter("selectedDate");
+		String sessionDate = (String) request.getParameter("date"); // selectedDate
 		if(sessionDate == null || sessionDate.isEmpty()){ 
 			log.debug("sessionDate is null, setting it to YESTERDAY!");
 //			sessionDate = "30.12.2010"; // TODO TEMPORARY!
