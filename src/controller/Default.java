@@ -40,7 +40,7 @@ public class Default extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		log.info("[doGet] START");
-		HttpSession httpSession = request.getSession(true);
+//		HttpSession httpSession = request.getSession(true);
 		String selectedLanguage = request.getParameter("language");
 		if(selectedLanguage != null){
 			log.debug("[doGet] have selectedLanguage, it is: " + selectedLanguage);
@@ -53,16 +53,23 @@ public class Default extends HttpServlet {
 //		String sessionDate = (String) httpSession.getAttribute("sessionDate");
 		String sessionDateFormat = "dd.MM.yyyy";
 		String sessionDate = (String) request.getParameter("date"); // selectedDate
-		if(sessionDate == null || sessionDate.isEmpty()){ 
-			log.debug("sessionDate is null, setting it to YESTERDAY!");
-//			sessionDate = "30.12.2010"; // TODO TEMPORARY!
-			// WORKS: (TODO Date on change, get new list!)
-			log.debug("[doGet] NO SESSION DATE IN SESSION ATTRIBUTES!, setting it as yesterday");
-			DateFormat dateFormat = new SimpleDateFormat(sessionDateFormat); //("yyyy/MM/dd HH:mm:ss");
-	        Calendar cal = Calendar.getInstance();
-	        cal.add(Calendar.DATE, -1); // YESTERDAY
-	        sessionDate = dateFormat.format(cal.getTime());
-	        log.debug("[doGet] session date is now " + sessionDate);
+		if(sessionDate == null || sessionDate.isEmpty()){
+//			if(httpSession.getAttribute("selectedDate") == null){
+				
+				log.debug("sessionDate is null, setting it to YESTERDAY!");
+//				sessionDate = "30.12.2010"; // TODO TEMPORARY!
+				// WORKS: (TODO Date on change, get new list!)
+				log.debug("[doGet] NO SESSION DATE IN SESSION ATTRIBUTES!, setting it as yesterday");
+				DateFormat dateFormat = new SimpleDateFormat(sessionDateFormat); //("yyyy/MM/dd HH:mm:ss");
+		        Calendar cal = Calendar.getInstance();
+		        cal.add(Calendar.DATE, -1); // YESTERDAY
+		        sessionDate = dateFormat.format(cal.getTime());
+		        log.debug("[doGet] session date is now " + sessionDate);
+		        
+//		        httpSession.setAttribute("selectedDate", sessionDate);
+//			}else{
+//				sessionDate = (String) httpSession.getAttribute("selectedDate");
+//			}
 		}
 		request.setAttribute("selectedD", sessionDate);
 
@@ -106,10 +113,16 @@ public class Default extends HttpServlet {
 			log.debug("[doPost] outputCurrency: " + outputCurrency);
 			
 //			String selectedDate = request.getParameter("selectedDate");
-			String selectedDate = request.getParameter("selectedD");
-			log.debug("[doPost] selectedDate is " + selectedDate);
+			
+			String selectedDate = request.getParameter("selectedD"); // BEFORE WAS IN FORM, NOW ADDING TO SERIALIZED FORM IN JS
+			
+//			if(selectedDate != null){
+//				httpSession.setAttribute("selectedDate", selectedDate);
+//			}
+//			String selectedDate = (String) httpSession.getAttribute("selectedDate");
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy"); //DateFormat format = new SimpleDateFormat("dd.MM.yy");
 			if(selectedDate != null){
+				log.debug("[doPost] selectedDate is " + selectedDate);
 				LocalDate selectedDateAsLocalDate = LocalDate.parse(selectedDate, formatter);
 				// CHECK IF SELECTED DATE IS GOOD (ADD TO SEPARATE METHOD LATER)
 				if(selectedDate == null || selectedDate.isEmpty()){

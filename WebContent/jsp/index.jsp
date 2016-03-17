@@ -59,7 +59,8 @@ $(document).on("submit","#someForm",function(event) {
 	});
 	 */
 
-	$.post($form.attr("action"), $form.serialize(), function(responseJson) { // responseText responseJson responseXml
+	 //  + "&par1=1&par2=2&par3=232"
+	$.post($form.attr("action"), $form.serialize() +"&selectedD="+$("#datepicker").datepicker().val(), function(responseJson) { // responseText responseJson responseXml
 		console.log("responseJson is: " + responseJson);
 
 		//$("#somediv").html($(responseXml).find("data").html());
