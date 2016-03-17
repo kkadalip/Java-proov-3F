@@ -1,7 +1,7 @@
 package controller;
 
 import java.io.IOException;
-//import java.text.DateFormat;
+import java.text.DateFormat;
 //import java.text.ParseException;
 //import java.text.DateFormat;
 //import java.sql.Date;
@@ -51,20 +51,22 @@ public class Default extends HttpServlet {
 
 		// DATE IN SESSION? (also try to convert + parse check, otherwise fall back to default etc.. TODO. (JS AJAX?)
 //		String sessionDate = (String) httpSession.getAttribute("sessionDate");
+		String sessionDateFormat = "dd.MM.yyyy";
 		String sessionDate = (String) request.getParameter("selectedDate");
-		if(sessionDate == null || sessionDate.isEmpty()){
-			log.debug("sessionDate is null");
-			sessionDate = "30.12.2010"; // TODO TEMPORARY!
+		if(sessionDate == null || sessionDate.isEmpty()){ 
+			log.debug("sessionDate is null, setting it to YESTERDAY!");
+//			sessionDate = "30.12.2010"; // TODO TEMPORARY!
 			// WORKS: (TODO Date on change, get new list!)
-//			log.debug("[doGet] NO SESSION DATE IN SESSION ATTRIBUTES!, setting it as yesterday");
-//			DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy"); //("yyyy/MM/dd HH:mm:ss");
-//	        Calendar cal = Calendar.getInstance();
-//	        cal.add(Calendar.DATE, -1); // YESTERDAY
-//	        sessionDate = dateFormat.format(cal.getTime());
-//	        log.debug("[doGet] session date is now " + sessionDate);
+			log.debug("[doGet] NO SESSION DATE IN SESSION ATTRIBUTES!, setting it as yesterday");
+			DateFormat dateFormat = new SimpleDateFormat(sessionDateFormat); //("yyyy/MM/dd HH:mm:ss");
+	        Calendar cal = Calendar.getInstance();
+	        cal.add(Calendar.DATE, -1); // YESTERDAY
+	        sessionDate = dateFormat.format(cal.getTime());
+	        log.debug("[doGet] session date is now " + sessionDate);
 		}
+		request.setAttribute("sessionD", sessionDate);
 
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy"); //DateFormat format = new SimpleDateFormat("dd.MM.yy");
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern(sessionDateFormat); //DateFormat format = new SimpleDateFormat("dd.MM.yy");
 		LocalDate sessionDateAsLocalDate = LocalDate.parse(sessionDate, formatter);
 		
 		// TODO check session date null?

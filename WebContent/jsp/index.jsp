@@ -141,7 +141,7 @@ $(function() {
 	});
 	var dateYesterday = new Date();
 	dateYesterday.setDate(dateYesterday.getDate() - 1); // YESTERDAY
-	$("#datepicker").datepicker('setDate', dateYesterday);//new Date(2010, 11, 30));
+	//$("#datepicker").datepicker('setDate', dateYesterday); // DEFAULT DATE SET TO YESTERDAY //new Date(2010, 11, 30));
 
 	//$("#datepicker").datepicker();
 	//$("#datepicker").datepicker("option", "dateFormat", "dd.mm.yy");
@@ -174,7 +174,7 @@ $(function() {
 		 -->
 		<div id="floating-box-main"  class="floating-box">
 			<form action="" method=GET id="datePickerForm">
-				<fmt:message key="label.date" />: <input required="required" class="hoverShadow dataEntry" type="text" id="datepicker" name="selectedDate">
+				<fmt:message key="label.date" />: <input required="required" class="hoverShadow dataEntry" type="text" id="datepicker" name="selectedDate" value="${sessionD}">
 			</form>
 		
 			<form action="" method="POST" id="someForm">
@@ -224,8 +224,7 @@ $(function() {
 										<c:forEach items="${requestScope['displayedCurrencies']}"
 											var="item">
 											<option id="output_${item}"
-												value="${item}">${item} -
-												<fmt:message key="currency.${item}" /></option>
+												value="${item}">${item} - <fmt:message key="currency.${item}" /></option>
 										</c:forEach>
 								</select></td>
 							</tr>
