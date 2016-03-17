@@ -40,15 +40,8 @@ public class BankUtil {
 	// ATM USING ONLY FOR DISPLAY!!!
 //	public static List<Currency> downloadAllForDate(ServletContext context, String selectedDate){ //, Date date){
 	public static List<String> downloadAllForDate(ServletContext context, String selectedDate){ //, Date date){ // TODO list of classes/banks
-		//log.debug("[downloadAllForDate]");
 		log.debug("[downloadAllForDate] selectedDate " + selectedDate);
 		
-//		String day = "30";
-//		String month = "12";
-//		String year = "2010";
-//		String timeString = year+"-"+month+"-"+day;
-		
-//		String dateInUrl = datepickerToUrlFormat(selectedDate);
 		String dateInUrl = 	BankUtil.datepickerToUrlFormat(selectedDate, "dd.MM.yy","yyyy-MM-dd");
 		String dateInUrlIsrael = BankUtil.datepickerToUrlFormat(selectedDate, "dd.MM.yy","yyyyMMdd");
 		
@@ -92,15 +85,13 @@ public class BankUtil {
 
 	public List<Result> calculateResults(ServletContext context, Float inputMoneyAmount, String inputCurrency, String outputCurreny, String selectedDate){ //, List<Class> bankClasses){ //, String date){
 		//List<Class> bankClasses = new ArrayList<Class>();
-//	public static List<Result> calculateResults(ServletContext context, Float inputMoneyAmount, String inputCurrency, String outputCurreny, String selectedDate){ //, String date){
+		//public static List<Result> calculateResults(ServletContext context, Float inputMoneyAmount, String inputCurrency, String outputCurreny, String selectedDate){ //, String date){
 		log.debug("[calculateResults]");
 		
 		String dateInUrl = 	BankUtil.datepickerToUrlFormat(selectedDate, "dd.MM.yy","yyyy-MM-dd");
 		String dateInUrlIsrael = BankUtil.datepickerToUrlFormat(selectedDate, "dd.MM.yy","yyyyMMdd");
 
-//		FileInputStream fisEST = getFisForX(context, bankOfEstonia,"bankOfEstonia-2010-12-30.xml");
-//		String fisESTinputRate = fisToRateEST(fisEST,inputCurrency);
-		//String fisEstoniaOutputRate = fisToRate(fisEstonia,outputCurreny); // java.io.IOException: Stream Closed
+		List<Result> resultsList = new ArrayList<Result>();
 		
 		// ESTONIA START
 		log.debug("[calculateResults] GETTING INPUT CURRENCY RATE FOR: " + inputCurrency);
@@ -109,42 +100,12 @@ public class BankUtil {
 		BankOfEstonia bankEST = new BankOfEstonia();
 		Float fisESTinputRate = bankEST.fisToRate(BankUtil.getFisForX(context, bankOfESTurl,bankofESTfileName),inputCurrency);
 		Float fisESToutputRate = bankEST.fisToRate(BankUtil.getFisForX(context, bankOfESTurl,bankofESTfileName),outputCurreny);
-		if(fisESTinputRate != null){log.debug("[calculateResults] going to parse fisEstoniaInputRate: " + fisESTinputRate.toString());
+		if(fisESTinputRate != null){log.debug("[calculateResults] fisESTinputRate: " + fisESTinputRate.toString());
 		}else{log.debug("[calculateResults] fisEstoniaInputRate IS NULL!");}
-		if(fisESToutputRate != null){ log.debug("[calculateResults]  ...and outputrate fisESToutputRate: " + fisESToutputRate.toString()); 
+		if(fisESToutputRate != null){ log.debug("[calculateResults] fisESToutputRate: " + fisESToutputRate.toString()); 
 		}else{log.debug("[calculateResults] fisESToutputRate IS NULL!");}
-		// ESTONIA END
-		
-		// LITHUANIA START
-		//FileInputStream fisLT = getFisForX(context, bankOfEstonia,"bankOfEstonia-2010-12-30.xml");
-		String bankOfLTurl = "http://webservices.lb.lt/ExchangeRates/ExchangeRates.asmx/getExchangeRatesByDate?Date="+dateInUrl;
-		String bankOfLTfileName = "bankOfLithuania-"+dateInUrl+".xml"; //String bankOfLT = "bankOfLithuania-2010-12-30.xml";
-		BankOfLithuania bankLT = new BankOfLithuania();
-		Float fisLTinputRate = bankLT.fisToRate(BankUtil.getFisForX(context, bankOfLTurl,bankOfLTfileName),inputCurrency);
-		Float fisLToutputRate = bankLT.fisToRate(BankUtil.getFisForX(context, bankOfLTurl,bankOfLTfileName),outputCurreny);
-		if(fisLTinputRate != null){log.debug("[calculateResults] going to parse fisLTinputRate: " + fisLTinputRate.toString());
-		}else{log.debug("[calculateResults] fisLTinputRate IS NULL!");}
-		if(fisLToutputRate != null){log.debug("[calculateResults]  ...and outputrate fisLToutputRate: " + fisLToutputRate.toString());
-		}else{log.debug("[calculateResults] fisLToutputRate IS NULL!");}
-		// LITHUANIA END
-		
-		List<Result> resultsList = new ArrayList<Result>();
-		
-		log.debug("[calculateResults] PARSING if not null obv");
+		// ------------------------
 		if(fisESTinputRate != null && fisESToutputRate != null){
-//			DecimalFormat df = new DecimalFormat(); // new DecimalFormat("#.#");
-//			DecimalFormatSymbols symbols = new DecimalFormatSymbols();
-//			symbols.setDecimalSeparator(',');
-//			symbols.setGroupingSeparator(' ');
-//			//symbols.setGroupingSeparator(' ');
-//			df.setDecimalFormatSymbols(symbols);
-//			//df.parse(p);
-//			//float f = df.parse(str).floatValue();
-			
-			//Float inputCurrencyFloatEST = df.parse(fisESTinputRate).floatValue(); // Float.parseFloat(fisEstoniaInputRate);
-			//Float outputCurrencyFloatEST = df.parse(fisESToutputRate).floatValue(); // Float.parseFloat(fisEstoniaOutputRate);
-//				if(inputCurrencyFloatEST != null && outputCurrencyFloatEST != null && inputMoneyAmount != null){
-//				Float outputAmountEstonia = inputCurrencyFloatEST / outputCurrencyFloatEST * inputMoneyAmount;
 			if(fisESTinputRate != null && fisESToutputRate != null && inputMoneyAmount != null){
 				Float outputAmountEstonia = fisESTinputRate / fisESToutputRate * inputMoneyAmount;
 				String output = displayedFloat(outputAmountEstonia);
@@ -156,16 +117,51 @@ public class BankUtil {
 			log.error("Bank of Estonia DOES NOT HAVE RESULT!");
 			resultsList.add(new Result("Bank of Estonia","-"));
 		}
+		// ESTONIA END
 		
+		// LITHUANIA START
+		//FileInputStream fisLT = getFisForX(context, bankOfEstonia,"bankOfEstonia-2010-12-30.xml");
+		String bankOfLTurl = "http://webservices.lb.lt/ExchangeRates/ExchangeRates.asmx/getExchangeRatesByDate?Date="+dateInUrl;
+		String bankOfLTfileName = "bankOfLithuania-"+dateInUrl+".xml"; //String bankOfLT = "bankOfLithuania-2010-12-30.xml";
+		BankOfLithuania bankLT = new BankOfLithuania();
+		Float fisLTinputRate = bankLT.fisToRate(BankUtil.getFisForX(context, bankOfLTurl,bankOfLTfileName),inputCurrency);
+		Float fisLToutputRate = bankLT.fisToRate(BankUtil.getFisForX(context, bankOfLTurl,bankOfLTfileName),outputCurreny);
+		if(fisLTinputRate != null){log.debug("[calculateResults] fisLTinputRate: " + fisLTinputRate.toString());
+		}else{log.debug("[calculateResults] fisLTinputRate IS NULL!");}
+		if(fisLToutputRate != null){log.debug("[calculateResults] fisLToutputRate: " + fisLToutputRate.toString());
+		}else{log.debug("[calculateResults] fisLToutputRate IS NULL!");}
+		// ------------------------
 		if(fisLTinputRate != null && fisLToutputRate != null && inputMoneyAmount != null){
 			Float outputAmountLithuania = fisLTinputRate / fisLToutputRate * inputMoneyAmount;
-			log.debug("Bank of Lithuania RESULT: " + outputAmountLithuania.toString());
+			log.debug("[calculateResults] Bank of Lithuania RESULT: " + outputAmountLithuania.toString());
 			resultsList.add(new Result("Bank of Lithuania", displayedFloat(outputAmountLithuania))); //outputAmountLithuania.toString()));
 		}else{
-			log.error("Bank of Lithuania DOES NOT HAVE RESULT!");
+			log.error("[calculateResults] Bank of Lithuania DOES NOT HAVE RESULT!");
 			resultsList.add(new Result("Bank of Lithuania","-"));
 		}
-		// FAILINIMEDEST LIST (model Bank nt), SIIN KÄIN NAD LÄBI JA PÄRIN VÄLJA ÕIGE ASJA + ARVUTAN?
+		// LITHUANIA END
+		
+		// ISRAEL START
+		String bankOfISRurl = "http://www.boi.org.il/currency.xml?rdate="+dateInUrlIsrael;
+		String bankOfISRfileName = "bankOfIsrael-"+dateInUrl+".xml"; //String bankOfISR = "bankOfIsrael-2010-12-30.xml";
+		BankOfIsrael bankISR = new BankOfIsrael();
+		Float fisISRinputRate = bankISR.fisToRate(BankUtil.getFisForX(context, bankOfISRurl,bankOfISRfileName),inputCurrency);
+		Float fisISRoutputRate = bankISR.fisToRate(BankUtil.getFisForX(context, bankOfISRurl,bankOfISRfileName),outputCurreny);
+		if(fisISRinputRate != null){log.debug("[calculateResults] fisISRinputRate: " + fisISRinputRate.toString());
+		}else{log.debug("[calculateResults] fisISRinputRate IS NULL!");}
+		if(fisISRoutputRate != null){log.debug("[calculateResults]  fisISRoutputRate: " + fisISRoutputRate.toString());
+		}else{log.debug("[calculateResults] fisISRoutputRate IS NULL!");}
+		// ------------------------
+		if(fisISRinputRate != null && fisISRoutputRate != null && inputMoneyAmount != null){
+			Float outputAmountIsrael = fisISRinputRate / fisISRoutputRate * inputMoneyAmount;
+			log.debug("[calculateResults] Bank of Israel RESULT: " + outputAmountIsrael.toString());
+			resultsList.add(new Result("Bank of Israel", displayedFloat(outputAmountIsrael))); //outputAmountLithuania.toString()));
+		}else{
+			log.error("[calculateResults] Bank of Israel DOES NOT HAVE RESULT!");
+			resultsList.add(new Result("Bank of Israel","-"));
+		}
+		// ISRAEL END
+		
 		return resultsList;
 	}
 	
@@ -271,6 +267,38 @@ public class BankUtil {
 
 
 
+
+
+
+
+
+
+
+//if(fisESTinputRate != null && fisESToutputRate != null){
+//	DecimalFormat df = new DecimalFormat(); // new DecimalFormat("#.#");
+//	DecimalFormatSymbols symbols = new DecimalFormatSymbols();
+//	symbols.setDecimalSeparator(',');
+//	symbols.setGroupingSeparator(' ');
+//	//symbols.setGroupingSeparator(' ');
+//	df.setDecimalFormatSymbols(symbols);
+//	//df.parse(p);
+//	//float f = df.parse(str).floatValue();
+	
+	//Float inputCurrencyFloatEST = df.parse(fisESTinputRate).floatValue(); // Float.parseFloat(fisEstoniaInputRate);
+	//Float outputCurrencyFloatEST = df.parse(fisESToutputRate).floatValue(); // Float.parseFloat(fisEstoniaOutputRate);
+//		if(inputCurrencyFloatEST != null && outputCurrencyFloatEST != null && inputMoneyAmount != null){
+//		Float outputAmountEstonia = inputCurrencyFloatEST / outputCurrencyFloatEST * inputMoneyAmount;
+
+//FileInputStream fisEST = getFisForX(context, bankOfEstonia,"bankOfEstonia-2010-12-30.xml");
+//String fisESTinputRate = fisToRateEST(fisEST,inputCurrency);
+//String fisEstoniaOutputRate = fisToRate(fisEstonia,outputCurreny); // java.io.IOException: Stream Closed
+
+//String dateInUrl = datepickerToUrlFormat(selectedDate);
+
+//String day = "30";
+//String month = "12";
+//String year = "2010";
+//String timeString = year+"-"+month+"-"+day;
 
 //String dateInUrl = datepickerToUrlFormat(selectedDate);
 
