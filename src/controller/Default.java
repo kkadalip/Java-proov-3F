@@ -149,16 +149,16 @@ public class Default extends HttpServlet {
 					}
 				}
 				// Try to parse selected date
-				
-				log.debug("NO ERRORS, CONTINUING doPost!");
-				Float inputMoneyAmountFloat = null;
-				try{
-					inputMoneyAmountFloat = Float.parseFloat(inputMoneyAmount);
-				}catch(NumberFormatException e){ // java.lang.NumberFormatException
-					log.error("[doPost] number field to float FAILED!",e);
-					errors.add("error.inputAmountFormatWrong"); //("Input amount doesn't have correct format!");
-				}
 				if(errors.isEmpty()){
+				log.debug("NO ERRORS, CONTINUING doPost!");
+					Float inputMoneyAmountFloat = null;
+					try{
+						inputMoneyAmountFloat = Float.parseFloat(inputMoneyAmount);
+					}catch(NumberFormatException e){ // java.lang.NumberFormatException
+						log.error("[doPost] number field to float FAILED!",e);
+						errors.add("error.inputAmountFormatWrong"); //("Input amount doesn't have correct format!");
+					}
+
 					if(inputMoneyAmountFloat != null){
 						BankUtil bu = new BankUtil();
 						List<Result> results = bu.calculateResults(getServletContext(), inputMoneyAmountFloat, inputCurrency, outputCurrency, selectedDateAsLocalDate); //, selectedDate); //, date);
