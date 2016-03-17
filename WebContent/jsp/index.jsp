@@ -182,11 +182,17 @@ $(function() {
 			<p class="unselectable" id="td-title"><fmt:message key="label.title" /></p>
 		
 			<form action="" method=GET id="datePickerForm">
-				<fmt:message key="label.date" />: <input required="required" class="hoverShadow dataEntry" type="text" id="datepicker" name="selectedDate" value="${sessionD}">
+				<table style="width:100%">
+					<tr>
+						<td class="tdInfo unselectable"><fmt:message key="label.date" />:</td>
+						<td><input required="required" class="hoverShadow dataEntry" type="text" id="datepicker" name="selectedDate" value="${sessionD}"></td>
+					</tr>
+				</table>
 			</form>
 		
+		
 			<form action="" method="POST" id="someForm">
-				<table style="width: 100%">
+				<table style="width:100%">
 					<tbody>
 							<!--
 							<tr>
