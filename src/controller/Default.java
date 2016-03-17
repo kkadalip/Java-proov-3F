@@ -64,7 +64,7 @@ public class Default extends HttpServlet {
 	        sessionDate = dateFormat.format(cal.getTime());
 	        log.debug("[doGet] session date is now " + sessionDate);
 		}
-		request.setAttribute("sessionD", sessionDate);
+		request.setAttribute("selectedD", sessionDate);
 
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern(sessionDateFormat); //DateFormat format = new SimpleDateFormat("dd.MM.yy");
 		LocalDate sessionDateAsLocalDate = LocalDate.parse(sessionDate, formatter);
@@ -105,68 +105,72 @@ public class Default extends HttpServlet {
 			String outputCurrency = request.getParameter("outputCurrency");
 			log.debug("[doPost] outputCurrency: " + outputCurrency);
 			
-			String selectedDate = request.getParameter("selectedDate");
-			
+//			String selectedDate = request.getParameter("selectedDate");
+			String selectedDate = request.getParameter("selectedD");
+			log.debug("[doPost] selectedDate is " + selectedDate);
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy"); //DateFormat format = new SimpleDateFormat("dd.MM.yy");
-			LocalDate selectedDateAsLocalDate = LocalDate.parse(selectedDate, formatter);
-			
-			// CHECK IF SELECTED DATE IS GOOD (ADD TO SEPARATE METHOD LATER)
-			if(selectedDate == null || selectedDate.isEmpty()){
-				errors.add("Select a date!");
-			}else{
-				log.debug("[doPost] selectedDate: " + selectedDate);
-				SimpleDateFormat format = new SimpleDateFormat("dd.MM.yy");
-				format.setLenient(false);
-				try {
-					Date date = format.parse(selectedDate);
-					Calendar cal = Calendar.getInstance();
-					cal.add(Calendar.DATE, -1);
-					System.out.println("Yesterday's date = "+ cal.getTime());
-					// IF SELECTED DATE IS AFTER YESTERDAY
-					if(date.after(cal.getTime())){
-						errors.add("Date cannot be today or in the future!");
+			if(selectedDate != null){
+				LocalDate selectedDateAsLocalDate = LocalDate.parse(selectedDate, formatter);
+				// CHECK IF SELECTED DATE IS GOOD (ADD TO SEPARATE METHOD LATER)
+				if(selectedDate == null || selectedDate.isEmpty()){
+					errors.add("Select a date!");
+				}else{
+					log.debug("[doPost] selectedDate: " + selectedDate);
+					SimpleDateFormat format = new SimpleDateFormat("dd.MM.yy");
+					format.setLenient(false);
+					try {
+						Date date = format.parse(selectedDate);
+						Calendar cal = Calendar.getInstance();
+						cal.add(Calendar.DATE, -1);
+						System.out.println("Yesterday's date = "+ cal.getTime());
+						// IF SELECTED DATE IS AFTER YESTERDAY
+						if(date.after(cal.getTime())){
+							errors.add("Date cannot be today or in the future!");
+						}
+						
+						
+					} catch (java.text.ParseException e) {
+						log.error("[doPost] Can't parse date",e);
+						errors.add("Date format wrong!");
 					}
-					
-					
-				} catch (java.text.ParseException e) {
-					log.error("[doPost] Can't parse date",e);
-					errors.add("Date format wrong!");
 				}
-			}
-			// Try to parse selected date
-			
-			log.debug("NO ERRORS, CONTINUING doPost!");
-			Float inputMoneyAmountFloat = null;
-			try{
-				inputMoneyAmountFloat = Float.parseFloat(inputMoneyAmount);
-			}catch(NumberFormatException e){ // java.lang.NumberFormatException
-				log.error("[doPost] number field to float FAILED!",e);
-				errors.add("Input amount doesn't have correct format!");
-			}
-			if(errors.isEmpty()){
-				if(inputMoneyAmountFloat != null){
-					// TODO make sure Date has been validated before!!!
-					BankUtil bu = new BankUtil();
-					List<Result> results = bu.calculateResults(getServletContext(), inputMoneyAmountFloat, inputCurrency, outputCurrency, selectedDateAsLocalDate); //, selectedDate); //, date);
-					String json = new Gson().toJson(results);
-					log.debug("[doPost] results json: " + json);
+				// Try to parse selected date
+				
+				log.debug("NO ERRORS, CONTINUING doPost!");
+				Float inputMoneyAmountFloat = null;
+				try{
+					inputMoneyAmountFloat = Float.parseFloat(inputMoneyAmount);
+				}catch(NumberFormatException e){ // java.lang.NumberFormatException
+					log.error("[doPost] number field to float FAILED!",e);
+					errors.add("Input amount doesn't have correct format!");
+				}
+				if(errors.isEmpty()){
+					if(inputMoneyAmountFloat != null){
+						// TODO make sure Date has been validated before!!!
+						BankUtil bu = new BankUtil();
+						List<Result> results = bu.calculateResults(getServletContext(), inputMoneyAmountFloat, inputCurrency, outputCurrency, selectedDateAsLocalDate); //, selectedDate); //, date);
+						String json = new Gson().toJson(results);
+						log.debug("[doPost] results json: " + json);
+						response.setContentType("application/json");
+						response.setCharacterEncoding("UTF-8");
+						response.getWriter().write(json);
+					}
+				}else{
+					log.debug("HAVE ERRORS, will display them SoonTM");
+					List<String> list = new ArrayList<String>();
+					//list.add("some example error");
+					for(String error : errors){
+						log.debug("[doPost] Errorslist error: " + error);
+						list.add(error);
+					}
+					String json = new Gson().toJson(list);
+					log.debug("[doPost]  Errors json: " + json);
 					response.setContentType("application/json");
 					response.setCharacterEncoding("UTF-8");
 					response.getWriter().write(json);
 				}
 			}else{
-				log.debug("HAVE ERRORS, will display them SoonTM");
-				List<String> list = new ArrayList<String>();
-				//list.add("some example error");
-				for(String error : errors){
-					log.debug("[doPost] Errorslist error: " + error);
-					list.add(error);
-				}
-				String json = new Gson().toJson(list);
-				log.debug("[doPost]  Errors json: " + json);
-				response.setContentType("application/json");
-				response.setCharacterEncoding("UTF-8");
-				response.getWriter().write(json);
+				log.error("[doPost] selectedDate is NULL!");
 			}
 		}else{
 			log.debug("[doPost] REGULAR POST!!!"); // Handle regular (JSP) response here.

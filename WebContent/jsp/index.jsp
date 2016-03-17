@@ -185,7 +185,7 @@ $(function() {
 				<table style="width:100%">
 					<tr>
 						<td class="tdInfo unselectable"><fmt:message key="label.date" />:</td>
-						<td><input required="required" class="hoverShadow dataEntry" type="text" id="datepicker" name="selectedDate" value="${sessionD}"></td>
+						<td><input required="required" class="hoverShadow dataEntry" type="text" id="datepicker" name="selectedDate" value="${selectedD}"></td>
 					</tr>
 				</table>
 			</form>
