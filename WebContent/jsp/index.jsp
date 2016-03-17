@@ -42,13 +42,19 @@
 <script>
 //Ajaxifying an existing form
 $(document).on("click","#swapCurrenciesBtn",function(event){
-	$("#someForm").submit();
+	if($("#inputMoneyAmount").val()){
+		$("#someForm").submit();
+	}
 });
 $(document).on("change","#selectOutputCurrency",function(event){
-	$("#someForm").submit();
+	if($("#inputMoneyAmount").val()){
+		$("#someForm").submit();
+	}
 });
 $(document).on("change","#selectInputCurrency",function(event){
-	$("#someForm").submit();
+	if($("#inputMoneyAmount").val()){
+		$("#someForm").submit();
+	}
 });
 $(document).on("submit","#someForm",function(event) {
 	console.log("submitting the ajax post form");
@@ -207,7 +213,7 @@ $(function() {
 							<tr>
 								<td class="tdInfo unselectable"><fmt:message key="label.inputAmount" />:</td>
 								<td><input required="required" class="hoverShadow dataEntry" type="number"
-									min="0" step="any" name="inputMoneyAmount" placeholder="" /></td>
+									min="0" step="any" name="inputMoneyAmount" id="inputMoneyAmount" placeholder="" /></td>
 							</tr>
 							<tr>
 								<td class="tdInfo unselectable"><fmt:message key="label.inputCurrency" />:</td>
