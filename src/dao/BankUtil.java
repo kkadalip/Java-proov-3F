@@ -43,39 +43,28 @@ public class BankUtil {
 	public static List<String> downloadAllForDate(ServletContext context, LocalDate selectedDate){ //, Date date){ // TODO list of classes/banks
 		log.debug("[downloadAllForDate] selectedDate " + selectedDate);
 		
-		// ESTONIA:
-		BankOfEstonia bankOfEstonia = new BankOfEstonia();
-		String bankOfEstoniaUrl = bankOfEstonia.getDownloadUrlByDate(selectedDate);
-		String bankOfEstoniaFileName = bankOfEstonia.getFileNameByDate(selectedDate);
-		// LITHUANIA:
-		BankOfLithuania bankOfLithuania = new BankOfLithuania();
-		String bankOfLithuaniaUrl = bankOfLithuania.getDownloadUrlByDate(selectedDate);
-		String bankOfLithuaniaFileName = bankOfLithuania.getFileNameByDate(selectedDate);
-		// ISRAEL:
-		BankOfIsrael bankOfIsrael = new BankOfIsrael();
-		String bankOfIsraelUrl = bankOfIsrael.getDownloadUrlByDate(selectedDate);
-		String bankOfIsraelFileName = bankOfIsrael.getFileNameByDate(selectedDate);
+		List<List<String>> listsOfCurrencies = new ArrayList<List<String>>();
 		
-		// DOWNLOAD FOR X      URL(with date) and file name (eg eesti-2010-12-30)
-		//fisEstonia = getFisForX(context, bankOfEstonia,"bankOfEstonia-"+timeString+".xml");
+		// ESTONIA:
+		BankOfEstonia bankEST = new BankOfEstonia();
+		String bankOfEstoniaUrl = bankEST.getDownloadUrlByDate(selectedDate);
+		String bankOfEstoniaFileName = bankEST.getFileNameByDate(selectedDate);
 		FileInputStream fisEstonia = BankUtil.getFisForX(context, bankOfEstoniaUrl,bankOfEstoniaFileName);
+		listsOfCurrencies.add(bankEST.fisToCurrencies(fisEstonia));
+		// LITHUANIA:
+		BankOfLithuania bankLT = new BankOfLithuania();
+		String bankOfLithuaniaUrl = bankLT.getDownloadUrlByDate(selectedDate);
+		String bankOfLithuaniaFileName = bankLT.getFileNameByDate(selectedDate);
 		FileInputStream fisLithuania = BankUtil.getFisForX(context, bankOfLithuaniaUrl,bankOfLithuaniaFileName);
-		FileInputStream fisIsrael = BankUtil.getFisForX(context, bankOfIsraelUrl,bankOfIsraelFileName);
+		listsOfCurrencies.add(bankLT.fisToCurrencies(fisLithuania));
+		// ISRAEL:
+		BankOfIsrael bankISR = new BankOfIsrael();
+		String bankOfIsraelUrl = bankISR.getDownloadUrlByDate(selectedDate);
+		String bankOfIsraelFileName = bankISR.getFileNameByDate(selectedDate);
+		FileInputStream fisIsrael = BankUtil.getFisForX(context, bankOfIsraelUrl,bankOfIsraelFileName);		
+		listsOfCurrencies.add(bankISR.fisToCurrencies(fisIsrael));
 
 		List<String> uniqueCurrencies = new ArrayList<String>();
-
-		BankOfEstonia bankEST = new BankOfEstonia();
-		List<String> bankOfEstoniaCurrencies = bankEST.fisToCurrencies(fisEstonia);
-		BankOfLithuania bankLT = new BankOfLithuania();
-		List<String> bankOfLithuaniaCurrencies = bankLT.fisToCurrencies(fisLithuania);
-		BankOfIsrael bankISR = new BankOfIsrael();
-		List<String> bankOfIsraelCurrencies = bankISR.fisToCurrencies(fisIsrael);
-		
-		List<List<String>> listsOfCurrencies = new ArrayList<List<String>>();
-		listsOfCurrencies.add(bankOfEstoniaCurrencies);
-		listsOfCurrencies.add(bankOfLithuaniaCurrencies);
-		listsOfCurrencies.add(bankOfIsraelCurrencies);
-		
 		for(List<String> currencyList : listsOfCurrencies){
 			if(currencyList != null && !currencyList.isEmpty()){
 				for(String currency : currencyList){
@@ -262,10 +251,10 @@ public class BankUtil {
 
 
 
+//List<String> bankOfEstoniaCurrencies = bankEST.fisToCurrencies(fisEstonia);
 
-
-
-
+// DOWNLOAD FOR X      URL(with date) and file name (eg eesti-2010-12-30)
+//fisEstonia = getFisForX(context, bankOfEstonia,"bankOfEstonia-"+timeString+".xml");
 
 //public static List<Currency> downloadAllForDate(ServletContext context, String selectedDate){ //, Date date){
 
