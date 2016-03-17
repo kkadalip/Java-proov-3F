@@ -7,6 +7,58 @@ function swapCurrencies(){
 	$(b).val(fromVal);
 }
 
+function selectOption(sectorID) {
+	var optionElement = document.getElementById("option_" + sectorID);
+	//var optionElement = $("#option_"+sectorID); // JQUERY WAY
+	if (optionElement) {
+		console.log("WOO I have option element option_" + sectorID);
+		optionElement.selected = true;
+		//optionElement.attr('selected','selected'); // JQUERY WAY
+	} else {
+		console.log("BOO I DO NOT have option_" + sectorID);
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 //STRING AS PLAIN TEXT
 /*
 $(document).on("click", "#ajaxbutton", function() {
@@ -62,46 +114,6 @@ console.log("Im in here!");
    });
 });
  */
-
-function selectOption(sectorID) {
-	var optionElement = document.getElementById("option_" + sectorID);
-	//var optionElement = $("#option_"+sectorID); // JQUERY WAY
-	if (optionElement) {
-		console.log("WOO I have option element option_" + sectorID);
-		optionElement.selected = true;
-		//optionElement.attr('selected','selected'); // JQUERY WAY
-	} else {
-		console.log("BOO I DO NOT have option_" + sectorID);
-	}
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 //LANGUAGE AJAX:
 /*

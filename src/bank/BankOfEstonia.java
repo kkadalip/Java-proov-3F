@@ -3,8 +3,6 @@ package bank;
 import java.io.FileInputStream;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-//import java.text.DecimalFormat;
-//import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,7 +41,6 @@ public class BankOfEstonia implements BankInterface {
 	
 	// Estonia: node Currency attribute rate
 	@Override
-	//public static String fisToRateEST(FileInputStream fis, String inputCurrency){
 	public Float fisToRate(FileInputStream fis, String inputCurrency) {	
 		Float resultRate = null;
 		try {
@@ -118,6 +115,25 @@ public class BankOfEstonia implements BankInterface {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//public static String fisToRateEST(FileInputStream fis, String inputCurrency){
+
+//import java.text.DecimalFormat;
+//import java.text.DecimalFormatSymbols;
 
 //public List<String> fisToCurrencies(FileInputStream fis){
 //	log.debug("[fisToCurrencies]");

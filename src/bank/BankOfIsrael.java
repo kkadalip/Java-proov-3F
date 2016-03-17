@@ -34,7 +34,7 @@ public class BankOfIsrael implements BankInterface {
 	}
 	
 	@Override
-	public String getDownloadUrlByDate (LocalDate selectedDate){ // TODO Date selectedDate
+	public String getDownloadUrlByDate (LocalDate selectedDate){
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd"); //("yyyy-MM-dd HH:mm");
 		String formattedDateTime = selectedDate.format(formatter); //dateTime.format(formatter); // "1986-04-08 12:30"
 		String result = "http://www.boi.org.il/currency.xml?rdate="+formattedDateTime; //"yyyy-MM-dd"
@@ -70,7 +70,7 @@ public class BankOfIsrael implements BankInterface {
 		log.debug("[fisToCurrencies]");
 		if(fis != null){
 			List<String> returnCurrencies = new ArrayList<String>();
-			Document doc = BankUtil.fisToDocument(fis); // TODO instead of fis get doc?
+			Document doc = BankUtil.fisToDocument(fis);
 			NodeList nList = doc.getElementsByTagName("CURRENCYCODE"); // row
 			for (int i = 0; i < nList.getLength(); i++) {
 				String nodeValue = nList.item(i).getTextContent();
@@ -89,5 +89,18 @@ public class BankOfIsrael implements BankInterface {
 
 
 
-	
-//	String dateInUrl = BankUtil.datepickerToUrlFormat(selectedDate, "dd.MM.yy","yyyyMMdd");		
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//String dateInUrl = BankUtil.datepickerToUrlFormat(selectedDate, "dd.MM.yy","yyyyMMdd");		

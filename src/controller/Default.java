@@ -24,7 +24,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+//import javax.servlet.http.HttpSession;
 //import javax.servlet.jsp.jstl.core.Config;
 
 import org.slf4j.Logger;
@@ -52,7 +52,7 @@ public class Default extends HttpServlet {
 			request.setAttribute("language", "en");
 		}
 
-		// DATE IN SESSION? (also try to convert + parse check, otherwise fall back to default etc.. TODO. (JS AJAX?)
+		// DATE IN SESSION?
 //		String sessionDate = (String) httpSession.getAttribute("sessionDate");
 		String sessionDateFormat = "dd.MM.yyyy";
 		String sessionDate = (String) request.getParameter("date"); // selectedDate
@@ -115,9 +115,7 @@ public class Default extends HttpServlet {
 			String outputCurrency = request.getParameter("outputCurrency");
 			log.debug("[doPost] outputCurrency: " + outputCurrency);
 			
-//			String selectedDate = request.getParameter("selectedDate");
-			
-			String selectedDate = request.getParameter("selectedD"); // BEFORE WAS IN FORM, NOW ADDING TO SERIALIZED FORM IN JS
+			String selectedDate = request.getParameter("selectedD"); // selectedDate // BEFORE WAS IN FORM, NOW ADDING TO SERIALIZED FORM IN JS
 			
 //			if(selectedDate != null){
 //				httpSession.setAttribute("selectedDate", selectedDate);

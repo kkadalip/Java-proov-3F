@@ -41,15 +41,12 @@ public class BankOfLithuania implements BankInterface {
 	// Lithuania: node item, in which node currency and node rate
 	@Override
 	public Float fisToRate(FileInputStream fis, String inputCurrency) { // public static Float fisToRateLT(FileInputStream fis, String inputCurrency){
-		//String currencyRate = null;
+		log.debug("[fisToRateLT]");
 		Float resultRate = null;
 		try {
-			log.debug("[fisToRateLT]");
-			//Float returnValue;
-			
 			Document doc = BankUtil.fisToDocument(fis);
 			XPath xPath = XPathFactory.newInstance().newXPath();
-
+			
 			//String expression = "//item/currency[.='"+inputCurrency+"']"+"/../rate[.]"; //"/currencies/currency";	    // EG Currency name="AED" rate="3,12312321"     
 			String expression = "//item[currency='"+inputCurrency+"']/rate[.]";
 			log.debug("[fisToRateLT] expression: " + expression);
@@ -74,14 +71,6 @@ public class BankOfLithuania implements BankInterface {
 				log.error("[fisToRateLT] I DO NOT HAVE NODE!!!!!!!!!!");
 				return null;
 			}
-
-			//					if (node.getNodeType() == Node.ELEMENT_NODE) {
-			//						Element eElement = (Element) node;
-			//						resultRate = eElement.getAttribute("rate");
-			//						log.debug("[fisToRateLT] I HAVE RATE, RATE IS: " + resultRate);
-			//					}else{
-			//						log.debug("[fisToRateLT] NO RATE?");
-			//					}
 		} catch (Exception e) {
 			log.error("[fisToRateLT] failed!", e);
 		}
@@ -116,6 +105,25 @@ public class BankOfLithuania implements BankInterface {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+//if (node.getNodeType() == Node.ELEMENT_NODE) {
+//Element eElement = (Element) node;
+//resultRate = eElement.getAttribute("rate");
+//log.debug("[fisToRateLT] I HAVE RATE, RATE IS: " + resultRate);
+//}else{
+//log.debug("[fisToRateLT] NO RATE?");
+//}
 
 //XPath xPath = XPathFactory.newInstance().newXPath();
 //String expression = "//currency";

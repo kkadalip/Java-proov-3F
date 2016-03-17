@@ -40,7 +40,6 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
 
 <script>
-//Ajaxifying an existing form
 $(document).on("click","#swapCurrenciesBtn",function(event){
 	if($("#inputMoneyAmount").val() && $("#selectOutputCurrency").val() != $("#selectInputCurrency").val()){
 		$("#someForm").submit();
@@ -56,6 +55,7 @@ $(document).on("change","#selectInputCurrency",function(event){
 		$("#someForm").submit();
 	}
 });
+//Ajaxifying an existing form
 $(document).on("submit","#someForm",function(event) {
 	console.log("submitting the ajax post form");
 	var $form = $(this);
@@ -171,14 +171,8 @@ $(function() {
 </head>
 <body>
 	<div class="floating-box-container">
-		<!-- 
-		<div class="floating-box unselectable" id="floating-box-top">
-			<p unselectable="on"><fmt:message key="label.title" /></p>
-		</div>
-		 -->
 		<div id="floating-box-main"  class="floating-box">
 			<p class="unselectable" id="td-title"><fmt:message key="label.title" /></p>
-		
 			<form action="" method=GET id="datePickerForm">
 				<table style="width:100%">
 					<tr>
@@ -198,8 +192,6 @@ $(function() {
 					</tr>
 				</table>
 			</form>
-		
-		
 			<form action="" method="POST" id="someForm">
 				<table style="width:100%">
 					<tbody>
@@ -253,15 +245,12 @@ $(function() {
 									<input class="gradientButton" type="submit" value="<fmt:message key="label.done" />">
 								</td>
 							</tr>
-
 					</tbody>
 				</table>
-					<!-- <input type="submit" value="Done">  -->
-					<!-- <button class="gradientButton" type="submit" value="">Done</button>  -->
-				</form>
-			<div id="errorsTableContainer"></div>
-				<div id="resultsTableContainer"></div>
-			</div>
+			</form>
+		<div id="errorsTableContainer"></div>
+			<div id="resultsTableContainer"></div>
+		</div>
 	</div>
 </body>
 </html>
