@@ -27,7 +27,6 @@
     style-src 'self' 'unsafe-inline' https://ajax.googleapis.com;
     media-src 'self';">
 
-
 <link rel="shortcut icon" href="static/lazydraw.ico" />
 
 <!-- MY OWN CSS AND JS -->
@@ -126,7 +125,21 @@ $(function() {
 		//maxDate : new Date(2010, 11, 30),
 		maxDate : -1, // YESTERDAY
 		changeMonth : true,
-		changeYear : true
+		changeYear : true,
+		
+		beforeShow: function(el){
+	        // set the current value before showing the widget
+	        $(this).data('previous', $(el).val() );
+	    },
+		onSelect: function(newDateText) {
+			// compare the new value to the previous one
+	        if( $(this).data('previous') != newDateText ){
+	            // do whatever has to be done, e.g. log it to console
+	            console.log( 'datePicker changed to: ' + newDateText );
+	        }
+			//console.log("Selected date: " + newDateText + "; input's current value: " + this.value); // both same eg 05.03.2016
+			// TODO upon change GET ALL DISPLAYED CURRENCIES!, GET?
+		}
 	});
 	var dateYesterday = new Date();
 	dateYesterday.setDate(dateYesterday.getDate() - 1); // YESTERDAY
@@ -138,7 +151,9 @@ $(function() {
 	//$( "#datepicker" ).datepicker({ minDate: -20, maxDate: "+1M +10D" });
 
 	//var date = $('#datepicker').datepicker({ dateFormat: 'dd-mm-yy' }).val();
+	
 });
+
 </script>
 
 </head>

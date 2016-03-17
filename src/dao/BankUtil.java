@@ -40,9 +40,9 @@ public class BankUtil {
 	static Logger log = LoggerFactory.getLogger(BankUtil.class); // info trace debug warn error
 	
 	// ATM USING ONLY FOR DISPLAY!!!
-//	public static List<Currency> downloadAllForDate(ServletContext context, String selectedDate){ //, Date date){
 	public static List<String> downloadAllForDate(ServletContext context, LocalDate selectedDate){ //, Date date){ // TODO list of classes/banks
 		log.debug("[downloadAllForDate] selectedDate " + selectedDate);
+		
 		// ESTONIA:
 		BankOfEstonia bankOfEstonia = new BankOfEstonia();
 		String bankOfEstoniaUrl = bankOfEstonia.getDownloadUrlByDate(selectedDate);
@@ -267,7 +267,7 @@ public class BankUtil {
 
 
 
-
+//public static List<Currency> downloadAllForDate(ServletContext context, String selectedDate){ //, Date date){
 
 //String bankOfISRfileName = "bankOfIsrael-"+dateInFile+".xml";
 //String bankOfLTfileName = "bankOfLithuania-"+dateInFile+".xml"; //String bankOfLT = "bankOfLithuania-2010-12-30.xml";

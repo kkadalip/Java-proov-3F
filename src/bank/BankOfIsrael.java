@@ -80,5 +80,9 @@ public class BankOfIsrael implements BankInterface {
 	}
 }
 
+
+
+
+
 	
 //	String dateInUrl = BankUtil.datepickerToUrlFormat(selectedDate, "dd.MM.yy","yyyyMMdd");		
