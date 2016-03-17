@@ -30,7 +30,6 @@ public class BankOfEstonia implements BankInterface {
 		Float resultRate = null;
 		try {
 			log.debug("[fisToRateEST]");
-			
 			Document doc = BankUtil.fisToDocument(fis);
 			XPath xPath =  XPathFactory.newInstance().newXPath();
 			
@@ -88,7 +87,6 @@ public class BankOfEstonia implements BankInterface {
 		}
 		return null;
 	}
-
 }
 
 
