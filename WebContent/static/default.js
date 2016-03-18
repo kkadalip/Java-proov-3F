@@ -45,7 +45,7 @@ $(document).on("change","#selectInputCurrency",function(event){
 
 //Ajaxifying an existing form (submitting the ajax post form):
 $(document).on("submit","#someForm",function(event) {
-	console.log("submit someform");
+	//console.log("submit someform");
 	var $form = $(this);
 	// Adding selectedD (date) and lang (language) as extra params to serialized form!
 	$.post($form.attr("action"), $form.serialize() +"&selectedD="+$("#datepicker").datepicker().val()+"&lang="+$("#languageSelect").val(), function(responseJson) { // responseText responseJson responseXml
