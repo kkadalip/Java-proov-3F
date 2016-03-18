@@ -50,7 +50,7 @@
 							<fmt:message key="label.language" />:
 						</td>
 						<td>
-							<select class="hoverShadow dataSelect" id="languageSelect" name="language" onchange="submit()">
+							<select class="hoverShadow dataSelect" id="languageSelect" name="language">
 				            	<option value="en" ${language == 'en' ? 'selected' : ''}>English</option>
 				            	<option value="et" ${language == 'et' ? 'selected' : ''}>Eesti keel</option>
 				        	</select>
@@ -84,7 +84,7 @@
 							</tr>
 							<tr>
 								<td colspan="2">
-									<button class="unselectable" id="swapCurrenciesBtn" type="button" onClick="swapCurrencies();">▲ ▼</button>
+									<button class="unselectable" id="swapCurrenciesBtn" type="button">▲ ▼</button>
 								</td>
 							</tr>
 							<tr>

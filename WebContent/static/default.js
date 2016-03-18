@@ -1,12 +1,3 @@
-function swapCurrencies(){
-	var a = "#selectInputCurrency";
-	var b = "#selectOutputCurrency";
-	var fromVal = $(a +" option:selected").val();
-	var toVal = $(b +" option:selected").val();
-	$(a).val(toVal);
-	$(b).val(fromVal);
-}
-
 $(function() {
 	$("#datepicker").datepicker({
 		dateFormat : "dd.mm.yy",
@@ -27,11 +18,26 @@ $(function() {
 	dateYesterday.setDate(dateYesterday.getDate() - 1); // YESTERDAY
 });
 
+function swapCurrencies(){
+	var a = "#selectInputCurrency";
+	var b = "#selectOutputCurrency";
+	var fromVal = $(a +" option:selected").val();
+	var toVal = $(b +" option:selected").val();
+	$(a).val(toVal);
+	$(b).val(fromVal);
+}
 $(document).on("click","#swapCurrenciesBtn",function(event){
+	swapCurrencies();
 	if($("#inputMoneyAmount").val() && $("#selectOutputCurrency").val() != $("#selectInputCurrency").val()){
 		$("#someForm").submit();
 	}
 });
+
+$(document).on("change","#languageSelect",function(event){
+	$("#datePickerForm").submit();
+});
+
+
 $(document).on("change","#selectOutputCurrency",function(event){
 	if($("#inputMoneyAmount").val()){
 		$("#someForm").submit();
