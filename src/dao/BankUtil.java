@@ -71,32 +71,8 @@ public class BankUtil {
 		
 		List<Result> resultsList = new ArrayList<Result>();
 		
-		// ESTONIA START
-		log.debug("[calculateResults] GETTING INPUT CURRENCY RATE FOR: " + inputCurrency);
-		BankOfEstonia bankEST = new BankOfEstonia(); // NEW
-		String bankOfESTurl = bankEST.getDownloadUrlByDate(selectedDate); // NEW
-		String bankOfESTfileName = bankEST.getFileNameByDate(selectedDate);
-		Float fisESTinputRate = bankEST.fisToRate(BankUtil.getFisForX(context, bankOfESTurl,bankOfESTfileName),inputCurrency);
-		Float fisESToutputRate = bankEST.fisToRate(BankUtil.getFisForX(context, bankOfESTurl,bankOfESTfileName),outputCurreny);
-		if(fisESTinputRate != null){log.debug("[calculateResults] fisESTinputRate: " + fisESTinputRate.toString());
-		}else{log.debug("[calculateResults] fisEstoniaInputRate IS NULL!");}
-		if(fisESToutputRate != null){ log.debug("[calculateResults] fisESToutputRate: " + fisESToutputRate.toString()); 
-		}else{log.debug("[calculateResults] fisESToutputRate IS NULL!");}
-		// ------------------------
-		if(fisESTinputRate != null && fisESToutputRate != null){
-			if(fisESTinputRate != null && fisESToutputRate != null && inputMoneyAmount != null){
-				Float outputAmountEstonia = fisESTinputRate / fisESToutputRate * inputMoneyAmount;
-				String output = displayedFloat(outputAmountEstonia);
-				log.debug("[calculateResults]  input: " + fisESTinputRate + " / " + fisESToutputRate + " * " +  inputMoneyAmount);
-				log.debug("[calculateResults]  Bank of Estonia RESULT: " + output); //outputAmountEstonia.toString());
-				resultsList.add(new Result("Bank of Estonia", output)); // outputAmountEstonia.toString()
-			}
-		}else{
-			log.error("Bank of Estonia DOES NOT HAVE RESULT!");
-			resultsList.add(new Result("Bank of Estonia","-"));
-		}
-		// ESTONIA END
-		
+		resultsList.add(new BankOfEstonia().getResult(context, selectedDate, inputCurrency, outputCurreny, inputMoneyAmount)); // ESTONIA
+				
 		// LITHUANIA START
 		BankOfLithuania bankLT = new BankOfLithuania();
 		String bankOfLTurl = bankLT.getDownloadUrlByDate(selectedDate);
@@ -246,6 +222,36 @@ public class BankUtil {
 
 
 
+
+
+
+
+
+
+
+// ESTONIA START
+//log.debug("[calculateResults] GETTING INPUT CURRENCY RATE FOR: " + inputCurrency);
+//BankOfEstonia bankEST = new BankOfEstonia(); // NEW
+//String bankOfESTurl = bankEST.getDownloadUrlByDate(selectedDate); // NEW
+//String bankOfESTfileName = bankEST.getFileNameByDate(selectedDate);
+//Float fisESTinputRate = bankEST.fisToRate(BankUtil.getFisForX(context, bankOfESTurl,bankOfESTfileName),inputCurrency);
+//Float fisESToutputRate = bankEST.fisToRate(BankUtil.getFisForX(context, bankOfESTurl,bankOfESTfileName),outputCurreny);
+//if(fisESTinputRate != null){log.debug("[calculateResults] fisESTinputRate: " + fisESTinputRate.toString());
+//}else{log.debug("[calculateResults] fisEstoniaInputRate IS NULL!");}
+//if(fisESToutputRate != null){ log.debug("[calculateResults] fisESToutputRate: " + fisESToutputRate.toString()); 
+//}else{log.debug("[calculateResults] fisESToutputRate IS NULL!");}
+// ------------------------
+//if(fisESTinputRate != null && fisESToutputRate != null && inputMoneyAmount != null){
+//	Float outputAmountEstonia = fisESTinputRate / fisESToutputRate * inputMoneyAmount;
+//	String output = displayedFloat(outputAmountEstonia);
+//	log.debug("[calculateResults]  input: " + fisESTinputRate + " / " + fisESToutputRate + " * " +  inputMoneyAmount);
+//	log.debug("[calculateResults]  Bank of Estonia RESULT: " + output); //outputAmountEstonia.toString());
+//	resultsList.add(new Result("Bank of Estonia", output)); // outputAmountEstonia.toString()
+//}else{
+//	log.error("Bank of Estonia DOES NOT HAVE RESULT!");
+//	resultsList.add(new Result("Bank of Estonia","-"));
+//}
+// ESTONIA END
 
 // DOWNLOAD ALL FOR DATE STUFF:
 // ESTONIA:

@@ -20,6 +20,7 @@ import org.w3c.dom.NodeList;
 
 import dao.BankInterface;
 import dao.BankUtil;
+import model.Result;
 
 public class BankOfEstonia implements BankInterface {
 	static Logger log = LoggerFactory.getLogger(BankOfEstonia.class);
@@ -101,6 +102,23 @@ public class BankOfEstonia implements BankInterface {
 		List<String> currencies = fisToCurrencies(fisEstonia);
 		return currencies;
 	}
+	
+	public Result getResult(ServletContext context, LocalDate selectedDate, String inputCurrency, String outputCurrency, Float inputMoneyAmount) {
+		String url = getDownloadUrlByDate(selectedDate);
+		String filename = getFileNameByDate(selectedDate);
+		Float fisESTinputRate = fisToRate(BankUtil.getFisForX(context, url,filename),inputCurrency);
+		Float fisESToutputRate = fisToRate(BankUtil.getFisForX(context, url,filename),outputCurrency);
+		if(fisESTinputRate != null && fisESToutputRate != null && inputMoneyAmount != null){
+			Float outputAmountEstonia = fisESTinputRate / fisESToutputRate * inputMoneyAmount;
+			String output = BankUtil.displayedFloat(outputAmountEstonia);
+			log.debug("[calculateResults]  input: " + fisESTinputRate + " / " + fisESToutputRate + " * " +  inputMoneyAmount);
+			log.debug("[calculateResults]  Bank of Estonia RESULT: " + output); //outputAmountEstonia.toString());
+			return new Result("Bank of Estonia", output); // outputAmountEstonia.toString()
+		}else{
+			log.error("Bank of Estonia DOES NOT HAVE RESULT!");
+			return new Result("Bank of Estonia","-");
+		}
+	}
 }
 
 
@@ -138,7 +156,10 @@ public class BankOfEstonia implements BankInterface {
 
 
 
-
+//if(fisESTinputRate != null){log.debug("[calculateResults] fisESTinputRate: " + fisESTinputRate.toString());
+//}else{log.debug("[calculateResults] fisEstoniaInputRate IS NULL!");}
+//if(fisESToutputRate != null){ log.debug("[calculateResults] fisESToutputRate: " + fisESToutputRate.toString()); 
+//}else{log.debug("[calculateResults] fisESToutputRate IS NULL!");}
 
 //public static String fisToRateEST(FileInputStream fis, String inputCurrency){
 
