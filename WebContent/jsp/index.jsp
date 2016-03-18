@@ -74,11 +74,18 @@
 								<td class="tdInfo unselectable"><fmt:message key="label.inputCurrency" />:</td>
 								<td><select id="selectInputCurrency"
 									class="hoverShadow dataSelect" name="inputCurrency">
+										<!-- 
 										<c:forEach items="${requestScope['displayedCurrencies']}"
 											var="item">
 											<option id="input_${item}"
 												value="${item}">${item} -
 												<fmt:message key="currency.${item}" /></option>
+										</c:forEach>
+										 -->
+										<c:forEach items="${requestScope['displayedCurrencies']}"
+											var="item">
+											<option id="input_${item._shortName}"
+												value="${item._shortName}">${item._shortName} - ${item._fullName}</option>)
 										</c:forEach>
 								</select></td>
 							</tr>
@@ -94,10 +101,17 @@
 								<td><select id="selectOutputCurrency"
 									class="hoverShadow dataSelect" name="outputCurrency">
 										<!--<option value="empty"></option>-->
+										<!-- 
 										<c:forEach items="${requestScope['displayedCurrencies']}"
 											var="item">
 											<option id="output_${item}"
 												value="${item}">${item} - <fmt:message key="currency.${item}" /></option>
+										</c:forEach>
+										-->
+										<c:forEach items="${requestScope['displayedCurrencies']}"
+											var="item">
+											<option id="output_${item._shortName}"
+												value="${item._shortName}">${item._shortName} - ${item._fullName}</option>)
 										</c:forEach>
 								</select></td>
 							</tr>

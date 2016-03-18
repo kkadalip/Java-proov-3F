@@ -10,6 +10,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 //import java.util.LinkedHashMap;
 import java.util.List;
@@ -18,6 +19,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -33,6 +36,7 @@ import org.slf4j.LoggerFactory;
 import com.google.gson.Gson;
 
 import dao.BankUtil;
+import model.Currency;
 //import model.Currency;
 import model.Result;
 
@@ -49,7 +53,8 @@ public class Default extends HttpServlet {
 			log.debug("[doGet] have selectedLanguage, it is: " + selectedLanguage);
 		}else{
 			log.debug("[doGet] selectedLanguage is null, setting it to english as default");
-			request.setAttribute("language", "en");
+			selectedLanguage = "en";
+			request.setAttribute("language", selectedLanguage);
 		}
 		String sessionDateFormat = "dd.MM.yyyy";
 		String sessionDate = (String) request.getParameter("date"); // selectedDate
@@ -73,8 +78,29 @@ public class Default extends HttpServlet {
 		// Create new sorted list
 		// Sort list by translations
 		// Set said list as displayed list (if possible WITH translations ie KVP, if not then just re-translate in JSP)
-		request.setAttribute("displayedCurrencies", displayedCurrencies);
+		Locale selectedLocale = new Locale(selectedLanguage);
+		ResourceBundle textBundle = ResourceBundle.getBundle("text",selectedLocale);
 
+		List<Currency> currenciesWithTranslations= new ArrayList<Currency>();
+		//SortedSet<Currency> currenciesWithTranslations = new TreeSet<Currency>();
+		for(String currencyShortName : displayedCurrencies){
+			// TRANSLATE FOR LOCALE:
+			String translation;
+			try{
+				log.debug("[doGet] get translation for currency." + currencyShortName);
+				translation = textBundle.getString("currency."+currencyShortName);
+				log.debug("[doGet] translation: " + translation);
+			}catch(MissingResourceException e){
+				log.error("No error translation for " + currencyShortName, e);
+				translation = "?";
+			}
+			Currency returnCurrency = new Currency(currencyShortName, translation);
+			currenciesWithTranslations.add(returnCurrency);
+		}
+		Collections.sort(currenciesWithTranslations);
+
+		request.setAttribute("displayedCurrencies", currenciesWithTranslations);
+		//request.setAttribute("displayedCurrencies", displayedCurrencies);
 		request.getRequestDispatcher("jsp/index.jsp").forward(request, response);
 	}
 
