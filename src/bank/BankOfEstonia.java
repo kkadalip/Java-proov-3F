@@ -103,6 +103,7 @@ public class BankOfEstonia implements BankInterface {
 		return currencies;
 	}
 	
+	@Override
 	public Result getResult(ServletContext context, LocalDate selectedDate, String inputCurrency, String outputCurrency, Float inputMoneyAmount) {
 		String url = getDownloadUrlByDate(selectedDate);
 		String filename = getFileNameByDate(selectedDate);

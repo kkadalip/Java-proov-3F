@@ -72,27 +72,7 @@ public class BankUtil {
 		List<Result> resultsList = new ArrayList<Result>();
 		
 		resultsList.add(new BankOfEstonia().getResult(context, selectedDate, inputCurrency, outputCurreny, inputMoneyAmount)); // ESTONIA
-				
-		// LITHUANIA START
-		BankOfLithuania bankLT = new BankOfLithuania();
-		String bankOfLTurl = bankLT.getDownloadUrlByDate(selectedDate);
-		String bankOfLTfileName = bankLT.getFileNameByDate(selectedDate);
-		Float fisLTinputRate = bankLT.fisToRate(BankUtil.getFisForX(context, bankOfLTurl,bankOfLTfileName),inputCurrency);
-		Float fisLToutputRate = bankLT.fisToRate(BankUtil.getFisForX(context, bankOfLTurl,bankOfLTfileName),outputCurreny);
-		if(fisLTinputRate != null){log.debug("[calculateResults] fisLTinputRate: " + fisLTinputRate.toString());
-		}else{log.debug("[calculateResults] fisLTinputRate IS NULL!");}
-		if(fisLToutputRate != null){log.debug("[calculateResults] fisLToutputRate: " + fisLToutputRate.toString());
-		}else{log.debug("[calculateResults] fisLToutputRate IS NULL!");}
-		// ------------------------
-		if(fisLTinputRate != null && fisLToutputRate != null && inputMoneyAmount != null){
-			Float outputAmountLithuania = fisLTinputRate / fisLToutputRate * inputMoneyAmount;
-			log.debug("[calculateResults] Bank of Lithuania RESULT: " + outputAmountLithuania.toString());
-			resultsList.add(new Result("Bank of Lithuania", displayedFloat(outputAmountLithuania))); //outputAmountLithuania.toString()));
-		}else{
-			log.error("[calculateResults] Bank of Lithuania DOES NOT HAVE RESULT!");
-			resultsList.add(new Result("Bank of Lithuania","-"));
-		}
-		// LITHUANIA END
+		resultsList.add(new BankOfLithuania().getResult(context, selectedDate, inputCurrency, outputCurreny, inputMoneyAmount)); // LITHUANIA
 		
 		// ISRAEL START
 		BankOfIsrael bankISR = new BankOfIsrael();
@@ -227,7 +207,26 @@ public class BankUtil {
 
 
 
-
+//// LITHUANIA START
+//BankOfLithuania bankLT = new BankOfLithuania();
+//String bankOfLTurl = bankLT.getDownloadUrlByDate(selectedDate);
+//String bankOfLTfileName = bankLT.getFileNameByDate(selectedDate);
+//Float fisLTinputRate = bankLT.fisToRate(BankUtil.getFisForX(context, bankOfLTurl,bankOfLTfileName),inputCurrency);
+//Float fisLToutputRate = bankLT.fisToRate(BankUtil.getFisForX(context, bankOfLTurl,bankOfLTfileName),outputCurreny);
+//if(fisLTinputRate != null){log.debug("[calculateResults] fisLTinputRate: " + fisLTinputRate.toString());
+//}else{log.debug("[calculateResults] fisLTinputRate IS NULL!");}
+//if(fisLToutputRate != null){log.debug("[calculateResults] fisLToutputRate: " + fisLToutputRate.toString());
+//}else{log.debug("[calculateResults] fisLToutputRate IS NULL!");}
+//// ------------------------
+//if(fisLTinputRate != null && fisLToutputRate != null && inputMoneyAmount != null){
+//	Float outputAmountLithuania = fisLTinputRate / fisLToutputRate * inputMoneyAmount;
+//	log.debug("[calculateResults] Bank of Lithuania RESULT: " + outputAmountLithuania.toString());
+//	resultsList.add(new Result("Bank of Lithuania", displayedFloat(outputAmountLithuania))); //outputAmountLithuania.toString()));
+//}else{
+//	log.error("[calculateResults] Bank of Lithuania DOES NOT HAVE RESULT!");
+//	resultsList.add(new Result("Bank of Lithuania","-"));
+//}
+//// LITHUANIA END
 
 // ESTONIA START
 //log.debug("[calculateResults] GETTING INPUT CURRENCY RATE FOR: " + inputCurrency);

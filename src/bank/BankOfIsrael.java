@@ -19,6 +19,7 @@ import org.w3c.dom.NodeList;
 
 import dao.BankInterface;
 import dao.BankUtil;
+import model.Result;
 
 // http://www.boi.org.il/en/Markets/Pages/explainxml.aspx
 // TODAY http://www.boi.org.il/currency.xml
@@ -93,7 +94,18 @@ public class BankOfIsrael implements BankInterface {
 		List<String> currencies = fisToCurrencies(fisIsrael);
 		return currencies;
 	}
+
+	@Override
+	public Result getResult(ServletContext context, LocalDate selectedDate, String inputCurrency, String outputCurrency,
+			Float inputMoneyAmount) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
+
+
+
+
 
 
 

@@ -19,6 +19,7 @@ import org.w3c.dom.NodeList;
 
 import dao.BankInterface;
 import dao.BankUtil;
+import model.Result;
 
 public class BankOfLithuania implements BankInterface {
 	static Logger log = LoggerFactory.getLogger(BankOfLithuania.class);
@@ -105,6 +106,23 @@ public class BankOfLithuania implements BankInterface {
 		List<String> currencies = fisToCurrencies(fisLithuania);
 		return currencies;
 	}
+
+	@Override
+	public Result getResult(ServletContext context, LocalDate selectedDate, String inputCurrency, String outputCurrency, Float inputMoneyAmount) {
+		String url = getDownloadUrlByDate(selectedDate);
+		String filename = getFileNameByDate(selectedDate);
+		Float fisLTinputRate = fisToRate(BankUtil.getFisForX(context, url, filename),inputCurrency);
+		Float fisLToutputRate = fisToRate(BankUtil.getFisForX(context, url,filename),outputCurrency);
+		if(fisLTinputRate != null && fisLToutputRate != null && inputMoneyAmount != null){
+			Float outputAmountLithuania = fisLTinputRate / fisLToutputRate * inputMoneyAmount;
+			String output = BankUtil.displayedFloat(outputAmountLithuania);
+			log.debug("[calculateResults] Bank of Lithuania RESULT: " + outputAmountLithuania.toString());
+			return new Result("Bank of Lithuania", output); //outputAmountLithuania.toString()));
+		}else{
+			log.error("[calculateResults] Bank of Lithuania DOES NOT HAVE RESULT!");
+			return new Result("Bank of Lithuania","-");
+		}
+	}
 }
 
 
@@ -126,6 +144,14 @@ public class BankOfLithuania implements BankInterface {
 
 
 
+
+
+
+
+//if(fisLTinputRate != null){log.debug("[calculateResults] fisLTinputRate: " + fisLTinputRate.toString());
+//}else{log.debug("[calculateResults] fisLTinputRate IS NULL!");}
+//if(fisLToutputRate != null){log.debug("[calculateResults] fisLToutputRate: " + fisLToutputRate.toString());
+//}else{log.debug("[calculateResults] fisLToutputRate IS NULL!");}
 
 //if (node.getNodeType() == Node.ELEMENT_NODE) {
 //Element eElement = (Element) node;
