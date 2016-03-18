@@ -2,12 +2,14 @@ package controller;
 
 import java.io.IOException;
 import java.text.DateFormat;
+import java.text.ParseException;
 //import java.text.ParseException;
 //import java.text.DateFormat;
 //import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -70,37 +72,39 @@ public class Default extends HttpServlet {
 		request.setAttribute("selectedD", sessionDate);
 
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern(sessionDateFormat); //DateFormat format = new SimpleDateFormat("dd.MM.yy");
-		LocalDate sessionDateAsLocalDate = LocalDate.parse(sessionDate, formatter);
-
-		// UNSORTED DISPLAYED CURRENCIES WITHOUT TRANSLATIONS!!!!!
-		List<String> displayedCurrencies = BankUtil.downloadAllForDate(getServletContext(), sessionDateAsLocalDate); //"30.12.2010");
-		// TODO
-		// Create new sorted list
-		// Sort list by translations
-		// Set said list as displayed list (if possible WITH translations ie KVP, if not then just re-translate in JSP)
-		Locale selectedLocale = new Locale(selectedLanguage);
-		ResourceBundle textBundle = ResourceBundle.getBundle("text",selectedLocale);
-
-		List<Currency> currenciesWithTranslations= new ArrayList<Currency>();
-		//SortedSet<Currency> currenciesWithTranslations = new TreeSet<Currency>();
-		for(String currencyShortName : displayedCurrencies){
-			// TRANSLATE FOR LOCALE:
-			String translation;
-			try{
-				log.debug("[doGet] get translation for currency." + currencyShortName);
-				translation = textBundle.getString("currency."+currencyShortName);
-				log.debug("[doGet] translation: " + translation);
-			}catch(MissingResourceException e){
-				log.error("No error translation for " + currencyShortName, e);
-				translation = "?";
-			}
-			Currency returnCurrency = new Currency(currencyShortName, translation);
-			currenciesWithTranslations.add(returnCurrency);
+		LocalDate sessionDateAsLocalDate = null;
+		try{
+			sessionDateAsLocalDate = LocalDate.parse(sessionDate, formatter);
+		}catch(DateTimeParseException e){
+			log.error("[doGet] LocalDate parse exception");
 		}
-		Collections.sort(currenciesWithTranslations);
+		if(sessionDateAsLocalDate != null){
+			// UNSORTED DISPLAYED CURRENCIES WITHOUT TRANSLATIONS!!!!!
+			List<String> displayedCurrencies = BankUtil.downloadAllForDate(getServletContext(), sessionDateAsLocalDate); //"30.12.2010");
+			Locale selectedLocale = new Locale(selectedLanguage);
+			ResourceBundle textBundle = ResourceBundle.getBundle("text",selectedLocale);
 
-		request.setAttribute("displayedCurrencies", currenciesWithTranslations);
-		//request.setAttribute("displayedCurrencies", displayedCurrencies);
+			List<Currency> currenciesWithTranslations= new ArrayList<Currency>();
+			//SortedSet<Currency> currenciesWithTranslations = new TreeSet<Currency>();
+			for(String currencyShortName : displayedCurrencies){
+				// TRANSLATE FOR LOCALE:
+				String translation;
+				try{
+					log.debug("[doGet] get translation for currency." + currencyShortName);
+					translation = textBundle.getString("currency."+currencyShortName);
+					log.debug("[doGet] translation: " + translation);
+				}catch(MissingResourceException e){
+					log.error("No error translation for " + currencyShortName, e);
+					translation = "?";
+				}
+				Currency returnCurrency = new Currency(currencyShortName, translation);
+				currenciesWithTranslations.add(returnCurrency);
+			}
+			Collections.sort(currenciesWithTranslations);
+
+			request.setAttribute("displayedCurrencies", currenciesWithTranslations);
+			//request.setAttribute("displayedCurrencies", displayedCurrencies);
+		}
 		request.getRequestDispatcher("jsp/index.jsp").forward(request, response);
 	}
 
@@ -131,7 +135,6 @@ public class Default extends HttpServlet {
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy"); //DateFormat format = new SimpleDateFormat("dd.MM.yy");
 			if(selectedDate != null){
 				log.debug("[doPost] selectedDate is " + selectedDate);
-				LocalDate selectedDateAsLocalDate = LocalDate.parse(selectedDate, formatter);
 				// CHECK IF SELECTED DATE IS GOOD (ADD TO SEPARATE METHOD LATER)
 				if(selectedDate == null || selectedDate.isEmpty()){
 					errors.add("error.selectDate"); //errors.add("Select a date!");
@@ -148,65 +151,75 @@ public class Default extends HttpServlet {
 						if(date.after(cal.getTime())){
 							errors.add("error.notTodayOrFuture"); //("Date cannot be today or in the future!");
 						}
-					} catch (java.text.ParseException e) {
+					}catch(ParseException e){
 						log.error("[doPost] Can't parse date",e);
 						errors.add("error.dateFormatWrong"); //("Date format wrong!");
 					}
 				}
 				// Try to parse selected date
 				if(errors.isEmpty()){
-					log.debug("NO ERRORS, CONTINUING doPost!");
-					Float inputMoneyAmountFloat = null;
+					LocalDate selectedDateAsLocalDate = null;
 					try{
-						inputMoneyAmountFloat = Float.parseFloat(inputMoneyAmount);
-					}catch(NumberFormatException e){ // java.lang.NumberFormatException
-						log.error("[doPost] number field to float FAILED!",e);
-						errors.add("error.inputAmountFormatWrong"); //("Input amount doesn't have correct format!");
+						selectedDateAsLocalDate = LocalDate.parse(selectedDate, formatter);
+					}catch(DateTimeParseException e){
+						log.error("[doPost] could not parse date!");
+						errors.add("error.dateFormatWrong");
 					}
-
-					if(inputMoneyAmountFloat != null){
-						BankUtil bu = new BankUtil();
-						List<Result> results = bu.calculateResults(getServletContext(), inputMoneyAmountFloat, inputCurrency, outputCurrency, selectedDateAsLocalDate); //, selectedDate); //, date);
-						String json = new Gson().toJson(results);
-						log.debug("[doPost] results json: " + json);
-						response.setContentType("application/json");
-						response.setCharacterEncoding("UTF-8");
-						response.getWriter().write(json);
-					}
-				}else{
-					log.debug("HAVE ERRORS, will display them SoonTM");
-					List<String> list = new ArrayList<String>();
-					//list.add("some example error");
-
-					String currentLang = request.getParameter("lang");
-					log.debug("currentLang is " + currentLang);
-					Locale selectedLocale = new Locale(currentLang); //(selectedLanguage);
-					ResourceBundle textBundle = ResourceBundle.getBundle("text",selectedLocale);
-
-					///request.setAttribute("displayValues", textBundle);
-					//request.setAttribute("language", selectedLanguage);
-					for(String error : errors){
-						log.debug("[doPost] Errorslist error: " + error);
-						//list.add(error);
-
-						// TRANSLATE FOR LOCALE:
-						String value;
+					if(errors.isEmpty()){
+						log.debug("NO ERRORS, CONTINUING doPost!");
+						Float inputMoneyAmountFloat = null;
 						try{
-							value = textBundle.getString(error);
-						}catch(MissingResourceException e){
-							log.error("No error translation for " + error, e);
-							value = error;
+							inputMoneyAmountFloat = Float.parseFloat(inputMoneyAmount);
+						}catch(NumberFormatException e){ // java.lang.NumberFormatException
+							log.error("[doPost] number field to float FAILED!",e);
+							errors.add("error.inputAmountFormatWrong"); //("Input amount doesn't have correct format!");
 						}
-						list.add(value);
+						if(inputMoneyAmountFloat != null){
+							BankUtil bu = new BankUtil();
+							List<Result> results = bu.calculateResults(getServletContext(), inputMoneyAmountFloat, inputCurrency, outputCurrency, selectedDateAsLocalDate); //, selectedDate); //, date);
+							String json = new Gson().toJson(results);
+							log.debug("[doPost] results json: " + json);
+							response.setContentType("application/json");
+							response.setCharacterEncoding("UTF-8");
+							response.getWriter().write(json);
+						}
 					}
-					String json = new Gson().toJson(list);
-					log.debug("[doPost]  Errors json: " + json);
-					response.setContentType("application/json");
-					response.setCharacterEncoding("UTF-8");
-					response.getWriter().write(json);
 				}
 			}else{
 				log.error("[doPost] selectedDate is NULL!");
+			}
+			// DISPLAYING ERRORS:
+			if(!errors.isEmpty()){
+				log.debug("HAVE ERRORS, will display them SoonTM");
+				List<String> list = new ArrayList<String>();
+				//list.add("some example error");
+
+				String currentLang = request.getParameter("lang");
+				log.debug("currentLang is " + currentLang);
+				Locale selectedLocale = new Locale(currentLang); //(selectedLanguage);
+				ResourceBundle textBundle = ResourceBundle.getBundle("text",selectedLocale);
+
+				///request.setAttribute("displayValues", textBundle);
+				//request.setAttribute("language", selectedLanguage);
+				for(String error : errors){
+					log.debug("[doPost] Errorslist error: " + error);
+					//list.add(error);
+
+					// TRANSLATE FOR LOCALE:
+					String value;
+					try{
+						value = textBundle.getString(error);
+					}catch(MissingResourceException e){
+						log.error("No error translation for " + error, e);
+						value = error;
+					}
+					list.add(value);
+				}
+				String json = new Gson().toJson(list);
+				log.debug("[doPost]  Errors json: " + json);
+				response.setContentType("application/json");
+				response.setCharacterEncoding("UTF-8");
+				response.getWriter().write(json);
 			}
 		}else{
 			log.debug("[doPost] REGULAR POST!!!"); // Handle regular (JSP) response here.

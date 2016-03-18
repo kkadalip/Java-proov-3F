@@ -17,7 +17,7 @@
 
 <meta http-equiv="Content-Security-Policy" content="
 	default-src 'self';
-    script-src 'self' https://ajax.googleapis.com;
+    script-src 'unsafe-inline' 'self' https://ajax.googleapis.com;
     connect-src 'self';
     font-src 'self';
     img-src 'self' https://ajax.googleapis.com;
@@ -37,6 +37,42 @@
 <!-- MY OWN CSS AND JS -->
 <link rel="stylesheet" type="text/css" href="static/style.css">
 <script type="text/javascript" src="static/default.js"></script>
+
+<!-- UNSAFE INLINE, using because of JSTL fmt:message -->
+<script>
+//Ajaxifying an existing form (submitting the ajax post form):
+$(document).on("submit","#someForm",function(event) {
+	//console.log("submit someform");
+	var $form = $(this);
+	// Adding selectedD (date) and lang (language) as extra params to serialized form!
+	$.post($form.attr("action"), $form.serialize() +"&selectedD="+$("#datepicker").datepicker().val()+"&lang="+$("#languageSelect").val(), function(responseJson) { // responseText responseJson responseXml
+		//console.log("responseJson is: " + responseJson);
+		// EMPTY BOTH RESULTS AND ERRORS HOLDERS:
+		$("#errorsTableContainer").html("");
+		$("#resultsTableContainer").html("");
+		// I GOT ERRORS:
+		if(typeof responseJson[0] === 'string'){ // responseJson[0] is string, therefore responseJson has error messages.
+			var $ul = $("<ul>");
+			$("<li id='errorsList'>").appendTo($ul).text("<fmt:message key='label.error' />:"); // Errors:
+			$.each(responseJson, function(index, item) { // Iterate over the JSON array.
+				$("<li>").text(item).appendTo($ul);
+			});
+			$("#errorsTableContainer").html($ul);
+		}else{
+		// NO ERRORS:
+			var $table = $("<table>");
+			$("<tr>").appendTo($table).append($("<th>").text("Bank:")).append($("<th>").text("Result:"));
+			$.each(responseJson, function(index, result) { // Iterate over the JSON array.
+				$("<tr>").appendTo($table).append(
+						$("<td>").text(result._bankName)).append(
+								$("<td>").text(result._resultValue));
+			});
+			$('#resultsTableContainer').html($table);
+		}
+	});
+	event.preventDefault(); // Important! Prevents submitting the form.
+});
+</script>
 
 </head>
 <body>
