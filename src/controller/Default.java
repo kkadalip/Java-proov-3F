@@ -86,7 +86,7 @@ public class Default extends HttpServlet {
 		request.getRequestDispatcher("jsp/index.jsp").forward(request, response);
 	}
 	
-	// NOT USING:
+
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		log.info("[doPost] START");
 //		HttpSession httpSession = request.getSession(true);
