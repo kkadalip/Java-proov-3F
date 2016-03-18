@@ -58,10 +58,8 @@ public class Default extends HttpServlet {
 		String sessionDate = (String) request.getParameter("date"); // selectedDate
 		if(sessionDate == null || sessionDate.isEmpty()){
 //			if(httpSession.getAttribute("selectedDate") == null){
-				
+//			sessionDate = "30.12.2010";				
 				log.debug("sessionDate is null, setting it to YESTERDAY!");
-//				sessionDate = "30.12.2010"; // TODO TEMPORARY!
-				// WORKS: (TODO Date on change, get new list!)
 				log.debug("[doGet] NO SESSION DATE IN SESSION ATTRIBUTES!, setting it as yesterday");
 				DateFormat dateFormat = new SimpleDateFormat(sessionDateFormat); //("yyyy/MM/dd HH:mm:ss");
 		        Calendar cal = Calendar.getInstance();
@@ -79,14 +77,11 @@ public class Default extends HttpServlet {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern(sessionDateFormat); //DateFormat format = new SimpleDateFormat("dd.MM.yy");
 		LocalDate sessionDateAsLocalDate = LocalDate.parse(sessionDate, formatter);
 		
-		// TODO check session date null?
 		List<String> displayedCurrencies = BankUtil.downloadAllForDate(getServletContext(), sessionDateAsLocalDate); //"30.12.2010");
 		request.setAttribute("displayedCurrencies", displayedCurrencies);
 
 		//ServletContext context = getContext();
 		//URL resourceUrl = context.getResource("/WEB-INF/test/foo.txt");
-
-		//List<Currency> displayedCurrencies = Readxml.getCurrencies(getServletContext()); // TODO add date, get by date, default will be current day (atm the latest possible, later dates need to be disabled!)
 
 		request.getRequestDispatcher("jsp/index.jsp").forward(request, response);
 	}
@@ -229,6 +224,34 @@ public class Default extends HttpServlet {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// check session date null?
+
+//List<Currency> displayedCurrencies = Readxml.getCurrencies(getServletContext()); //  add date, get by date, default will be current day (atm the latest possible, later dates need to be disabled!)
 
 //Date sessionDateAsDate = null;
 //try {

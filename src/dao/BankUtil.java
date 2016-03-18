@@ -40,7 +40,7 @@ public class BankUtil {
 	static Logger log = LoggerFactory.getLogger(BankUtil.class); // info trace debug warn error
 	
 	// ATM USING ONLY FOR DISPLAY!!!
-	public static List<String> downloadAllForDate(ServletContext context, LocalDate selectedDate){ //, Date date){ // TODO list of classes/banks
+	public static List<String> downloadAllForDate(ServletContext context, LocalDate selectedDate){
 		log.debug("[downloadAllForDate] selectedDate " + selectedDate);
 		
 		List<List<String>> listsOfCurrencies = new ArrayList<List<String>>();

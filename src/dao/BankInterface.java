@@ -9,7 +9,7 @@ import javax.servlet.ServletContext;
 public interface BankInterface {
 	String fileNameDatePattern = "-yyyy-MM-dd";
 	
-	public String getDownloadUrlByDate(LocalDate selectedDate); // (String selectedDate); // TODO Date selectedDate
+	public String getDownloadUrlByDate(LocalDate selectedDate);
 	public String getFileNameByDate(LocalDate selectedDate);
 	
 	public Float fisToRate(FileInputStream fis, String inputCurrency);
