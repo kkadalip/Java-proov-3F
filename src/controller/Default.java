@@ -85,13 +85,12 @@ public class Default extends HttpServlet {
 		boolean ajax = "XMLHttpRequest".equals(request.getHeader("X-Requested-With"));
 		if(ajax){
 			log.debug("[doPost] AJAX POST!!!");
-
 			// Handle ajax (JSON) response.
 			List<String> errors = new ArrayList<String>(); // if no errors... do the calculations etc...
 
 			String inputMoneyAmount = request.getParameter("inputMoneyAmount");
 			if(inputMoneyAmount == null || inputMoneyAmount.isEmpty()){
-				log.error("[doPost] inputMoneyAmount NULL!");
+				log.error("[doPost] inputMoneyAmount NULL or empty!");
 				errors.add("error.inputMoneyEmpty");//errors.add("Input money amount is empty!");
 			}else{
 				log.debug("[doPost] inputMoneyAmount: " + inputMoneyAmount);

@@ -52,7 +52,7 @@ $(document).on("submit","#someForm",function(event) {
 		//console.log("responseJson is: " + responseJson);
 		// EMPTY BOTH RESULTS AND ERRORS HOLDERS:
 		$("#errorsTableContainer").html("");
-		$('#resultsTableContainer').html("");
+		$("#resultsTableContainer").html("");
 		// I GOT ERRORS:
 		if(typeof responseJson[0] === 'string'){ // responseJson[0] is string, therefore responseJson has error messages.
 			var $ul = $("<ul>");
