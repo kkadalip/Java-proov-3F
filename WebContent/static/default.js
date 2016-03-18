@@ -1,5 +1,4 @@
 function swapCurrencies(){
-	console.log("swapCurrencies");
 	var a = "#selectInputCurrency";
 	var b = "#selectOutputCurrency";
 	var fromVal = $(a +" option:selected").val();
@@ -44,13 +43,12 @@ $(document).on("change","#selectInputCurrency",function(event){
 	}
 });
 
-//Ajaxifying an existing form:
+//Ajaxifying an existing form (submitting the ajax post form):
 $(document).on("submit","#someForm",function(event) {
-	console.log("submitting the ajax post form");
 	var $form = $(this);
 	// Adding selectedD (date) and lang (language) as extra params to serialized form!
 	$.post($form.attr("action"), $form.serialize() +"&selectedD="+$("#datepicker").datepicker().val()+"&lang="+$("#languageSelect").val(), function(responseJson) { // responseText responseJson responseXml
-		console.log("responseJson is: " + responseJson);
+		//console.log("responseJson is: " + responseJson);
 		// EMPTY BOTH RESULTS AND ERRORS HOLDERS:
 		$("#errorsTableContainer").html("");
 		$('#resultsTableContainer').html("");
