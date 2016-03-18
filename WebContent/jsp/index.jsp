@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
@@ -12,11 +11,9 @@
 <!DOCTYPE html>
 <html>
 <head>
+
 <meta charset="utf-8">
 <meta http-equiv="Content-Type" content="text/html">
-
-<title>Finest</title>
-
 <meta http-equiv="Content-Security-Policy"
 	content="
     default-src 'self';
@@ -26,6 +23,8 @@
     img-src 'self' https://ajax.googleapis.com;
     style-src 'self' 'unsafe-inline' https://ajax.googleapis.com;
     media-src 'self';">
+    
+<title>Finest</title>
 
 <link rel="shortcut icon" href="static/lazydraw.ico" />
 
@@ -39,6 +38,7 @@
 <link rel="stylesheet" type="text/css" href="static/style.css">
 <script type="text/javascript" src="static/default.js"></script>
 
+<!-- INLINE JS -->
 <script>
 </script>
 
@@ -69,13 +69,6 @@
 			<form action="" method="POST" id="someForm">
 				<table style="width:100%">
 					<tbody>
-							<!--
-							<tr>
-								<td class="tdInfo unselectable"><fmt:message key="label.date" />:</td>
-								<td><input required="required" class="hoverShadow dataEntry" type="text"
-									id="datepicker" name="date"></td>
-							</tr>
-							-->
 							<tr>
 								<td class="tdInfo unselectable"><fmt:message key="label.inputAmount" />:</td>
 								<td><input required="required" class="hoverShadow dataEntry" type="number"
@@ -83,7 +76,6 @@
 							</tr>
 							<tr>
 								<td class="tdInfo unselectable"><fmt:message key="label.inputCurrency" />:</td>
-								<!-- <td style="width:3px"></td>  -->
 								<td><select id="selectInputCurrency"
 									class="hoverShadow dataSelect" name="inputCurrency">
 										<c:forEach items="${requestScope['displayedCurrencies']}"
