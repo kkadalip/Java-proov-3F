@@ -109,6 +109,8 @@ public class BankOfLithuania implements BankInterface {
 
 	@Override
 	public Result getResult(ServletContext context, LocalDate selectedDate, String inputCurrency, String outputCurrency, Float inputMoneyAmount) {
+		String translationLabel = "label.bankOfLithuania";
+		
 		String url = getDownloadUrlByDate(selectedDate);
 		String filename = getFileNameByDate(selectedDate);
 		Float fisLTinputRate = fisToRate(BankUtil.getFisForX(context, url, filename),inputCurrency);
@@ -117,10 +119,10 @@ public class BankOfLithuania implements BankInterface {
 			Float outputAmountLithuania = fisLTinputRate / fisLToutputRate * inputMoneyAmount;
 			String output = BankUtil.displayedFloat(outputAmountLithuania);
 			log.debug("[calculateResults] Bank of Lithuania RESULT: " + outputAmountLithuania.toString());
-			return new Result("Lithuania", output); //outputAmountLithuania.toString()));
+			return new Result(translationLabel, output); //outputAmountLithuania.toString()));
 		}else{
 			log.error("[calculateResults] Bank of Lithuania DOES NOT HAVE RESULT!");
-			return new Result("Lithuania","-");
+			return new Result(translationLabel,"-");
 		}
 	}
 }

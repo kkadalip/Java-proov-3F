@@ -105,6 +105,8 @@ public class BankOfEstonia implements BankInterface {
 	
 	@Override
 	public Result getResult(ServletContext context, LocalDate selectedDate, String inputCurrency, String outputCurrency, Float inputMoneyAmount) {
+		String translationLabel = "label.bankOfEstonia";
+		
 		String url = getDownloadUrlByDate(selectedDate);
 		String filename = getFileNameByDate(selectedDate);
 		Float fisESTinputRate = fisToRate(BankUtil.getFisForX(context, url,filename),inputCurrency);
@@ -114,10 +116,10 @@ public class BankOfEstonia implements BankInterface {
 			String output = BankUtil.displayedFloat(outputAmountEstonia);
 			log.debug("[calculateResults]  input: " + fisESTinputRate + " / " + fisESToutputRate + " * " +  inputMoneyAmount);
 			log.debug("[calculateResults]  Bank of Estonia RESULT: " + output); //outputAmountEstonia.toString());
-			return new Result("Estonia", output); // outputAmountEstonia.toString()
+			return new Result(translationLabel, output); // outputAmountEstonia.toString()
 		}else{
 			log.error("Bank of Estonia DOES NOT HAVE RESULT!");
-			return new Result("Estonia","-");
+			return new Result(translationLabel,"-");
 		}
 	}
 }

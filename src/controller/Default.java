@@ -130,6 +130,12 @@ public class Default extends HttpServlet {
 			log.debug("[doPost] inputCurrency: " + inputCurrency); // rate
 			String outputCurrency = request.getParameter("outputCurrency");
 			log.debug("[doPost] outputCurrency: " + outputCurrency);
+			
+			// LOCALE & TRANSLATIONS BUNDLE
+			String currentLang = request.getParameter("lang");
+			log.debug("currentLang is " + currentLang);
+			Locale selectedLocale = new Locale(currentLang); //(selectedLanguage);
+			ResourceBundle textBundle = ResourceBundle.getBundle("text",selectedLocale);
 
 			String selectedDate = request.getParameter("selectedD"); // selectedDate // BEFORE WAS IN FORM, NOW ADDING TO SERIALIZED FORM IN JS
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy"); //DateFormat format = new SimpleDateFormat("dd.MM.yy");
@@ -177,6 +183,15 @@ public class Default extends HttpServlet {
 						if(inputMoneyAmountFloat != null){
 							BankUtil bu = new BankUtil();
 							List<Result> results = bu.calculateResults(getServletContext(), inputMoneyAmountFloat, inputCurrency, outputCurrency, selectedDateAsLocalDate); //, selectedDate); //, date);
+							// TRANSLATING BANK NAMES IN RESULTS!
+							for(Result res : results){
+								try{
+									String non_translated_bankName = res.get_bankName();
+									res.set_bankName(textBundle.getString(non_translated_bankName));
+								}catch(MissingResourceException e){
+									log.error("No error translation for " + res.get_bankName(), e);
+								}
+							}
 							String json = new Gson().toJson(results);
 							log.debug("[doPost] results json: " + json);
 							response.setContentType("application/json");
@@ -194,10 +209,10 @@ public class Default extends HttpServlet {
 				List<String> list = new ArrayList<String>();
 				//list.add("some example error");
 
-				String currentLang = request.getParameter("lang");
-				log.debug("currentLang is " + currentLang);
-				Locale selectedLocale = new Locale(currentLang); //(selectedLanguage);
-				ResourceBundle textBundle = ResourceBundle.getBundle("text",selectedLocale);
+//				String currentLang = request.getParameter("lang");
+//				log.debug("currentLang is " + currentLang);
+//				Locale selectedLocale = new Locale(currentLang); //(selectedLanguage);
+//				ResourceBundle textBundle = ResourceBundle.getBundle("text",selectedLocale);
 
 				///request.setAttribute("displayValues", textBundle);
 				//request.setAttribute("language", selectedLanguage);
