@@ -17,11 +17,11 @@
 
 <meta http-equiv="Content-Security-Policy" content="
 	default-src 'self';
-    script-src 'self' https://ajax.googleapis.com;
+    script-src 'self' 'unsafe-inline' https://ajax.googleapis.com;
     connect-src 'self';
     font-src 'self';
     img-src 'self' https://ajax.googleapis.com;
-    style-src 'self' https://ajax.googleapis.com;
+    style-src 'self' 'unsafe-inline' https://ajax.googleapis.com;
     media-src 'self';">
     
 <title>Finest</title>
@@ -38,13 +38,17 @@
 <link rel="stylesheet" type="text/css" href="static/style.css">
 <script type="text/javascript" src="static/default.js"></script>
 
+<!-- INLINE JS -->
+<script>
+</script>
+
 </head>
 <body>
 	<div class="floating-box-container">
 		<div id="floating-box-main"  class="floating-box">
 			<p class="unselectable" id="td-title"><fmt:message key="label.title" /></p>
 			<form action="" method=GET id="datePickerForm">
-				<table id="languageAndDateTable">
+				<table style="width:100%">
 					<tr>
 						<td class="tdInfo unselectable">
 							<fmt:message key="label.language" />:
@@ -63,7 +67,7 @@
 				</table>
 			</form>
 			<form action="" method="POST" id="someForm">
-				<table id="mainTable">
+				<table style="width:100%">
 					<tbody>
 							<tr>
 								<td class="tdInfo unselectable"><fmt:message key="label.inputAmount" />:</td>
@@ -84,13 +88,14 @@
 							</tr>
 							<tr>
 								<td colspan="2">
-									<button class="unselectable" id="swapCurrenciesBtn" type="button" onClick="swapCurrencies();">▲ ▼</button>
+									<button class="unselectable" id="swapCurrenciesBtn" type="button" style="font-size:12px; margin:0; padding:0;" onClick="swapCurrencies();">▲ ▼</button>
 								</td>
 							</tr>
 							<tr>
 								<!-- <td> <input class="hoverShadow dataEntry" type="text" placeholder=""
 								name="outputResult" id="outResult" /> </td> -->
 								<td class="tdInfo unselectable"><fmt:message key="label.outputCurrency" />:</td>
+								<!-- <td style="width:3px"></td>  -->
 								<td><select id="selectOutputCurrency"
 									class="hoverShadow dataSelect" name="outputCurrency">
 										<!--<option value="empty"></option>-->

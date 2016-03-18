@@ -112,6 +112,8 @@ body {
 	color: black;
 	font-size: 14px;
 	width: 100%;
+	margin:0;
+	 padding:0;"
 	height: 30px;
 	display: inline-block;
     padding: 5px 10px;
@@ -193,7 +195,12 @@ body {
 	margin: 0;
 }
 
-
+#languageAndDateTable{
+	width: 100%;
+}
+#mainTable{
+	width: 100%;
+}
 
 
 
