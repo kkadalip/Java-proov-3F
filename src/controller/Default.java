@@ -77,7 +77,12 @@ public class Default extends HttpServlet {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern(sessionDateFormat); //DateFormat format = new SimpleDateFormat("dd.MM.yy");
 		LocalDate sessionDateAsLocalDate = LocalDate.parse(sessionDate, formatter);
 
+		// UNSORTED DISPLAYED CURRENCIES WITHOUT TRANSLATIONS!!!!!
 		List<String> displayedCurrencies = BankUtil.downloadAllForDate(getServletContext(), sessionDateAsLocalDate); //"30.12.2010");
+		// TODO
+		// Create new sorted list
+		// Sort list by translations
+		// Set said list as displayed list (if possible WITH translations ie KVP, if not then just re-translate in JSP)
 		request.setAttribute("displayedCurrencies", displayedCurrencies);
 
 		request.getRequestDispatcher("jsp/index.jsp").forward(request, response);
