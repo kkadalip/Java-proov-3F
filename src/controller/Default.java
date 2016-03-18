@@ -21,8 +21,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
-import java.util.SortedSet;
-import java.util.TreeSet;
+//import java.util.SortedSet;
+//import java.util.TreeSet;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -39,7 +39,6 @@ import com.google.gson.Gson;
 
 import dao.BankUtil;
 import model.Currency;
-//import model.Currency;
 import model.Result;
 
 @WebServlet("")

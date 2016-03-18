@@ -61,7 +61,7 @@ $(document).on("submit","#someForm",function(event) {
 		}else{
 		// NO ERRORS:
 			var $table = $("<table>");
-			$("<tr>").appendTo($table).append($("<th>").text("Bank:")).append($("<th>").text("Result:"));
+			$("<tr>").appendTo($table).append($("<th>").text("<fmt:message key='label.bank' />:")).append($("<th>").text("<fmt:message key='label.result' />:")); // Bank: Result:
 			$.each(responseJson, function(index, result) { // Iterate over the JSON array.
 				$("<tr>").appendTo($table).append(
 						$("<td>").text(result._bankName)).append(
