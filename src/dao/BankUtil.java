@@ -74,8 +74,9 @@ public class BankUtil {
 		return resultsList;
 	}
 	
+	// X SHAPED FLOAT TO NICELY FORMATTED DISPLAY STRING eg 0.1299 to 00.13
 	public static String displayedFloat(Float regularFloat){
-		DecimalFormat df = new DecimalFormat("0.00");
+		DecimalFormat df = new DecimalFormat("00.00");
 		DecimalFormatSymbols symbols = new DecimalFormatSymbols();
 		symbols.setDecimalSeparator('.');
 		df.setDecimalFormatSymbols(symbols);

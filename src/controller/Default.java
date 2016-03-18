@@ -43,7 +43,7 @@ public class Default extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		log.info("[doGet] START");
-//		HttpSession httpSession = request.getSession(true);
+		//HttpSession httpSession = request.getSession(true);
 		String selectedLanguage = request.getParameter("language");
 		if(selectedLanguage != null){
 			log.debug("[doGet] have selectedLanguage, it is: " + selectedLanguage);
@@ -53,47 +53,44 @@ public class Default extends HttpServlet {
 		}
 
 		// DATE IN SESSION?
-//		String sessionDate = (String) httpSession.getAttribute("sessionDate");
+		//String sessionDate = (String) httpSession.getAttribute("sessionDate");
 		String sessionDateFormat = "dd.MM.yyyy";
 		String sessionDate = (String) request.getParameter("date"); // selectedDate
 		if(sessionDate == null || sessionDate.isEmpty()){
-//			if(httpSession.getAttribute("selectedDate") == null){
-//			sessionDate = "30.12.2010";				
-				log.debug("sessionDate is null, setting it to YESTERDAY!");
-				log.debug("[doGet] NO SESSION DATE IN SESSION ATTRIBUTES!, setting it as yesterday");
-				DateFormat dateFormat = new SimpleDateFormat(sessionDateFormat); //("yyyy/MM/dd HH:mm:ss");
-		        Calendar cal = Calendar.getInstance();
-		        cal.add(Calendar.DATE, -1); // YESTERDAY
-		        sessionDate = dateFormat.format(cal.getTime());
-		        log.debug("[doGet] session date is now " + sessionDate);
-		        
-//		        httpSession.setAttribute("selectedDate", sessionDate);
-//			}else{
-//				sessionDate = (String) httpSession.getAttribute("selectedDate");
-//			}
+			//if(httpSession.getAttribute("selectedDate") == null){
+			//sessionDate = "30.12.2010";				
+			log.debug("sessionDate is null, setting it to YESTERDAY!");
+			log.debug("[doGet] NO SESSION DATE IN SESSION ATTRIBUTES!, setting it as yesterday");
+			DateFormat dateFormat = new SimpleDateFormat(sessionDateFormat); //("yyyy/MM/dd HH:mm:ss");
+			Calendar cal = Calendar.getInstance();
+			cal.add(Calendar.DATE, -1); // YESTERDAY
+			sessionDate = dateFormat.format(cal.getTime());
+			log.debug("[doGet] session date is now " + sessionDate);
+
+			//    httpSession.setAttribute("selectedDate", sessionDate);
+			//}else{
+			//	sessionDate = (String) httpSession.getAttribute("selectedDate");
+			//}
 		}
 		request.setAttribute("selectedD", sessionDate);
 
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern(sessionDateFormat); //DateFormat format = new SimpleDateFormat("dd.MM.yy");
 		LocalDate sessionDateAsLocalDate = LocalDate.parse(sessionDate, formatter);
-		
+
 		List<String> displayedCurrencies = BankUtil.downloadAllForDate(getServletContext(), sessionDateAsLocalDate); //"30.12.2010");
 		request.setAttribute("displayedCurrencies", displayedCurrencies);
 
-		//ServletContext context = getContext();
-		//URL resourceUrl = context.getResource("/WEB-INF/test/foo.txt");
-
 		request.getRequestDispatcher("jsp/index.jsp").forward(request, response);
 	}
-	
+
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		log.info("[doPost] START");
-//		HttpSession httpSession = request.getSession(true);
+		//		HttpSession httpSession = request.getSession(true);
 		boolean ajax = "XMLHttpRequest".equals(request.getHeader("X-Requested-With"));
 		if(ajax){
 			log.debug("[doPost] AJAX POST!!!");
-			
+
 			// Handle ajax (JSON) response.
 			List<String> errors = new ArrayList<String>(); // if no errors... do the calculations etc...
 
@@ -109,13 +106,13 @@ public class Default extends HttpServlet {
 			log.debug("[doPost] inputCurrency: " + inputCurrency); // rate
 			String outputCurrency = request.getParameter("outputCurrency");
 			log.debug("[doPost] outputCurrency: " + outputCurrency);
-			
+
 			String selectedDate = request.getParameter("selectedD"); // selectedDate // BEFORE WAS IN FORM, NOW ADDING TO SERIALIZED FORM IN JS
-			
-//			if(selectedDate != null){
-//				httpSession.setAttribute("selectedDate", selectedDate);
-//			}
-//			String selectedDate = (String) httpSession.getAttribute("selectedDate");
+
+			//if(selectedDate != null){
+			//	httpSession.setAttribute("selectedDate", selectedDate);
+			//}
+			//String selectedDate = (String) httpSession.getAttribute("selectedDate");
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy"); //DateFormat format = new SimpleDateFormat("dd.MM.yy");
 			if(selectedDate != null){
 				log.debug("[doPost] selectedDate is " + selectedDate);
@@ -143,7 +140,7 @@ public class Default extends HttpServlet {
 				}
 				// Try to parse selected date
 				if(errors.isEmpty()){
-				log.debug("NO ERRORS, CONTINUING doPost!");
+					log.debug("NO ERRORS, CONTINUING doPost!");
 					Float inputMoneyAmountFloat = null;
 					try{
 						inputMoneyAmountFloat = Float.parseFloat(inputMoneyAmount);
@@ -165,18 +162,18 @@ public class Default extends HttpServlet {
 					log.debug("HAVE ERRORS, will display them SoonTM");
 					List<String> list = new ArrayList<String>();
 					//list.add("some example error");
-					
+
 					String currentLang = request.getParameter("lang");
 					log.debug("currentLang is " + currentLang);
 					Locale selectedLocale = new Locale(currentLang); //(selectedLanguage);
 					ResourceBundle textBundle = ResourceBundle.getBundle("text",selectedLocale);
-					
+
 					///request.setAttribute("displayValues", textBundle);
 					//request.setAttribute("language", selectedLanguage);
 					for(String error : errors){
 						log.debug("[doPost] Errorslist error: " + error);
 						//list.add(error);
-						
+
 						// TRANSLATE FOR LOCALE:
 						String value;
 						try{
@@ -247,7 +244,9 @@ public class Default extends HttpServlet {
 
 
 
-
+// end of doGet
+//ServletContext context = getContext();
+//URL resourceUrl = context.getResource("/WEB-INF/test/foo.txt");
 
 // check session date null?
 
@@ -269,11 +268,11 @@ public class Default extends HttpServlet {
 
 //DELETE LATER
 //if(httpSession.getAttribute("language")=="en"){
-	//httpSession.setAttribute("language","et");
-	//Config.set( httpSession, Config.FMT_LOCALE, new java.util.Locale("et") );// en_US
+//httpSession.setAttribute("language","et");
+//Config.set( httpSession, Config.FMT_LOCALE, new java.util.Locale("et") );// en_US
 //}else{
-	//httpSession.setAttribute("language","en");
-	//Config.set( httpSession, Config.FMT_LOCALE, new java.util.Locale("en") );// en_US
+//httpSession.setAttribute("language","en");
+//Config.set( httpSession, Config.FMT_LOCALE, new java.util.Locale("en") );// en_US
 //}
 
 //Locale defaultLocale = Locale.getDefault();
