@@ -114,10 +114,10 @@ public class BankOfEstonia implements BankInterface {
 			String output = BankUtil.displayedFloat(outputAmountEstonia);
 			log.debug("[calculateResults]  input: " + fisESTinputRate + " / " + fisESToutputRate + " * " +  inputMoneyAmount);
 			log.debug("[calculateResults]  Bank of Estonia RESULT: " + output); //outputAmountEstonia.toString());
-			return new Result("Bank of Estonia", output); // outputAmountEstonia.toString()
+			return new Result("Estonia", output); // outputAmountEstonia.toString()
 		}else{
 			log.error("Bank of Estonia DOES NOT HAVE RESULT!");
-			return new Result("Bank of Estonia","-");
+			return new Result("Estonia","-");
 		}
 	}
 }

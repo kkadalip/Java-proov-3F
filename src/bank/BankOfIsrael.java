@@ -105,10 +105,10 @@ public class BankOfIsrael implements BankInterface {
 			Float outputAmountIsrael = fisISRinputRate / fisISRoutputRate * inputMoneyAmount;
 			String output = BankUtil.displayedFloat(outputAmountIsrael);
 			log.debug("[calculateResults] Bank of Israel RESULT: " + output);
-			return new Result("Bank of Israel", output);
+			return new Result("Israel", output);
 		}else{
 			log.error("[calculateResults] Bank of Israel DOES NOT HAVE RESULT!");
-			return new Result("Bank of Israel","-");
+			return new Result("Israel","-");
 		}		
 	}
 }
