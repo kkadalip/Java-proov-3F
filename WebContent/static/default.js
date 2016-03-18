@@ -1,9 +1,3 @@
-//console.log("Default.js loaded");
-
-//$(document).ready(function() {
-//console.log("DOCUMENT READY!!!");	
-//});
-
 function swapCurrencies(){
 	console.log("swapCurrencies");
 	var a = "#selectInputCurrency";
@@ -65,7 +59,8 @@ $(document).on("change","#selectInputCurrency",function(event){
 		$("#someForm").submit();
 	}
 });
-//Ajaxifying an existing form
+
+//Ajaxifying an existing form:
 $(document).on("submit","#someForm",function(event) {
 	console.log("submitting the ajax post form");
 	var $form = $(this);
@@ -127,9 +122,6 @@ $(document).on("submit","#someForm",function(event) {
 			});
 			$('#resultsTableContainer').html($table);
 		}
-
-
-
 		//$.get("Something", function(responseXml) {                // Execute Ajax GET request on URL of "someservlet" and execute the following function with Ajax response XML...
 		//    $("#somediv").html($(responseXml).find("data").html()); // Parse XML, find <data> element and append its HTML to HTML DOM element with ID "somediv".
 		//});
@@ -173,6 +165,14 @@ $(document).on("submit","#someForm",function(event) {
 
 
 
+
+
+
+//console.log("Default.js loaded");
+
+//$(document).ready(function() {
+//console.log("DOCUMENT READY!!!");	
+//});
 
 
 /*
