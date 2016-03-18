@@ -51,7 +51,6 @@ public class Default extends HttpServlet {
 			log.debug("[doGet] selectedLanguage is null, setting it to english as default");
 			request.setAttribute("language", "en");
 		}
-		//String sessionDate = (String) httpSession.getAttribute("sessionDate"); // selectedDate // DATE IN SESSION?
 		String sessionDateFormat = "dd.MM.yyyy";
 		String sessionDate = (String) request.getParameter("date"); // selectedDate
 		if(sessionDate == null || sessionDate.isEmpty()){
@@ -62,10 +61,6 @@ public class Default extends HttpServlet {
 			cal.add(Calendar.DATE, -1); // YESTERDAY
 			sessionDate = dateFormat.format(cal.getTime());
 			log.debug("[doGet] session date is now " + sessionDate);
-			//    httpSession.setAttribute("selectedDate", sessionDate);
-			//}else{
-			//	sessionDate = (String) httpSession.getAttribute("selectedDate");
-			//}
 		}
 		request.setAttribute("selectedD", sessionDate);
 
@@ -86,7 +81,7 @@ public class Default extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		log.info("[doPost] START");
-		//		HttpSession httpSession = request.getSession(true);
+		//HttpSession httpSession = request.getSession(true);
 		boolean ajax = "XMLHttpRequest".equals(request.getHeader("X-Requested-With"));
 		if(ajax){
 			log.debug("[doPost] AJAX POST!!!");
@@ -108,11 +103,6 @@ public class Default extends HttpServlet {
 			log.debug("[doPost] outputCurrency: " + outputCurrency);
 
 			String selectedDate = request.getParameter("selectedD"); // selectedDate // BEFORE WAS IN FORM, NOW ADDING TO SERIALIZED FORM IN JS
-
-			//if(selectedDate != null){
-			//	httpSession.setAttribute("selectedDate", selectedDate);
-			//}
-			//String selectedDate = (String) httpSession.getAttribute("selectedDate");
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy"); //DateFormat format = new SimpleDateFormat("dd.MM.yy");
 			if(selectedDate != null){
 				log.debug("[doPost] selectedDate is " + selectedDate);
@@ -239,10 +229,18 @@ public class Default extends HttpServlet {
 
 
 
-
-
-
-
+// SESSION DATE STUFF:
+//String sessionDate = (String) httpSession.getAttribute("sessionDate"); // selectedDate
+// doGet
+//httpSession.setAttribute("selectedDate", sessionDate);
+//}else{
+//	sessionDate = (String) httpSession.getAttribute("selectedDate");
+//}
+// doPost
+//if(selectedDate != null){
+//	httpSession.setAttribute("selectedDate", selectedDate);
+//}
+//String selectedDate = (String) httpSession.getAttribute("selectedDate");
 
 // end of doGet
 //ServletContext context = getContext();
