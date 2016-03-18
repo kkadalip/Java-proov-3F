@@ -51,22 +51,17 @@ public class Default extends HttpServlet {
 			log.debug("[doGet] selectedLanguage is null, setting it to english as default");
 			request.setAttribute("language", "en");
 		}
-
-		// DATE IN SESSION?
-		//String sessionDate = (String) httpSession.getAttribute("sessionDate");
+		//String sessionDate = (String) httpSession.getAttribute("sessionDate"); // selectedDate // DATE IN SESSION?
 		String sessionDateFormat = "dd.MM.yyyy";
 		String sessionDate = (String) request.getParameter("date"); // selectedDate
 		if(sessionDate == null || sessionDate.isEmpty()){
-			//if(httpSession.getAttribute("selectedDate") == null){
-			//sessionDate = "30.12.2010";				
-			log.debug("sessionDate is null, setting it to YESTERDAY!");
-			log.debug("[doGet] NO SESSION DATE IN SESSION ATTRIBUTES!, setting it as yesterday");
+			//sessionDate = "30.12.2010";
+			log.debug("[doGet] sessionDate null (not in params/attrs)!, setting it as yesterday");
 			DateFormat dateFormat = new SimpleDateFormat(sessionDateFormat); //("yyyy/MM/dd HH:mm:ss");
 			Calendar cal = Calendar.getInstance();
 			cal.add(Calendar.DATE, -1); // YESTERDAY
 			sessionDate = dateFormat.format(cal.getTime());
 			log.debug("[doGet] session date is now " + sessionDate);
-
 			//    httpSession.setAttribute("selectedDate", sessionDate);
 			//}else{
 			//	sessionDate = (String) httpSession.getAttribute("selectedDate");
