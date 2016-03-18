@@ -39,7 +39,7 @@ import model.Result;
 public class BankUtil {
 	static Logger log = LoggerFactory.getLogger(BankUtil.class); // info trace debug warn error
 	
-	// ATM USING ONLY FOR DISPLAY!!!
+	// DISPLAYED CURRENCIES:
 	public static List<String> downloadAllForDate(ServletContext context, LocalDate selectedDate){
 		log.debug("[downloadAllForDate] selectedDate " + selectedDate);
 		
@@ -64,37 +64,13 @@ public class BankUtil {
 		return uniqueCurrencies;
 	}
 
-	public List<Result> calculateResults(ServletContext context, Float inputMoneyAmount, String inputCurrency, String outputCurreny, LocalDate selectedDate){ //, List<Class> bankClasses){ //, String date){
-		//List<Class> bankClasses = new ArrayList<Class>();
-		//public static List<Result> calculateResults(ServletContext context, Float inputMoneyAmount, String inputCurrency, String outputCurreny, String selectedDate){ //, String date){
+	// CALCULATED RATE RESULTS FOR BANKS:
+	public List<Result> calculateResults(ServletContext context, Float inputMoneyAmount, String inputCurrency, String outputCurrency, LocalDate selectedDate){ //, List<Class> bankClasses){ //, String date){
 		log.debug("[calculateResults]");
-		
 		List<Result> resultsList = new ArrayList<Result>();
-		
-		resultsList.add(new BankOfEstonia().getResult(context, selectedDate, inputCurrency, outputCurreny, inputMoneyAmount)); // ESTONIA
-		resultsList.add(new BankOfLithuania().getResult(context, selectedDate, inputCurrency, outputCurreny, inputMoneyAmount)); // LITHUANIA
-		
-		// ISRAEL START
-		BankOfIsrael bankISR = new BankOfIsrael();
-		String bankOfISRurl = bankISR.getDownloadUrlByDate(selectedDate);
-		String bankOfISRfileName = bankISR.getFileNameByDate(selectedDate);
-		Float fisISRinputRate = bankISR.fisToRate(BankUtil.getFisForX(context, bankOfISRurl,bankOfISRfileName),inputCurrency);
-		Float fisISRoutputRate = bankISR.fisToRate(BankUtil.getFisForX(context, bankOfISRurl,bankOfISRfileName),outputCurreny);
-		if(fisISRinputRate != null){log.debug("[calculateResults] fisISRinputRate: " + fisISRinputRate.toString());
-		}else{log.debug("[calculateResults] fisISRinputRate IS NULL!");}
-		if(fisISRoutputRate != null){log.debug("[calculateResults]  fisISRoutputRate: " + fisISRoutputRate.toString());
-		}else{log.debug("[calculateResults] fisISRoutputRate IS NULL!");}
-		// ------------------------
-		if(fisISRinputRate != null && fisISRoutputRate != null && inputMoneyAmount != null){
-			Float outputAmountIsrael = fisISRinputRate / fisISRoutputRate * inputMoneyAmount;
-			log.debug("[calculateResults] Bank of Israel RESULT: " + outputAmountIsrael.toString());
-			resultsList.add(new Result("Bank of Israel", displayedFloat(outputAmountIsrael))); //outputAmountLithuania.toString()));
-		}else{
-			log.error("[calculateResults] Bank of Israel DOES NOT HAVE RESULT!");
-			resultsList.add(new Result("Bank of Israel","-"));
-		}
-		// ISRAEL END
-		
+		resultsList.add(new BankOfEstonia().getResult(context, selectedDate, inputCurrency, outputCurrency, inputMoneyAmount)); // ESTONIA
+		resultsList.add(new BankOfLithuania().getResult(context, selectedDate, inputCurrency, outputCurrency, inputMoneyAmount)); // LITHUANIA
+		resultsList.add(new BankOfIsrael().getResult(context, selectedDate, inputCurrency, outputCurrency, inputMoneyAmount)); // ISRAEL	
 		return resultsList;
 	}
 	
@@ -206,6 +182,37 @@ public class BankUtil {
 
 
 
+
+
+
+
+
+
+
+
+//List<Class> bankClasses = new ArrayList<Class>();
+//public static List<Result> calculateResults(ServletContext context, Float inputMoneyAmount, String inputCurrency, String outputCurreny, String selectedDate){ //, String date){
+
+//// ISRAEL START
+//BankOfIsrael bankISR = new BankOfIsrael();
+//String bankOfISRurl = bankISR.getDownloadUrlByDate(selectedDate);
+//String bankOfISRfileName = bankISR.getFileNameByDate(selectedDate);
+//Float fisISRinputRate = bankISR.fisToRate(BankUtil.getFisForX(context, bankOfISRurl,bankOfISRfileName),inputCurrency);
+//Float fisISRoutputRate = bankISR.fisToRate(BankUtil.getFisForX(context, bankOfISRurl,bankOfISRfileName),outputCurreny);
+//if(fisISRinputRate != null){log.debug("[calculateResults] fisISRinputRate: " + fisISRinputRate.toString());
+//}else{log.debug("[calculateResults] fisISRinputRate IS NULL!");}
+//if(fisISRoutputRate != null){log.debug("[calculateResults]  fisISRoutputRate: " + fisISRoutputRate.toString());
+//}else{log.debug("[calculateResults] fisISRoutputRate IS NULL!");}
+//// ------------------------
+//if(fisISRinputRate != null && fisISRoutputRate != null && inputMoneyAmount != null){
+//	Float outputAmountIsrael = fisISRinputRate / fisISRoutputRate * inputMoneyAmount;
+//	log.debug("[calculateResults] Bank of Israel RESULT: " + outputAmountIsrael.toString());
+//	resultsList.add(new Result("Bank of Israel", displayedFloat(outputAmountIsrael))); //outputAmountLithuania.toString()));
+//}else{
+//	log.error("[calculateResults] Bank of Israel DOES NOT HAVE RESULT!");
+//	resultsList.add(new Result("Bank of Israel","-"));
+//}
+//// ISRAEL END
 
 //// LITHUANIA START
 //BankOfLithuania bankLT = new BankOfLithuania();

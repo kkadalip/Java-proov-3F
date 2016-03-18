@@ -88,18 +88,28 @@ public class BankOfIsrael implements BankInterface {
 	
 	
 	public List<String> getCurrencies(ServletContext context, LocalDate selectedDate){
-		String bankOfIsraelUrl = getDownloadUrlByDate(selectedDate);
-		String bankOfIsraelFileName = getFileNameByDate(selectedDate);
-		FileInputStream fisIsrael = BankUtil.getFisForX(context, bankOfIsraelUrl,bankOfIsraelFileName);
+		String url = getDownloadUrlByDate(selectedDate);
+		String filename = getFileNameByDate(selectedDate);
+		FileInputStream fisIsrael = BankUtil.getFisForX(context, url, filename);
 		List<String> currencies = fisToCurrencies(fisIsrael);
 		return currencies;
 	}
 
 	@Override
-	public Result getResult(ServletContext context, LocalDate selectedDate, String inputCurrency, String outputCurrency,
-			Float inputMoneyAmount) {
-		// TODO Auto-generated method stub
-		return null;
+	public Result getResult(ServletContext context, LocalDate selectedDate, String inputCurrency, String outputCurrency, Float inputMoneyAmount) {
+		String url = getDownloadUrlByDate(selectedDate);
+		String filename = getFileNameByDate(selectedDate);
+		Float fisISRinputRate = fisToRate(BankUtil.getFisForX(context, url, filename),inputCurrency);
+		Float fisISRoutputRate = fisToRate(BankUtil.getFisForX(context, url, filename),outputCurrency);
+		if(fisISRinputRate != null && fisISRoutputRate != null && inputMoneyAmount != null){
+			Float outputAmountIsrael = fisISRinputRate / fisISRoutputRate * inputMoneyAmount;
+			String output = BankUtil.displayedFloat(outputAmountIsrael);
+			log.debug("[calculateResults] Bank of Israel RESULT: " + output);
+			return new Result("Bank of Israel", output);
+		}else{
+			log.error("[calculateResults] Bank of Israel DOES NOT HAVE RESULT!");
+			return new Result("Bank of Israel","-");
+		}		
 	}
 }
 
@@ -124,5 +134,16 @@ public class BankOfIsrael implements BankInterface {
 
 
 
+
+
+
+
+
+
+
+//if(fisISRinputRate != null){log.debug("[calculateResults] fisISRinputRate: " + fisISRinputRate.toString());
+//}else{log.debug("[calculateResults] fisISRinputRate IS NULL!");}
+//if(fisISRoutputRate != null){log.debug("[calculateResults]  fisISRoutputRate: " + fisISRoutputRate.toString());
+//}else{log.debug("[calculateResults] fisISRoutputRate IS NULL!");}
 
 //String dateInUrl = BankUtil.datepickerToUrlFormat(selectedDate, "dd.MM.yy","yyyyMMdd");		
