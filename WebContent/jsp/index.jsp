@@ -11,69 +11,66 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<meta charset="UTF-8">
 
-<meta charset="utf-8">
-<meta http-equiv="Content-Type" content="text/html">
-
-<meta name="Content-Security-Policy" content="
-	default-src 'self';
-    script-src 'unsafe-inline' 'self' https://ajax.googleapis.com;
-    connect-src 'self';
-    font-src 'self';
-    img-src 'self' https://ajax.googleapis.com;
-    style-src 'self' https://ajax.googleapis.com;
-    media-src 'self';">
-    
-<title>Finest</title>
-
-<link rel="shortcut icon" href="static/lazydraw.ico" />
-
-<!-- jQuery (Uncompressed: //code.jquery.com/jquery-1.12.1.js)-->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
-<!-- jQuery UI (Uncompressed: //code.jquery.com/ui/1.11.4/jquery-ui.js) -->
-<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
-<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
-
-<!-- MY OWN CSS AND JS -->
-<link rel="stylesheet" type="text/css" href="static/style.css">
-<script type="text/javascript" src="static/default.js"></script>
-
-<!-- UNSAFE INLINE, using because of JSTL fmt:message -->
-<script>
-//Ajaxifying an existing form (submitting the ajax post form):
-$(document).on("submit","#someForm",function(event) {
-	//console.log("submit someform");
-	var $form = $(this);
-	// Adding selectedD (date) and lang (language) as extra params to serialized form!
-	$.post($form.attr("action"), $form.serialize() +"&selectedD="+$("#datepicker").datepicker().val()+"&lang="+$("#languageSelect").val(), function(responseJson) { // responseText responseJson responseXml
-		//console.log("responseJson is: " + responseJson);
-		// EMPTY BOTH RESULTS AND ERRORS HOLDERS:
-		$("#errorsTableContainer").html("");
-		$("#resultsTableContainer").html("");
-		// I GOT ERRORS:
-		if(typeof responseJson[0] === 'string'){ // responseJson[0] is string, therefore responseJson has error messages.
-			var $ul = $("<ul>");
-			$("<li id='errorsList'>").appendTo($ul).text("<fmt:message key='label.error' />:"); // Errors:
-			$.each(responseJson, function(index, item) { // Iterate over the JSON array.
-				$("<li>").text(item).appendTo($ul);
-			});
-			$("#errorsTableContainer").html($ul);
-		}else{
-		// NO ERRORS:
-			var $table = $("<table>");
-			$("<tr>").appendTo($table).append($("<th>").text("<fmt:message key='label.bank' />:")).append($("<th>").text("<fmt:message key='label.result' />:")); // Bank: Result:
-			$.each(responseJson, function(index, result) { // Iterate over the JSON array.
-				$("<tr>").appendTo($table).append(
-						$("<td>").text(result._bankName)).append(
-								$("<td>").text(result._resultValue));
-			});
-			$('#resultsTableContainer').html($table);
-		}
+	<meta name="Content-Security-Policy" content="
+		default-src 'self';
+	    script-src 'unsafe-inline' 'self' https://ajax.googleapis.com;
+	    connect-src 'self';
+	    font-src 'self';
+	    img-src 'self' https://ajax.googleapis.com;
+	    style-src 'self' https://ajax.googleapis.com;
+	    media-src 'self';">
+	    
+	<title>Finest</title>
+	
+	<link rel="shortcut icon" href="static/lazydraw.ico" />
+	
+	<!-- jQuery (Uncompressed: //code.jquery.com/jquery-1.12.1.js)-->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+	<!-- jQuery UI (Uncompressed: //code.jquery.com/ui/1.11.4/jquery-ui.js) -->
+	<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+	
+	<!-- MY OWN CSS AND JS -->
+	<link rel="stylesheet" type="text/css" href="static/style.css">
+	<script type="text/javascript" src="static/default.js"></script>
+	
+	<!-- UNSAFE INLINE, using because of JSTL fmt:message -->
+	<script>
+	//Ajaxifying an existing form (submitting the ajax post form):
+	$(document).on("submit","#someForm",function(event) {
+		//console.log("submit someform");
+		var $form = $(this);
+		// Adding selectedD (date) and lang (language) as extra params to serialized form!
+		$.post($form.attr("action"), $form.serialize() +"&selectedD="+$("#datepicker").datepicker().val()+"&lang="+$("#languageSelect").val(), function(responseJson) { // responseText responseJson responseXml
+			//console.log("responseJson is: " + responseJson);
+			// EMPTY BOTH RESULTS AND ERRORS HOLDERS:
+			$("#errorsTableContainer").html("");
+			$("#resultsTableContainer").html("");
+			// I GOT ERRORS:
+			if(typeof responseJson[0] === 'string'){ // responseJson[0] is string, therefore responseJson has error messages.
+				var $ul = $("<ul>");
+				$("<li id='errorsList'>").appendTo($ul).text("<fmt:message key='label.error' />:"); // Errors:
+				$.each(responseJson, function(index, item) { // Iterate over the JSON array.
+					$("<li>").text(item).appendTo($ul);
+				});
+				$("#errorsTableContainer").html($ul);
+			}else{
+			// NO ERRORS:
+				var $table = $("<table>");
+				$("<tr>").appendTo($table).append($("<th>").text("<fmt:message key='label.bank' />:")).append($("<th>").text("<fmt:message key='label.result' />:")); // Bank: Result:
+				$.each(responseJson, function(index, result) { // Iterate over the JSON array.
+					$("<tr>").appendTo($table).append(
+							$("<td>").text(result._bankName)).append(
+									$("<td>").text(result._resultValue));
+				});
+				$('#resultsTableContainer').html($table);
+			}
+		});
+		event.preventDefault(); // Important! Prevents submitting the form.
 	});
-	event.preventDefault(); // Important! Prevents submitting the form.
-});
-</script>
-
+	</script>
 </head>
 <body>
 	<div class="floating-box-container">
