@@ -15,7 +15,7 @@
 <meta charset="utf-8">
 <meta http-equiv="Content-Type" content="text/html">
 
-<meta http-equiv="Content-Security-Policy" content="
+<meta name="Content-Security-Policy" content="
 	default-src 'self';
     script-src 'unsafe-inline' 'self' https://ajax.googleapis.com;
     connect-src 'self';
