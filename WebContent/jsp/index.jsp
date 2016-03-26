@@ -76,7 +76,7 @@
 	<div class="floating-box-container">
 		<div id="floating-box-main"  class="floating-box">
 			<p class="unselectable" id="td-title"><fmt:message key="label.title" /></p>
-			<form action="" method=GET id="datePickerForm">
+			<form action="#" method=GET id="datePickerForm">
 				<table id="languageAndDateTable">
 					<tr>
 						<td class="tdInfo unselectable">
@@ -95,7 +95,7 @@
 					</tr>
 				</table>
 			</form>
-			<form action="" method="POST" id="someForm">
+			<form action="#" method="POST" id="someForm">
 				<table id="mainTable">
 					<tbody>
 							<tr>
